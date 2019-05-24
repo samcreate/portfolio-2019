@@ -8,6 +8,7 @@
   --duration: 0.4s;
   --easing: cubic-bezier(0.7, 0, 0.2, 1);
   --baseline: 1;
+  --degs: 8deg;
 }
 html {
   scroll-behavior: smooth;
@@ -44,9 +45,75 @@ h5 {
   transform-style: preserve-3d;
   perspective: 801px;
   perspective-origin: center center;
+  justify-items: center;
+  align-items: center;
 }
-#app > * {
+#app .about {
+  color: #fff;
+  display: grid;
+  position: fixed;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  width: 76vw;
+  min-width: 320px;
+  z-index: -1;
+  grid-column-gap: 5vw;
+}
+#app .about .copy {
+  grid-column-end: span 2;
+}
+#app .about .copy p {
+  width: 26vw;
+  min-width: 300px;
+}
+#app .about h1 {
+  font-size: calc(16px + 2.9vw);
+  text-transform: uppercase;
+  line-height: 1;
+}
+#app .about h1::after {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(141,236,193)'/%3E%3C/svg%3E");
+  display: block;
+  width: 6vw;
+  animation: rotating 20s linear infinite;
+  transform-origin: 50% 50%;
+  transform: translateZ(0);
+  position: absolute;
+  top: -2vw;
+  left: -1vw;
+  z-index: -1;
+}
+#app .about .image {
+  perspective: 5000px;
   transform-style: preserve-3d;
+  height: 23rem;
+  width: 16rem;
+  justify-items: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+  border: 1rem #fff solid;
+  transform: translateZ(50px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+  background: #fff;
+}
+#app .about .image .front {
+  overflow: hidden;
+  transform-origin: bottom center;
+  background: url("me.2791075a.png") no-repeat;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  top: 5%;
+  position: absolute;
+  z-index: 1;
+  transform: translateZ(200px) scale(0.9) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+#app .about .image .back {
+  background: url("me-bg.2540ea14.png") no-repeat;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  margin: 0 auto;
+  transform: translateZ(80px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
 }
 #app .sections {
   perspective: 550px;

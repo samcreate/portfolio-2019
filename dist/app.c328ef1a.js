@@ -25565,6 +25565,46 @@ function (_Dispatcher) {
   }
 
   _createClass(SlideShow, [{
+    key: "handleArrowKeys",
+    value: function handleArrowKeys(event) {
+      if (event.defaultPrevented) {
+        return; // Do nothing if the event was already processed
+      }
+
+      switch (event.key) {
+        case "Down":
+        case "ArrowDown":
+        case "Right":
+        case "ArrowRight":
+          this.checkSlideState();
+          this.next();
+          break;
+
+        case "Up":
+        case "ArrowUp":
+        case "Left":
+        case "ArrowLeft":
+          this.checkSlideState();
+          this.prev();
+          break;
+      }
+
+      event.preventDefault();
+    }
+  }, {
+    key: "handleWheel",
+    value: function handleWheel(event) {
+      if (!this.lethargy.check(event)) return;
+      var scrollDelta = Math.sign(event.deltaY);
+      this.checkSlideState();
+
+      if (!this.isTweenBool && scrollDelta === this.downward) {
+        this.next();
+      } else if (!this.isTweenBool && scrollDelta === this.upward) {
+        this.prev();
+      }
+    }
+  }, {
     key: "checkSlideState",
     value: function checkSlideState() {
       var _this2 = this;
@@ -25590,52 +25630,6 @@ function (_Dispatcher) {
 
       if (this.pastIndex > this.sections.length) {
         this.pastIndex = 1;
-      }
-    }
-  }, {
-    key: "handleArrowKeys",
-    value: function handleArrowKeys(event) {
-      if (event.defaultPrevented) {
-        return; // Do nothing if the event was already processed
-      }
-
-      switch (event.key) {
-        case "Down": // IE/Edge specific value
-
-        case "ArrowDown":
-        case "Right": // IE/Edge specific value
-
-        case "ArrowRight":
-          this.checkSlideState();
-          this.next();
-          break;
-
-        case "Up": // IE/Edge specific value
-
-        case "ArrowUp":
-        case "Left": // IE/Edge specific value
-
-        case "ArrowLeft":
-          this.checkSlideState();
-          this.prev(); // Do something for "up arrow" key press.
-
-          break;
-      } // Cancel the default action to avoid it being handled twice
-
-
-      event.preventDefault();
-    }
-  }, {
-    key: "handleWheel",
-    value: function handleWheel(event) {
-      if (!this.lethargy.check(event)) return;
-      var scrollDelta = Math.sign(event.deltaY);
-      this.checkSlideState();
-
-      if (!this.isTweenBool && scrollDelta === this.downward) {
-        this.next();
-      } else if (!this.isTweenBool && scrollDelta === this.upward) {
-        this.prev();
       }
     }
   }, {
@@ -25996,7 +25990,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51057" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59356" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

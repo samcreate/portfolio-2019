@@ -44,6 +44,44 @@ export class SlideShow extends Dispatcher {
     });
   }
 
+  handleArrowKeys(event) {
+    if (event.defaultPrevented) {
+      return; // Do nothing if the event was already processed
+    }
+
+    switch (event.key) {
+      case "Down":
+      case "ArrowDown":
+      case "Right":
+      case "ArrowRight":
+        this.checkSlideState();
+        this.next();
+        break;
+      case "Up":
+      case "ArrowUp":
+      case "Left":
+      case "ArrowLeft":
+        this.checkSlideState();
+        this.prev();
+
+        break;
+    }
+    event.preventDefault();
+  }
+
+  handleWheel(event) {
+    if (!this.lethargy.check(event)) return;
+    let scrollDelta = Math.sign(event.deltaY);
+
+    this.checkSlideState();
+
+    if (!this.isTweenBool && scrollDelta === this.downward) {
+      this.next();
+    } else if (!this.isTweenBool && scrollDelta === this.upward) {
+      this.prev();
+    }
+  }
+
   checkSlideState() {
     this.isTweenBool = false;
 
@@ -65,46 +103,6 @@ export class SlideShow extends Dispatcher {
 
     if (this.pastIndex > this.sections.length) {
       this.pastIndex = 1;
-    }
-  }
-
-  handleArrowKeys(event) {
-    if (event.defaultPrevented) {
-      return; // Do nothing if the event was already processed
-    }
-
-    switch (event.key) {
-      case "Down": // IE/Edge specific value
-      case "ArrowDown":
-      case "Right": // IE/Edge specific value
-      case "ArrowRight":
-        this.checkSlideState();
-        this.next();
-        break;
-      case "Up": // IE/Edge specific value
-      case "ArrowUp":
-      case "Left": // IE/Edge specific value
-      case "ArrowLeft":
-        this.checkSlideState();
-        this.prev();
-        // Do something for "up arrow" key press.
-        break;
-    }
-
-    // Cancel the default action to avoid it being handled twice
-    event.preventDefault();
-  }
-
-  handleWheel(event) {
-    if (!this.lethargy.check(event)) return;
-    let scrollDelta = Math.sign(event.deltaY);
-
-    this.checkSlideState();
-
-    if (!this.isTweenBool && scrollDelta === this.downward) {
-      this.next();
-    } else if (!this.isTweenBool && scrollDelta === this.upward) {
-      this.prev();
     }
   }
 

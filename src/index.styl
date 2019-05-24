@@ -1,0 +1,292 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    position: relative;
+}
+:root {
+    --duration: 0.4s;
+    --easing: cubic-bezier(0.7, 0, 0.2, 1);
+    --baseline: 1;
+}
+
+html {
+    scroll-behavior: smooth;
+    //test
+}
+html,
+body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: #000;
+    overflow: hidden;
+    font-size: 20px;
+    line-height: 1.7
+    color:black;
+    font-family: 'Montserrat';
+    font-family: 'Esteban';
+}
+h1,h2,h3,h4,h5,h5{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    padding: 0px;
+    margin: 0px;
+    line-height: 0.7;
+}
+#app {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    transform-style: preserve-3d;
+    perspective: 801px;
+    perspective-origin: center center;
+}
+#app > * {
+    transform-style: preserve-3d;
+}
+#app .sections {
+    perspective: 550px;
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    position: relative;
+
+    .title{
+        text-transform: uppercase;
+        font-size: calc(16px + 2.9vw);
+        position: fixed;
+        top: 3.5vw;
+        left: 6vw;
+        border-right: 1px solid black;
+        padding-right:1rem;
+        text-align: right;
+        transform: translateZ(0);
+ 
+        h2{
+            
+            &::after{
+                display:block;
+                width:9vw;
+                animation: rotating 15s linear infinite;
+                transform-origin: 50% 50%;
+                transform: translateZ(0);
+                position: absolute;
+                top: -2vw;
+                left: -4vw;    
+                z-index:-1;
+                
+            }
+        }
+        
+        p{
+            text-transform:initial;
+            font-size: calc(9.5px + 1vw);
+            line-height: 1;
+            margin-bottom: 0;
+            margin-top: 15px;
+        }
+     
+    }
+
+    .lottie{
+        z-index:1;
+        left: -5vw;
+    }
+    h3{
+        position: fixed;
+        top: 37vh;
+        left:0;
+        display: grid;
+        place-content: center;
+        width: 100vw;
+        font-family: 'Montserrat', sans-serif;
+        text-transform: uppercase;
+        font-size: 17vw;
+        height: 29vh;
+        z-index:-1;
+        pointer-events:none;
+        opacity:0;
+        transform: translateZ(0);
+        color: #DEEFDB;
+    }
+    p.copy{
+        font-size: 0.7em;
+        font-size:calc(13px + 0.20vw);
+        width: 35vw;
+        min-width:320px;
+        position: fixed;
+        left: 63vw;
+        top: 66vh;
+        z-index: 3;
+        line-height: 1.4;
+        span{
+            display:block;
+            &.first-letter {
+                font-size: calc(45px + 7.7vw);
+                color: #DEEFDB;
+                float: left;
+                line-height: 1;
+                padding-right: calc(10px + 2vw)
+                padding-left: 2.1vw;
+                &::after{
+                    display:block;
+                    width: calc(40px + 7.6vw);
+                    animation: rotating 15s linear infinite;
+                    animation-delay: 2s;
+                    transform-origin: 48% 46%;
+                    transform: translateZ(0);
+                    position: absolute;
+                    top: 0;
+                    left: 0;    
+                    z-index:-1;
+                }
+            }
+        }
+    }
+    section {
+        position: absolute;
+        transform: translateZ(0);
+        width: 100vw;
+        height: 100vh;
+        margin: auto;
+        display: grid;
+        place-items: center;
+        overflow:hidden;
+        &.transition-in{
+            .lottie:after{
+                top: 37vh;
+                opacity:1;
+            }
+        }
+    }
+
+    section.tinker {
+            background: #cde3cd;
+            z-index: 1;
+            .lottie{
+                .copy .first-letter {
+                    color:#DEEFDB;
+                }
+            }
+            .title h2::after, .copy .first-letter::after{
+                content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='%238ccfb3'/%3E%3C/svg%3E");
+            }
+    }
+
+    section.explorer {
+        background: white;
+        z-index: 0;
+        h3{
+            color: #eee;
+        }
+        p.copy > span.first-letter{
+            color:white;
+        }
+        .title h2::after, .copy .first-letter::after{
+                content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(141,236,193)'/%3E%3C/svg%3E");
+            }
+        //
+    }
+
+    section.developer {
+        background: #EEB2A8;
+        z-index: 0;
+        h3{
+            color: #F3C3B8;
+        }
+        p.copy > span.first-letter{
+            color:#EEB2A8;
+        }
+        .title h2::after, .copy .first-letter::after{
+                content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(102,255,199)'/%3E%3C/svg%3E");
+            }
+    }
+    section.animator {
+        background: #BCA3BF;
+        z-index: 0;
+        h3{
+            color: #C5AFC8;
+        }
+        p.copy > span.first-letter{
+            color:#BCA3BF;
+        }
+        .title h2::after, .copy .first-letter::after{
+                content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='%23502455'/%3E%3C/svg%3E");
+            }
+        
+    }
+}
+
+
+
+.lottie{
+    min-width:50vw;
+    width:50vw;
+    z-index:2;
+    position: relative;
+}
+
+
+section:not(.in-transition) .lottie {
+    transform-origin: center;
+    transform: rotateY(calc(-20deg * var(--rot-y, 0)));
+}
+section:not(.in-transition) #circutboard{
+    transform: translate3d(calc(calc(10 * var(--rot-xvw, 0))+30px), calc(calc(6 * var(--rot-yvw, 0))+152px), 0);
+}
+section:not(.in-transition) #animated-speedlines-container{
+    transform: translate3d(calc(10* var(--rot-xvw, 0)), calc(calc(6 * var(--rot-yvw, 0))+92px), 0);
+}
+section:not(.in-transition) #floor-container{
+    transform: translate3d(calc(5 * var(--rot-xvw, 0)), calc(calc(3 * var(--rot-yvw, 0))+92px), 0);
+}
+section:not(.in-transition) #floor-shadow{
+    transform: translate3d(calc(-2 * var(--rot-xvw, 0)), calc(calc(-2 * var(--rot-yvw, 0))+92px), 0);
+}
+
+
+.bg {
+    transform-origin: center;
+    transform: translateZ(-280px) scale(1.28) rotateX(calc(2deg * var(--rot-x, 0))) rotateY(calc(2deg * var(--rot-y, 0)));
+    width: 150vw;
+    height: 150vh;
+    display: flex;
+    background: url("https://s3-us-west-2.amazonaws.com/lottietest/squiggle.gif");
+    background-size: 150px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.mouser {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 3vmin;
+    height: 3vmin;
+    border-radius: 50%;
+    background: #fff;
+    z-index: 999;
+    display: grid;
+
+    transform: translate(
+        calc(1px * var(--mouse-x, 50vw)),
+        calc(1px * var(--mouse-y, 50vh))
+    )
+    translate(-50%, -50%);
+}

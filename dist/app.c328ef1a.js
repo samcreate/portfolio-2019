@@ -150,8 +150,7 @@ function () {
       _this.x = e.clientX;
       _this.y = e.clientY;
     });
-    this.update();
-    document.body.style.cursor = "none";
+    this.update(); //document.body.style.cursor = "none";
   }
 
   _createClass(Mouse, [{
@@ -25542,10 +25541,16 @@ function (_Dispatcher) {
     _this.firstRun = true;
     _this.isTweenBool = false;
 
-    _TweenMax.TweenMax.set(document.querySelectorAll(".sections section.hidden"), {
+    _TweenMax.TweenMax.set(_this.$$(".sections section.hidden"), {
       rotationY: -18,
       left: "130vw",
       scale: 0.8
+    });
+
+    _TweenMax.TweenMax.set(_this.$(".sections"), {
+      css: {
+        pointerEvents: "none"
+      }
     });
 
     sections.forEach(function (slide) {
@@ -25892,6 +25897,8 @@ var _preloadJs = _interopRequireDefault(require("preload-js"));
 
 var _TweenMax = require("gsap/TweenMax");
 
+var _lottieWeb = _interopRequireDefault(require("lottie-web"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25899,6 +25906,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var G = document.querySelectorAll(".lotties");
+
+var MR = function MR(X) {
+  return Math.random() * X;
+};
+
+var TwL = TweenLite;
+
+function BTweens() {
+  var W = window.innerWidth,
+      H = window.innerHeight,
+      C = 40;
+  TwL.killDelayedCallsTo(BTweens);
+  TwL.delayedCall(C * 1, BTweens);
+
+  for (var i = G.length; i--;) {
+    var c = C,
+        BA = [],
+        GWidth = G[i].offsetWidth,
+        GHeight = G[i].offsetHeight;
+
+    while (c--) {
+      var SO = MR(1);
+      BA.push({
+        opacity: MR(1.5),
+        scale: MR(1.5),
+        x: MR(W - GWidth),
+        y: MR(H - GHeight),
+        zIndex: Math.round(SO * 7)
+      });
+    }
+
+    if (G[i].T) {
+      G[i].T.kill();
+    }
+
+    G[i].T = _TweenMax.TweenMax.to(G[i], C * 60, {
+      bezier: {
+        timeResolution: 0,
+        type: "soft",
+        values: BA
+      },
+      delay: i * 0.35,
+      ease: Power4.easeOut
+    });
+  }
+}
+
+BTweens();
+
+window.onresize = function () {
+  TwL.killDelayedCallsTo(BTweens);
+  TwL.delayedCall(0.4, BTweens);
+};
+
+for (var i = 0; i < G.length; i++) {
+  console.log(G[i]);
+  var temp_anim_data = {
+    container: G[i],
+    renderer: "svg",
+    loop: true,
+    autoplay: true,
+    path: "https://assets7.lottiefiles.com/temp/lf20_5WNDZV.json"
+  };
+
+  _lottieWeb.default.loadAnimation(temp_anim_data);
+}
 
 var App =
 /*#__PURE__*/
@@ -25962,7 +26037,7 @@ function () {
 }();
 
 var Portfolio = new App();
-},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

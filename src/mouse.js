@@ -12,7 +12,7 @@ export class Mouse {
       this.y = e.clientY;
     });
     this.update();
-    document.body.style.cursor = "none";
+    //document.body.style.cursor = "none";
   }
 
   pause(bl) {

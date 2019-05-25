@@ -24,10 +24,15 @@ export class SlideShow extends Dispatcher {
     this.firstRun = true;
     this.isTweenBool = false;
 
-    TweenMax.set(document.querySelectorAll(".sections section.hidden"), {
+    TweenMax.set(this.$$(".sections section.hidden"), {
       rotationY: -18,
       left: "130vw",
       scale: 0.8
+    });
+    TweenMax.set(this.$(".sections"), {
+      css: {
+        pointerEvents: "none"
+      }
     });
 
     sections.forEach(slide => {

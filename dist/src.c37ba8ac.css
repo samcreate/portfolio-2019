@@ -10,6 +10,10 @@
   --baseline: 1;
   --degs: 8deg;
 }
+::selection {
+  background: rgba(237,73,86,0.99);
+  color: #fff;
+}
 html {
   scroll-behavior: smooth;
 }
@@ -59,6 +63,7 @@ h5 {
   z-index: -1;
   grid-column-gap: 5vw;
   transform: translateZ(-229px) scale(1.2);
+  pointer-events: auto;
 }
 #app .about .copy {
   grid-column-end: span 2;

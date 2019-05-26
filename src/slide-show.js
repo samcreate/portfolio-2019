@@ -36,22 +36,29 @@ export class SlideShow extends Dispatcher {
     });
 
     sections.forEach(slide => {
-      this.createMainSectionTimeline(slide.dataset.section).then(response => {
-        this.loaded++;
-        this.animations.main[slide.dataset.section] = response.tl;
-        this.animations.lottie[slide.dataset.section] = response.lottie;
-        if (this.loaded === sections.length) {
-          this.dispatch("ready", {
-            loaded: true
-          });
-        }
-      });
+      try {
+        this.createMainSectionTimeline(slide.dataset.section).then(response => {
+          this.loaded++;
+          this.animations.main[slide.dataset.section] = response.tl;
+          this.animations.lottie[slide.dataset.section] = response.lottie;
+          if (this.loaded === sections.length) {
+            this.dispatch("ready", {
+              loaded: true
+            });
+          }
+        });
+      } catch (error) {
+        console.error(
+          "Unabled to create main timeline: ",
+          slide.dataset.section
+        );
+      }
     });
   }
 
   handleArrowKeys(event) {
     if (event.defaultPrevented) {
-      return; // Do nothing if the event was already processed
+      return;
     }
 
     switch (event.key) {
@@ -272,70 +279,66 @@ export class SlideShow extends Dispatcher {
     }
   }
 
-  createMainSectionTimeline(name) {
-    return new Promise((resolve, reject) => {
-      var tree = new TimelineMax({ paused: true });
-      let h3 = this.$("." + name + " h3");
-      let h2 = this.$("." + name + " h2");
-      let subtitle = this.$("." + name + " .title p");
-      let title_border = this.$("." + name + " .title");
-      let p_first_letter = this.$("." + name + " .copy span.first-letter");
-      let p_body_copy = this.$("." + name + " .copy span.body-copy");
-      TweenMax.set(h3, { y: "+=" + h3.clientHeight / 2 + "px" });
-      TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
-        opacity: 0,
-        y: "+=20px",
-        ease: Power2.easeOut
-      });
-      this.getLottieTween(name).then(lottie => {
-        tree.to(h3, 1, { opacity: 1, y: 0, ease: Power1.easeOut });
-        tree.call(
-          () => {
-            lottie.play();
-          },
-          null,
-          null,
-          "-=1"
-        );
-        tree.staggerTo(
-          [h2, subtitle],
-          0.93,
-          { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-          0.08,
-          "-=0.5"
-        );
-        tree.fromTo(
-          title_border,
-          0.25,
-          { borderRightColor: "rgba(0,0,0,0)" },
-          { borderRightColor: "rgba(0,0,0,1)" },
-          "-=0.8"
-        );
-        tree.staggerTo(
-          [p_first_letter, p_body_copy],
-          0.93,
-          { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-          0.08,
-          "-=0.8"
-        );
-        resolve({ tl: tree, lottie });
-      });
-    });
-  }
-  getLottieTween(name) {
-    let promise = new Promise((resolve, reject) => {
-      let tmpAnim = lottie.loadAnimation({
-        wrapper: this.$("." + name + " .lottie"),
-        renderer: "svg",
-        loop: true,
-        autoplay: false,
-        animationData: this.assets.getResult(name),
-        width: "100%",
-        height: "100%"
-      });
-      resolve(tmpAnim);
+  async createMainSectionTimeline(name) {
+    const lottie = await this.getLottieTween(name);
+    const tree = new TimelineMax({ paused: true });
+
+    const h3 = this.$("." + name + " h3");
+    const h2 = this.$("." + name + " h2");
+    const subtitle = this.$("." + name + " .title p");
+    const title_border = this.$("." + name + " .title");
+    const p_first_letter = this.$("." + name + " .copy span.first-letter");
+    const p_body_copy = this.$("." + name + " .copy span.body-copy");
+    TweenMax.set(h3, { y: "+=" + h3.clientHeight / 2 + "px" });
+    TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
+      opacity: 0,
+      y: "+=20px",
+      ease: Power2.easeOut
     });
 
-    return promise;
+    tree.to(h3, 1, { opacity: 1, y: 0, ease: Power1.easeOut });
+    tree.call(
+      () => {
+        lottie.play();
+      },
+      null,
+      null,
+      "-=1"
+    );
+    tree.staggerTo(
+      [h2, subtitle],
+      0.93,
+      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
+      0.08,
+      "-=0.5"
+    );
+    tree.fromTo(
+      title_border,
+      0.25,
+      { borderRightColor: "rgba(0,0,0,0)" },
+      { borderRightColor: "rgba(0,0,0,1)" },
+      "-=0.8"
+    );
+    tree.staggerTo(
+      [p_first_letter, p_body_copy],
+      0.93,
+      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
+      0.08,
+      "-=0.8"
+    );
+    return { tl: tree, lottie };
+  }
+  async getLottieTween(name) {
+    let tmpAnim = await lottie.loadAnimation({
+      wrapper: this.$("." + name + " .lottie"),
+      renderer: "svg",
+      loop: true,
+      autoplay: false,
+      animationData: this.assets.getResult(name),
+      width: "100%",
+      height: "100%"
+    });
+
+    return tmpAnim;
   }
 }

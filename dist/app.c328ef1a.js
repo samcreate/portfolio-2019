@@ -125,66 +125,47 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Mouse = void 0;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Mouse =
-/*#__PURE__*/
-function () {
-  function Mouse() {
-    var _this = this;
-
-    _classCallCheck(this, Mouse);
-
+class Mouse {
+  constructor() {
     this.paused = false;
     this.x = 0;
     this.y = 0;
     this.currX = 0;
     this.currY = 0;
-    document.addEventListener("mousemove", function (event) {
-      if (_this.paused) return;
-      var e = event.touches ? event.touches[0] : event;
-      _this.x = e.clientX;
-      _this.y = e.clientY;
+    document.addEventListener("mousemove", event => {
+      if (this.paused) return;
+      let e = event.touches ? event.touches[0] : event;
+      this.x = e.clientX;
+      this.y = e.clientY;
     });
     this.update(); //document.body.style.cursor = "none";
   }
 
-  _createClass(Mouse, [{
-    key: "pause",
-    value: function pause(bl) {
-      this.paused = bl;
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      var _this2 = this;
+  pause(bl) {
+    this.paused = bl;
+  }
 
-      requestAnimationFrame(function () {
-        _this2.currX = _this2.currX + (_this2.x - _this2.currX) * 0.15;
-        _this2.currY = _this2.currY + (_this2.y - _this2.currY) * 0.15;
-        var _window = window,
-            innerWidth = _window.innerWidth,
-            innerHeight = _window.innerHeight;
-        var rotX = _this2.currY / innerHeight * -2 + 1;
-        var rotY = _this2.currX / innerWidth * 2 - 1;
-        document.body.style.setProperty("--mouse-x", _this2.currX);
-        document.body.style.setProperty("--mouse-y", _this2.currY);
-        document.body.style.setProperty("--rot-x", rotX);
-        document.body.style.setProperty("--rot-xvw", rotY + "vw");
-        document.body.style.setProperty("--rot-yvw", rotX + "vw");
-        document.body.style.setProperty("--rot-y", rotY);
+  update() {
+    requestAnimationFrame(() => {
+      this.currX = this.currX + (this.x - this.currX) * 0.15;
+      this.currY = this.currY + (this.y - this.currY) * 0.15;
+      const {
+        innerWidth,
+        innerHeight
+      } = window;
+      const rotX = this.currY / innerHeight * -2 + 1;
+      const rotY = this.currX / innerWidth * 2 - 1;
+      document.body.style.setProperty("--mouse-x", this.currX);
+      document.body.style.setProperty("--mouse-y", this.currY);
+      document.body.style.setProperty("--rot-x", rotX);
+      document.body.style.setProperty("--rot-xvw", rotY + "vw");
+      document.body.style.setProperty("--rot-yvw", rotX + "vw");
+      document.body.style.setProperty("--rot-y", rotY);
+      this.update();
+    });
+  }
 
-        _this2.update();
-      });
-    }
-  }]);
-
-  return Mouse;
-}();
+}
 
 exports.Mouse = Mouse;
 },{}],"dispatcher.js":[function(require,module,exports) {
@@ -195,77 +176,59 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Dispatcher = void 0;
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Dispatcher =
-/*#__PURE__*/
-function () {
-  function Dispatcher() {
-    _classCallCheck(this, Dispatcher);
-
+class Dispatcher {
+  constructor() {
     this.events = {};
   }
 
-  _createClass(Dispatcher, [{
-    key: "addListener",
-    value: function addListener(event, callback) {
-      // Check if the callback is not a function
-      if (typeof callback !== "function") {
-        console.error("The listener callback must be a function, the given type is ".concat(_typeof(callback)));
-        return false;
-      } // Check if the event is not a string
+  addListener(event, callback) {
+    // Check if the callback is not a function
+    if (typeof callback !== "function") {
+      console.error(`The listener callback must be a function, the given type is ${typeof callback}`);
+      return false;
+    } // Check if the event is not a string
 
 
-      if (typeof event !== "string") {
-        console.error("The event name must be a string, the given type is ".concat(_typeof(event)));
-        return false;
-      } // Check if this event not exists
+    if (typeof event !== "string") {
+      console.error(`The event name must be a string, the given type is ${typeof event}`);
+      return false;
+    } // Check if this event not exists
 
 
-      if (this.events[event] === undefined) {
-        this.events[event] = {
-          listeners: []
-        };
-      }
-
-      this.events[event].listeners.push(callback);
+    if (this.events[event] === undefined) {
+      this.events[event] = {
+        listeners: []
+      };
     }
-  }, {
-    key: "removeListener",
-    value: function removeListener(event, callback) {
-      // Check if this event not exists
-      if (this.events[event] === undefined) {
-        console.error("This event: ".concat(event, " does not exist"));
-        return false;
-      }
 
-      this.events[event].listeners = this.events[event].listeners.filter(function (listener) {
-        return listener.toString() !== callback.toString();
-      });
+    this.events[event].listeners.push(callback);
+  }
+
+  removeListener(event, callback) {
+    // Check if this event not exists
+    if (this.events[event] === undefined) {
+      console.error(`This event: ${event} does not exist`);
+      return false;
     }
-  }, {
-    key: "dispatch",
-    value: function dispatch(event, details) {
-      // Check if this event not exists
-      if (this.events[event] === undefined) {
-        console.error("This event: ".concat(event, " does not exist"));
-        return false;
-      }
 
-      this.events[event].listeners.forEach(function (listener) {
-        listener(details);
-      });
+    this.events[event].listeners = this.events[event].listeners.filter(listener => {
+      return listener.toString() !== callback.toString();
+    });
+  }
+
+  dispatch(event, details) {
+    // Check if this event not exists
+    if (this.events[event] === undefined) {
+      console.error(`This event: ${event} does not exist`);
+      return false;
     }
-  }]);
 
-  return Dispatcher;
-}();
+    this.events[event].listeners.forEach(listener => {
+      listener(details);
+    });
+  }
+
+}
 
 exports.Dispatcher = Dispatcher;
 },{}],"../node_modules/gsap/TweenLite.js":[function(require,module,exports) {
@@ -276,8 +239,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.EventDispatcher = exports.TweenPlugin = exports.Power4 = exports.Power3 = exports.Power2 = exports.Power1 = exports.Power0 = exports.Linear = exports.Ease = exports.Animation = exports.SimpleTimeline = exports.globals = exports.default = exports.TweenLite = exports._gsScope = void 0;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /*!
  * VERSION: 2.1.3
@@ -316,7 +277,7 @@ var TweenLite = function (window) {
     return _globals.TweenLite; //in case the core set of classes is already loaded, don't instantiate twice.
   }
 
-  var _namespace = function _namespace(ns) {
+  var _namespace = function (ns) {
     var a = ns.split("."),
         p = _globals,
         i;
@@ -329,7 +290,7 @@ var TweenLite = function (window) {
   },
       gs = _namespace("com.greensock"),
       _tinyNum = 0.00000001,
-      _slice = function _slice(a) {
+      _slice = function (a) {
     //don't use Array.prototype.slice.call(target, 0) because that doesn't work in IE8 with a NodeList that's returned by querySelectorAll()
     var b = [],
         l = a.length,
@@ -339,13 +300,13 @@ var TweenLite = function (window) {
 
     return b;
   },
-      _emptyFunc = function _emptyFunc() {},
+      _emptyFunc = function () {},
       _isArray = function () {
     //works around issues in iframe environments where the Array global isn't shared, thus if the object originates in a different window/iframe, "(obj instanceof Array)" will evaluate false. We added some speed optimizations to avoid Object.prototype.toString.call() unless it's absolutely necessary because it's VERY slow (like 20x slower)
     var toString = Object.prototype.toString,
         array = toString.call([]);
     return function (obj) {
-      return obj != null && (obj instanceof Array || _typeof(obj) === "object" && !!obj.push && toString.call(obj) === array);
+      return obj != null && (obj instanceof Array || typeof obj === "object" && !!obj.push && toString.call(obj) === array);
     };
   }(),
       a,
@@ -388,7 +349,7 @@ var TweenLite = function (window) {
    * @param {!function():Object} func The function that should be called and passed the resolved dependencies which will return the actual class for this definition.
    * @param {boolean=} global If true, the class will be added to the global scope (typically window unless you define a window.GreenSockGlobals object)
    */
-  Definition = function Definition(ns, dependencies, func, global) {
+  Definition = function (ns, dependencies, func, global) {
     this.sc = _defLookup[ns] ? _defLookup[ns].sc : []; //subclasses
 
     _defLookup[ns] = this;
@@ -670,7 +631,7 @@ var TweenLite = function (window) {
         _id,
         _gap,
         _nextTime,
-        _tick = function _tick(manual) {
+        _tick = function (manual) {
       var elapsed = _getTime() - _lastUpdate,
           overlap,
           dispatch;
@@ -833,7 +794,7 @@ var TweenLite = function (window) {
   p._next = p._last = p._onUpdate = p._timeline = p.timeline = null;
   p._paused = false; //some browsers (like iOS) occasionally drop the requestAnimationFrame event when the user switches to a different tab and then comes back again, so we use a 2-second setTimeout() to sense if/when that condition occurs and then wake() the ticker.
 
-  var _checkTimeout = function _checkTimeout() {
+  var _checkTimeout = function () {
     if (_tickerActive && _getTime() - _lastUpdate > 2000 && ((_doc || {}).visibilityState !== "hidden" || !_ticker.lagSmoothing())) {
       //note: if the tab is hidden, we should still wake if lagSmoothing has been disabled.
       _ticker.wake();
@@ -1430,10 +1391,10 @@ var TweenLite = function (window) {
       this.render(Math.min(0, -this._delay)); //in case delay is negative
     }
   }, true),
-      _isSelector = function _isSelector(v) {
+      _isSelector = function (v) {
     return v && v.length && v !== window && v[0] && (v[0] === window || v[0].nodeType && v[0].style && !v.nodeType); //we cannot check "nodeType" if the target is window from within an iframe, otherwise it will trigger a security error in some browsers like Firefox.
   },
-      _autoCSS = function _autoCSS(vars, target) {
+      _autoCSS = function (vars, target) {
     var css = {},
         p;
 
@@ -1486,7 +1447,7 @@ var TweenLite = function (window) {
       _numbersExp = /(?:(-|-=|\+=)?\d*\.?\d*(?:e[\-+]?\d+)?)[0-9]/ig,
       _relExp = /[\+-]=-?[\.\d]/,
       //_nonNumbersExp = /(?:([\-+](?!(\d|=)))|[^\d\-+=e]|(e(?![\-+][\d])))+/ig,
-  _setRatio = function _setRatio(v) {
+  _setRatio = function (v) {
     var pt = this._firstPT,
         min = 0.000001,
         val;
@@ -1512,11 +1473,11 @@ var TweenLite = function (window) {
       pt = pt._next;
     }
   },
-      _blobRound = function _blobRound(v) {
+      _blobRound = function (v) {
     return (v * 1000 | 0) / 1000 + "";
   },
       //compares two strings (start/end), finds the numbers that are different and spits back an array representing the whole value but with the changing values isolated as elements. For example, "rgb(0,0,0)" and "rgb(100,50,0)" would become ["rgb(", 0, ",", 50, ",0)"]. Notice it merges the parts that are identical (performance optimization). The array also has a linked list of PropTweens attached starting with _firstPT that contain the tweening data (t, p, s, c, f, etc.). It also stores the starting value as a "start" property so that we can revert to it if/when necessary, like when a tween rewinds fully. If the quantity of numbers differs between the start and end, it will always prioritize the end value(s). The pt parameter is optional - it's for a PropTween that will be appended to the end of the linked list and is typically for actually setting the value after all of the elements have been updated (with array.join("")).
-  _blobDif = function _blobDif(start, end, filter, pt) {
+  _blobDif = function (start, end, filter, pt) {
     var a = [],
         charIndex = 0,
         s = "",
@@ -1608,12 +1569,12 @@ var TweenLite = function (window) {
     return a;
   },
       //note: "funcParam" is only necessary for function-based getters/setters that require an extra parameter like getAttribute("width") and setAttribute("width", value). In this example, funcParam would be "width". Used by AttrPlugin for example.
-  _addPropTween = function _addPropTween(target, prop, start, end, overwriteProp, mod, funcParam, stringFilter, index) {
+  _addPropTween = function (target, prop, start, end, overwriteProp, mod, funcParam, stringFilter, index) {
     if (typeof end === "function") {
       end = end(index || 0, target);
     }
 
-    var type = _typeof(target[prop]),
+    var type = typeof target[prop],
         getterName = type !== "function" ? "" : prop.indexOf("set") || typeof target["get" + prop.substr(3)] !== "function" ? prop : "get" + prop.substr(3),
         s = start !== "get" ? start : !getterName ? target[prop] : funcParam ? target[getterName](funcParam) : target[getterName](),
         isRelative = typeof end === "string" && end.charAt(1) === "=",
@@ -1801,7 +1762,7 @@ var TweenLite = function (window) {
 
   _ticker.addEventListener("tick", Animation._updateRoot);
 
-  var _register = function _register(target, tween, scrub) {
+  var _register = function (target, tween, scrub) {
     var id = target._gsTweenID,
         a,
         i;
@@ -1828,7 +1789,7 @@ var TweenLite = function (window) {
 
     return _tweenLookup[id].tweens;
   },
-      _onOverwrite = function _onOverwrite(overwrittenTween, overwritingTween, target, killedProps) {
+      _onOverwrite = function (overwrittenTween, overwritingTween, target, killedProps) {
     var func = overwrittenTween.vars.onOverwrite,
         r1,
         r2;
@@ -1845,7 +1806,7 @@ var TweenLite = function (window) {
 
     return r1 !== false && r2 !== false;
   },
-      _applyOverwrite = function _applyOverwrite(target, tween, props, mode, siblings) {
+      _applyOverwrite = function (target, tween, props, mode, siblings) {
     var i, changed, curTween, l;
 
     if (mode === 1 || mode >= 4) {
@@ -1911,7 +1872,7 @@ var TweenLite = function (window) {
 
     return changed;
   },
-      _checkOverlap = function _checkOverlap(tween, reference, zeroDur) {
+      _checkOverlap = function (tween, reference, zeroDur) {
     var tl = tween._timeline,
         ts = tl._timeScale,
         t = tween._startTime;
@@ -2400,7 +2361,7 @@ var TweenLite = function (window) {
 
       if (propLookup) {
         killProps = vars || propLookup;
-        record = vars !== overwrittenProps && overwrittenProps !== "all" && vars !== propLookup && (_typeof(vars) !== "object" || !vars._tempKill); //_tempKill is a super-secret way to delete a particular tweening property but NOT have it remembered as an official overwritten property (like in BezierPlugin)
+        record = vars !== overwrittenProps && overwrittenProps !== "all" && vars !== propLookup && (typeof vars !== "object" || !vars._tempKill); //_tempKill is a super-secret way to delete a particular tweening property but NOT have it remembered as an official overwritten property (like in BezierPlugin)
 
         if (overwritingTween && (TweenLite.onOverwrite || this.vars.onOverwrite)) {
           for (p in killProps) {
@@ -2595,7 +2556,7 @@ var TweenLite = function (window) {
   };
 
   TweenLite.killTweensOf = TweenLite.killDelayedCallsTo = function (target, onlyActive, vars) {
-    if (_typeof(onlyActive) === "object") {
+    if (typeof onlyActive === "object") {
       vars = onlyActive; //for backwards compatibility (before "onlyActive" parameter was inserted)
 
       onlyActive = false;
@@ -2888,22 +2849,31 @@ var _TweenLite = _interopRequireWildcard(require("./TweenLite.js"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/*!
+ * VERSION: 2.1.3
+ * DATE: 2019-05-17
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ **/
 
+/* eslint-disable */
 _TweenLite._gsScope._gsDefine("TweenMax", ["core.Animation", "core.SimpleTimeline", "TweenLite"], function () {
-  var _slice = function _slice(a) {
+  var _slice = function (a) {
     //don't use [].slice because that doesn't work in IE8 with a NodeList that's returned by querySelectorAll()
     var b = [],
         l = a.length,
         i;
 
-    for (i = 0; i !== l; b.push(a[i++])) {
-      ;
-    }
+    for (i = 0; i !== l; b.push(a[i++]));
 
     return b;
   },
-      _applyCycle = function _applyCycle(vars, targets, i) {
+      _applyCycle = function (vars, targets, i) {
     var alt = vars.cycle,
         p,
         val;
@@ -2916,12 +2886,12 @@ _TweenLite._gsScope._gsDefine("TweenMax", ["core.Animation", "core.SimpleTimelin
     delete vars.cycle;
   },
       //for distributing values across an array. Can accept a number, a function or (most commonly) a function which can contain the following properties: {base, amount, from, ease, grid, axis, length, each}. Returns a function that expects the following parameters: index, target, array. Recognizes the following
-  _distribute = function _distribute(v) {
+  _distribute = function (v) {
     if (typeof v === "function") {
       return v;
     }
 
-    var vars = _typeof(v) === "object" ? v : {
+    var vars = typeof v === "object" ? v : {
       each: v
     },
         //n:1 is just to indicate v was a number; we leverage that later to set v according to the length we get. If a number is passed in, we treat it like the old stagger value where 0.1, for example, would mean that things would be distributed with 0.1 between each element in the array rather than a total "amount" that's chunked out among them all.
@@ -2989,7 +2959,7 @@ _TweenLite._gsScope._gsDefine("TweenMax", ["core.Animation", "core.SimpleTimelin
       return distances.b + (ease ? ease.getRatio(l) : l) * distances.v;
     };
   },
-      TweenMax = function TweenMax(target, duration, vars) {
+      TweenMax = function (target, duration, vars) {
     _TweenLite.default.call(this, target, duration, vars);
 
     this._cycle = 0;
@@ -3482,7 +3452,7 @@ _TweenLite._gsScope._gsDefine("TweenMax", ["core.Animation", "core.SimpleTimelin
     return _TweenLite.default.getTweensOf(target, true).length > 0;
   };
 
-  var _getChildrenOf = function _getChildrenOf(timeline, includeTimelines) {
+  var _getChildrenOf = function (timeline, includeTimelines) {
     var a = [],
         cnt = 0,
         tween = timeline._first;
@@ -3592,7 +3562,7 @@ _TweenLite._gsScope._gsDefine("TweenMax", ["core.Animation", "core.SimpleTimelin
     }
   };
 
-  var _changePause = function _changePause(pause, tweens, delayedCalls, timelines) {
+  var _changePause = function (pause, tweens, delayedCalls, timelines) {
     tweens = tweens !== false;
     delayedCalls = delayedCalls !== false;
     timelines = timelines !== false;
@@ -3734,11 +3704,22 @@ var _TweenLite = _interopRequireWildcard(require("./TweenLite.js"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/*!
+ * VERSION: 2.1.3
+ * DATE: 2019-05-17
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ */
 
+/* eslint-disable */
 _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "TweenLite"], function () {
   /** @constructor **/
-  var CSSPlugin = function CSSPlugin() {
+  var CSSPlugin = function () {
     _TweenLite.TweenPlugin.call(this, "css");
 
     this._overwriteProps.length = 0;
@@ -3795,7 +3776,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       _camelExp = /-([a-z])/gi,
       _urlExp = /(^(?:url\(\"|url\())|(?:(\"\))$|\)$)/gi,
       //for pulling out urls from url(...) or url("...") strings (some browsers wrap urls in quotes, some don't when reporting things like backgroundImage)
-  _camelFunc = function _camelFunc(s, g) {
+  _camelFunc = function (s, g) {
     return g.toUpperCase();
   },
       _horizExp = /(?:Left|Right|Width)/i,
@@ -3812,11 +3793,11 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     style: {}
   },
       _doc = _TweenLite._gsScope.document || {
-    createElement: function createElement() {
+    createElement: function () {
       return _dummyElement;
     }
   },
-      _createElement = function _createElement(type, ns) {
+      _createElement = function (type, ns) {
     var e = _doc.createElementNS ? _doc.createElementNS(ns || "http://www.w3.org/1999/xhtml", type) : _doc.createElement(type);
     return e.style ? e : _doc.createElement(type); //some environments won't allow access to the element's style when created with a namespace in which case we default to the standard createElement() to work around the issue. Also note that when GSAP is embedded directly inside an SVG file, createElement() won't allow access to the style object in Firefox (see https://greensock.com/forums/topic/20215-problem-using-tweenmax-in-standalone-self-containing-svg-file-err-cannot-set-property-csstext-of-undefined/).
   },
@@ -3856,10 +3837,10 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     a.style.cssText = "top:1px;opacity:.55;";
     return /^0.55/.test(a.style.opacity);
   }(),
-      _getIEOpacity = function _getIEOpacity(v) {
+      _getIEOpacity = function (v) {
     return _opacityExp.test(typeof v === "string" ? v : (v.currentStyle ? v.currentStyle.filter : v.style.filter) || "") ? parseFloat(RegExp.$1) / 100 : 1;
   },
-      _log = function _log(s) {
+      _log = function (s) {
     //for logging messages, but in a way that won't throw errors in old versions of IE.
     if (_TweenLite._gsScope.console) {
       console.log(s);
@@ -3874,7 +3855,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   _prefix = "",
       //camelCase vendor prefix like "O", "ms", "Webkit", or "Moz".
   // @private feed in a camelCase property name like "transform" and it will check to see if it is valid as-is or if it needs a vendor prefix. It returns the corrected camelCase property name (i.e. "WebkitTransform" or "MozTransform" or "transform" or null if no such property is found, like if the browser is IE8 or before, "transform" won't be found at all)
-  _checkPropPrefix = function _checkPropPrefix(p, e) {
+  _checkPropPrefix = function (p, e) {
     e = e || _tempDiv;
     var s = e.style,
         a,
@@ -3899,9 +3880,9 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     return null;
   },
       _computedStyleScope = typeof window !== "undefined" ? window : _doc.defaultView || {
-    getComputedStyle: function getComputedStyle() {}
+    getComputedStyle: function () {}
   },
-      _getComputedStyle = function _getComputedStyle(e) {
+      _getComputedStyle = function (e) {
     return _computedStyleScope.getComputedStyle(e); //to avoid errors in Microsoft Edge, we need to call getComputedStyle() from a specific scope, typically window.
   },
 
@@ -4034,7 +4015,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     return t["offset" + dim] - (_convertToPixels(t, p, parseFloat(v), v.replace(_suffixExp, "")) || 0);
   },
       // @private returns at object containing ALL of the style properties in camelCase and their associated values.
-  _getAllStyles = function _getAllStyles(t, cs) {
+  _getAllStyles = function (t, cs) {
     var s = {},
         i,
         tr,
@@ -4093,7 +4074,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     return s;
   },
       // @private analyzes two style objects (as returned by _getAllStyles()) and only looks for differences between them that contain tweenable values (like a number or color). It returns an object with a "difs" property which refers to an object containing only those isolated properties and values for tweening, and a "firstMPT" property which refers to the first MiniPropTween instance in a linked list that recorded all the starting values of the different properties so that we can revert to them at the end or beginning of the tween - we don't want the cascading to get messed up. The forceLookup parameter is an optional generic object with properties that should be forced into the results - this is necessary for className tweens that are overwriting others because imagine a scenario where a rollover/rollout adds/removes a class and the user swipes the mouse over the target SUPER fast, thus nothing actually changed yet and the subsequent comparison of the properties would indicate they match (especially when px rounding is taken into consideration), thus no tweening is necessary even though it SHOULD tween and remove those properties after the tween (otherwise the inline styles will contaminate things). See the className SpecialProp code for details.
-  _cssDif = function _cssDif(t, s1, s2, vars, forceLookup) {
+  _cssDif = function (t, s1, s2, vars, forceLookup) {
     var difs = {},
         style = t.style,
         val,
@@ -4138,7 +4119,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    * @param {Object=} cs Computed style object (if one exists). Just a speed optimization.
    * @return {number} Dimension (in pixels)
    */
-  _getDimension = function _getDimension(t, p, cs) {
+  _getDimension = function (t, p, cs) {
     if ((t.nodeName + "").toLowerCase() === "svg") {
       //Chrome no longer supports offsetWidth/offsetHeight on SVG elements.
       return (cs || _getComputedStyle(t))[p] || 0;
@@ -4159,7 +4140,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     return v;
   },
       // @private Parses position-related complex strings like "top left" or "50px 10px" or "70% 20%", etc. which are used for things like transformOrigin or backgroundPosition. Optionally decorates a supplied object (recObj) with the following properties: "ox" (offsetX), "oy" (offsetY), "oxp" (if true, "ox" is a percentage not a pixel value), and "oxy" (if true, "oy" is a percentage not a pixel value)
-  _parsePosition = function _parsePosition(v, recObj) {
+  _parsePosition = function (v, recObj) {
     if (v === "contain" || v === "auto" || v === "auto auto") {
       //note: Firefox uses "auto auto" as default whereas Chrome uses "auto".
       return v + " ";
@@ -4218,7 +4199,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    * @param {(number|string)} b Beginning value which is typically a string but could be a number
    * @return {number} Amount of change between the beginning and ending values (relative values that have a "+=" or "-=" are recognized)
    */
-  _parseChange = function _parseChange(e, b) {
+  _parseChange = function (e, b) {
     if (typeof e === "function") {
       e = e(_index, _target);
     }
@@ -4232,7 +4213,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    * @param {!number} d Default value (which is also used for relative calculations if "+=" or "-=" is found in the first parameter)
    * @return {number} Parsed value
    */
-  _parseVal = function _parseVal(v, d) {
+  _parseVal = function (v, d) {
     if (typeof v === "function") {
       v = v(_index, _target);
     }
@@ -4255,7 +4236,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    * @param {Object=} directionalEnd An object that will store the raw end values for directional angles ("_short", "_cw", or "_ccw" suffix). We need a way to store the uncompensated value so that at the end of the tween, we set it to exactly what was requested with no directional compensation.
    * @return {number} parsed angle in radians
    */
-  _parseAngle = function _parseAngle(v, d, p, directionalEnd) {
+  _parseAngle = function (v, d, p, directionalEnd) {
     var min = 0.000001,
         cap,
         split,
@@ -4328,7 +4309,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     cyan: [0, 255, 255],
     transparent: [255, 255, 255, 0]
   },
-      _hue = function _hue(h, m1, m2) {
+      _hue = function (h, m1, m2) {
     h = h < 0 ? h + 1 : h > 1 ? h - 1 : h;
     return (h * 6 < 1 ? m1 + (m2 - m1) * h * 6 : h < 0.5 ? m2 : h * 3 < 2 ? m1 + (m2 - m1) * (2 / 3 - h) * 6 : m1) * 255 + 0.5 | 0;
   },
@@ -4423,7 +4404,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
     return a;
   },
-      _formatColors = function _formatColors(s, toHSL) {
+      _formatColors = function (s, toHSL) {
     var colors = s.match(_colorExp) || [],
         charIndex = 0,
         parsed = "",
@@ -4484,7 +4465,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    */
 
 
-  var _getFormatter = function _getFormatter(dflt, clr, collapsible, multi) {
+  var _getFormatter = function (dflt, clr, collapsible, multi) {
     if (dflt == null) {
       return function (v) {
         return v;
@@ -4498,7 +4479,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
         delim = dflt.indexOf(" ") !== -1 ? " " : ",",
         numVals = dVals.length,
         dSfx = numVals > 0 ? dVals[0].replace(_numExp, "") : "",
-        _formatter2;
+        formatter;
 
     if (!numVals) {
       return function (v) {
@@ -4507,7 +4488,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     }
 
     if (clr) {
-      _formatter2 = function formatter(v) {
+      formatter = function (v) {
         var color, vals, i, a;
 
         if (typeof v === "number") {
@@ -4516,7 +4497,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
           a = v.replace(_commasOutsideParenExp, "|").split("|");
 
           for (i = 0; i < a.length; i++) {
-            a[i] = _formatter2(a[i]);
+            a[i] = formatter(a[i]);
           }
 
           return a.join(",");
@@ -4535,10 +4516,10 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
         return pfx + vals.join(delim) + delim + color + sfx + (v.indexOf("inset") !== -1 ? " inset" : "");
       };
 
-      return _formatter2;
+      return formatter;
     }
 
-    _formatter2 = function _formatter(v) {
+    formatter = function (v) {
       var vals, a, i;
 
       if (typeof v === "number") {
@@ -4547,7 +4528,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
         a = v.replace(_commasOutsideParenExp, "|").split("|");
 
         for (i = 0; i < a.length; i++) {
-          a[i] = _formatter2(a[i]);
+          a[i] = formatter(a[i]);
         }
 
         return a.join(",");
@@ -4565,7 +4546,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       return (pfx && v !== "none" ? v.substr(0, v.indexOf(vals[0])) || pfx : pfx) + vals.join(delim) + sfx; //note: prefix might be different, like for clipPath it could start with inset( or polygon(
     };
 
-    return _formatter2;
+    return formatter;
   },
 
   /**
@@ -4573,7 +4554,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    * @param {!string} props a comma-delimited list of property names in order from top to left, like "marginTop,marginRight,marginBottom,marginLeft"
    * @return {Function} a formatter function
    */
-  _getEdgeParser = function _getEdgeParser(props) {
+  _getEdgeParser = function (props) {
     props = props.split(",");
     return function (t, e, p, cssp, pt, plugin, vars) {
       var a = (e + "").split(" "),
@@ -4650,7 +4631,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    * @param {MiniPropTween=} next next MiniPropTween in the linked list
    * @param {boolean=} r if true, the tweened value should be rounded to the nearest integer
    */
-  MiniPropTween = function MiniPropTween(t, p, v, next, r) {
+  MiniPropTween = function (t, p, v, next, r) {
     this.t = t;
     this.p = p;
     this.v = v;
@@ -4795,7 +4776,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       next._prev = this;
     }
   },
-      _addNonTweeningNumericPT = function _addNonTweeningNumericPT(target, prop, start, end, next, overwriteProp) {
+      _addNonTweeningNumericPT = function (target, prop, start, end, next, overwriteProp) {
     //cleans up some code redundancies and helps minification. Just a fast way to add a NUMERIC non-tweening CSSPropTween
     var pt = new CSSPropTween(target, prop, start, end - start, next, -1, overwriteProp);
     pt.b = start;
@@ -5047,7 +5028,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
    */
 
 
-  var SpecialProp = function SpecialProp(p, options) {
+  var SpecialProp = function (p, options) {
     options = options || {};
     this.p = options.prefix ? _checkPropPrefix(p) || p : p;
     _specialProps[p] = _specialProps[this.p] = this;
@@ -5066,7 +5047,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   },
       //shortcut for creating a new SpecialProp that can accept multiple properties as a comma-delimited list (helps minification). dflt can be an array for multiple values (we don't do a comma-delimited list because the default value may contain commas, like rect(0px,0px,0px,0px)). We attach this method to the SpecialProp class/object instead of using a private _createSpecialProp() method so that we can tap into it externally if necessary, like from another plugin.
   _registerComplexSpecialProp = _internals._registerComplexSpecialProp = function (p, options, defaults) {
-    if (_typeof(options) !== "object") {
+    if (typeof options !== "object") {
       options = {
         parser: defaults
       }; //to make backwards compatible with older versions of BezierPlugin and ThrowPropsPlugin
@@ -5090,7 +5071,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       var pluginName = p.charAt(0).toUpperCase() + p.substr(1) + "Plugin";
 
       _registerComplexSpecialProp(p, {
-        parser: function parser(t, e, p, cssp, pt, plugin, vars) {
+        parser: function (t, e, p, cssp, pt, plugin, vars) {
           var pluginClass = _globals.com.greensock.plugins[pluginName];
 
           if (!pluginClass) {
@@ -5213,7 +5194,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   CSSPlugin.registerSpecialProp = function (name, onInitTween, priority) {
     _registerComplexSpecialProp(name, {
-      parser: function parser(t, e, p, cssp, pt, plugin, vars) {
+      parser: function (t, e, p, cssp, pt, plugin, vars) {
         var rv = new CSSPropTween(t, p, 0, 0, pt, 2, p, false, priority);
         rv.plugin = plugin;
         rv.setRatio = onInitTween(t, e, cssp._tween, p);
@@ -5239,7 +5220,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       _SVGElement = _TweenLite._gsScope.SVGElement,
       _useSVGTransformAttr,
       //Some browsers (like Firefox and IE) don't honor transform-origin properly in SVG elements, so we need to manually adjust the matrix accordingly. We feature detect here rather than always doing the conversion for certain browsers because they may fix the problem at some point in the future.
-  _createSVG = function _createSVG(type, container, attributes) {
+  _createSVG = function (type, container, attributes) {
     var element = _doc.createElementNS("http://www.w3.org/2000/svg", type),
         reg = /([a-z])([A-Z])/g,
         p;
@@ -5277,7 +5258,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
     return force;
   }(),
-      _parseSVGOrigin = function _parseSVGOrigin(e, local, decoratee, absolute, smoothOrigin, skipRecord) {
+      _parseSVGOrigin = function (e, local, decoratee, absolute, smoothOrigin, skipRecord) {
     var tm = e._gsTransform,
         m = _getMatrix(e, true),
         v,
@@ -5365,7 +5346,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       e.setAttribute("data-svg-origin", v.join(" "));
     }
   },
-      _getBBoxHack = function _getBBoxHack(swapIfPossible) {
+      _getBBoxHack = function (swapIfPossible) {
     //works around issues in some browsers (like Firefox) that don't correctly report getBBox() on SVG elements inside a <defs> element and/or <mask>. We try creating an SVG, adding it to the documentElement and toss the element in there so that it's definitely part of the rendering tree, then grab the bbox and if it works, we actually swap out the original getBBox() method for our own that does these extra steps whenever getBBox is needed. This helps ensure that performance is optimal (only do all these extra steps when absolutely necessary...most elements don't need it).
     var svg = _createElement("svg", this.ownerSVGElement && this.ownerSVGElement.getAttribute("xmlns") || "http://www.w3.org/2000/svg"),
         oldParent = this.parentNode,
@@ -5399,19 +5380,19 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     this.style.cssText = oldCSS;
     return bbox;
   },
-      _getBBox = function _getBBox(e) {
+      _getBBox = function (e) {
     try {
       return e.getBBox(); //Firefox throws errors if you try calling getBBox() on an SVG element that's not rendered (like in a <symbol> or <defs>). https://bugzilla.mozilla.org/show_bug.cgi?id=612118
     } catch (error) {
       return _getBBoxHack.call(e, true);
     }
   },
-      _isSVG = function _isSVG(e) {
+      _isSVG = function (e) {
     //reports if the element is an SVG on which getBBox() actually works
     return !!(_SVGElement && e.getCTM && (!e.parentNode || e.ownerSVGElement) && _getBBox(e));
   },
       _identity2DMatrix = [1, 0, 0, 1, 0, 0],
-      _getMatrix = function _getMatrix(e, force2D) {
+      _getMatrix = function (e, force2D) {
     var tm = e._gsTransform || new Transform(),
         rnd = 100000,
         style = e.style,
@@ -5753,7 +5734,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     return tm;
   },
       //for setting 2D transforms in IE6, IE7, and IE8 (must use a "filter" to emulate the behavior of modern day browser transforms)
-  _setIETransformRatio = function _setIETransformRatio(v) {
+  _setIETransformRatio = function (v) {
     var t = this.data,
         //refers to the element's _gsTransform object
     ang = -t.rotation * _DEG2RAD,
@@ -6145,7 +6126,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   p.scaleX = p.scaleY = p.scaleZ = 1;
 
   _registerComplexSpecialProp("transform,scale,scaleX,scaleY,scaleZ,x,y,z,rotation,rotationX,rotationY,rotationZ,skewX,skewY,shortRotation,shortRotationX,shortRotationY,shortRotationZ,transformOrigin,svgOrigin,transformPerspective,directionalRotation,parseTransform,force3D,skewType,xPercent,yPercent,smoothOrigin", {
-    parser: function parser(t, e, parsingProp, cssp, pt, plugin, vars) {
+    parser: function (t, e, parsingProp, cssp, pt, plugin, vars) {
       if (cssp._lastParsedTransform === vars) {
         return pt;
       } //only need to parse the transform once, and only if the browser supports it.
@@ -6247,7 +6228,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
         if (v.yPercent != null) {
           m2.yPercent = _parseVal(v.yPercent, m1.yPercent);
         }
-      } else if (_typeof(v) === "object") {
+      } else if (typeof v === "object") {
         //for values like scaleX, scaleY, rotation, x, y, skewX, and skewY or transform:{...} (object)
         m2 = {
           scaleX: _parseVal(v.scaleX != null ? v.scaleX : v.scale, m1.scaleX),
@@ -6263,7 +6244,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
         dr = v.directionalRotation;
 
         if (dr != null) {
-          if (_typeof(dr) === "object") {
+          if (typeof dr === "object") {
             for (copy in dr) {
               v[copy] = dr[copy];
             }
@@ -6412,7 +6393,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("borderRadius", {
     defaultValue: "0px",
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       e = this.format(e);
       var props = ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"],
           style = t.style,
@@ -6504,7 +6485,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("borderBottomLeftRadius,borderBottomRightRadius,borderTopLeftRadius,borderTopRightRadius", {
     defaultValue: "0px",
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       return _parseComplex(t.style, p, this.format(_getStyle(t, p, _cs, false, "0px 0px")), this.format(e), false, "0px", pt);
     },
     prefix: true,
@@ -6513,7 +6494,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("backgroundPosition", {
     defaultValue: "0 0",
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       var bp = "background-position",
           cs = _cs || _getComputedStyle(t, null),
           bs = this.format((cs ? _ieVers ? cs.getPropertyValue(bp + "-x") + " " + cs.getPropertyValue(bp + "-y") : cs.getPropertyValue(bp) : t.currentStyle.backgroundPositionX + " " + t.currentStyle.backgroundPositionY) || "0 0"),
@@ -6559,7 +6540,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("backgroundSize", {
     defaultValue: "0 0",
-    formatter: function formatter(v) {
+    formatter: function (v) {
       v += ""; //ensure it's a string
 
       return v.substr(0, 2) === "co" ? v : _parsePosition(v.indexOf(" ") === -1 ? v + " " + v : v); //if set to something like "100% 100%", Safari typically reports the computed style as just "100%" (no 2nd value), but we should ensure that there are two values, so copy the first one. Otherwise, it'd be interpreted as "100% 0" (wrong). Also remember that it could be "cover" or "contain" which we can't tween but should be able to set.
@@ -6598,7 +6579,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("clip", {
     defaultValue: "rect(0px,0px,0px,0px)",
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       var b, cs, delim;
 
       if (_ieVers < 9) {
@@ -6623,7 +6604,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   });
 
   _registerComplexSpecialProp("autoRound,strictUnits", {
-    parser: function parser(t, e, p, cssp, pt) {
+    parser: function (t, e, p, cssp, pt) {
       return pt;
     }
   }); //just so that we can ignore these properties (not tween them)
@@ -6631,7 +6612,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("border", {
     defaultValue: "0px solid #000",
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       var bw = _getStyle(t, "borderTopWidth", _cs, false, "0px"),
           end = this.format(e).split(" "),
           esfx = end[0].replace(_suffixExp, "");
@@ -6644,7 +6625,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       return this.parseComplex(t.style, this.format(bw + " " + _getStyle(t, "borderTopStyle", _cs, false, "solid") + " " + _getStyle(t, "borderTopColor", _cs, false, "#000")), end.join(" "), pt, plugin);
     },
     color: true,
-    formatter: function formatter(v) {
+    formatter: function (v) {
       var a = v.split(" ");
       return a[0] + " " + (a[1] || "solid") + " " + (v.match(_colorExp) || ["#000"])[0];
     }
@@ -6656,7 +6637,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
 
   _registerComplexSpecialProp("float,cssFloat,styleFloat", {
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       var s = t.style,
           prop = "cssFloat" in s ? "cssFloat" : "styleFloat";
       return new CSSPropTween(s, prop, 0, 0, pt, -1, p, false, 0, s[prop], e);
@@ -6664,7 +6645,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   }); //opacity-related
 
 
-  var _setIEOpacityRatio = function _setIEOpacityRatio(v) {
+  var _setIEOpacityRatio = function (v) {
     var t = this.t,
         //refers to the element's style property
     filters = t.filter || _getStyle(this.data, "filter") || "",
@@ -6701,7 +6682,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
 
   _registerComplexSpecialProp("opacity,alpha,autoAlpha", {
     defaultValue: "1",
-    parser: function parser(t, e, p, cssp, pt, plugin) {
+    parser: function (t, e, p, cssp, pt, plugin) {
       var b = parseFloat(_getStyle(t, "opacity", _cs, false, "1")),
           style = t.style,
           isAutoAlpha = p === "autoAlpha";
@@ -6745,7 +6726,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     }
   });
 
-  var _removeProp = function _removeProp(s, p) {
+  var _removeProp = function (s, p) {
     if (p) {
       if (s.removeProperty) {
         if (p.substr(0, 2) === "ms" || p.substr(0, 6) === "webkit") {
@@ -6760,7 +6741,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
       }
     }
   },
-      _setClassNameRatio = function _setClassNameRatio(v) {
+      _setClassNameRatio = function (v) {
     this.t._gsClassPT = this;
 
     if (v === 1 || v === 0) {
@@ -6788,7 +6769,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   };
 
   _registerComplexSpecialProp("className", {
-    parser: function parser(t, e, p, cssp, pt, plugin, vars) {
+    parser: function (t, e, p, cssp, pt, plugin, vars) {
       var b = t.getAttribute("class") || "",
           //don't use t.className because it doesn't work consistently on SVG elements; getAttribute("class") and setAttribute("class", value") is more reliable.
       cssText = t.style.cssText,
@@ -6836,7 +6817,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     }
   });
 
-  var _setClearPropsRatio = function _setClearPropsRatio(v) {
+  var _setClearPropsRatio = function (v) {
     if (v === 1 || v === 0) if (this.data._totalTime === this.data._totalDuration && this.data.data !== "isFromStart") {
       //this.data refers to the tween. Only clear at the END of the tween (remember, from() tweens make the ratio go from 1 to 0, so we can't just check that and if the tween is the zero-duration one that's created internally to render the starting values in a from() tween, ignore that because otherwise, for example, from(...{height:100, clearProps:"height", delay:1}) would wipe the height at the beginning of the tween and after 1 second, it'd kick back in).
       var s = this.t.style,
@@ -6887,7 +6868,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   };
 
   _registerComplexSpecialProp("clearProps", {
-    parser: function parser(t, e, p, cssp, pt) {
+    parser: function (t, e, p, cssp, pt) {
       pt = new CSSPropTween(t, p, 0, 0, pt, 2);
       pt.setRatio = _setClearPropsRatio;
       pt.e = e;
@@ -7277,7 +7258,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
     this._transformType = !(this._transform.svg && _useSVGTransformAttr) && (threeD || this._transformType === 3) ? 3 : 2;
   };
 
-  var lazySet = function lazySet(v) {
+  var lazySet = function (v) {
     this.t[this.p] = this.e;
 
     this.data._linkCSSP(this, this._next, null, true); //we purposefully keep this._next even though it'd make sense to null it, but this is a performance optimization, as this happens during the while (pt) {} loop in setRatio() at the bottom of which it sets pt = pt._next, so if we null it, the linked list will be broken in that loop.
@@ -7395,7 +7376,7 @@ _TweenLite._gsScope._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin", "Twee
   }; //used by cascadeTo() for gathering all the style properties of each child element into an array for comparison.
 
 
-  var _getChildStyles = function _getChildStyles(e, props, targets) {
+  var _getChildStyles = function (e, props, targets) {
     var children, i, child, type;
 
     if (e.slice) {
@@ -7534,7 +7515,7 @@ var AttrPlugin = _TweenLite._gsScope._gsDefine.plugin({
   API: 2,
   version: "0.6.1",
   //called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
-  init: function init(target, value, tween, index) {
+  init: function (target, value, tween, index) {
     var p, end;
 
     if (typeof target.setAttribute !== "function") {
@@ -7568,20 +7549,31 @@ exports.p = exports._roundLinkedList = exports._getRoundFunc = exports.default =
 
 var _TweenLite = require("./TweenLite.js");
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/*!
+ * VERSION: 1.6.0
+ * DATE: 2018-08-27
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ **/
 
+/* eslint-disable */
 var RoundPropsPlugin = _TweenLite._gsScope._gsDefine.plugin({
   propName: "roundProps",
   version: "1.7.0",
   priority: -1,
   API: 2,
   //called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
-  init: function init(target, value, tween) {
+  init: function (target, value, tween) {
     this._tween = tween;
     return true;
   }
 }),
-    _getRoundFunc = function _getRoundFunc(v) {
+    _getRoundFunc = function (v) {
   //pass in 0.1 get a function that'll round to the nearest tenth, or 5 to round to the closest 5, or 0.001 to the closest 1000th, etc.
   var p = v < 1 ? Math.pow(10, (v + "").length - 2) : 1; //to avoid floating point math errors (like 24 * 0.1 == 2.4000000000000004), we chop off at a specific number of decimal places (much faster than toFixed()
 
@@ -7589,7 +7581,7 @@ var RoundPropsPlugin = _TweenLite._gsScope._gsDefine.plugin({
     return (Math.round(n / v) * v * p | 0) / p;
   };
 },
-    _roundLinkedList = function _roundLinkedList(node, mod) {
+    _roundLinkedList = function (node, mod) {
   while (node) {
     if (!node.f && !node.blob) {
       node.m = mod || Math.round;
@@ -7615,7 +7607,7 @@ p._onInitAllProps = function () {
       i,
       p;
 
-  if (_typeof(rp) === "object" && !rp.push) {
+  if (typeof rp === "object" && !rp.push) {
     for (p in rp) {
       lookup[p] = _getRoundFunc(rp[p]);
     }
@@ -7684,15 +7676,26 @@ exports.default = exports.DirectionalRotationPlugin = void 0;
 
 var _TweenLite = require("./TweenLite.js");
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/*!
+ * VERSION: 0.3.1
+ * DATE: 2018-08-27
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ **/
 
+/* eslint-disable */
 var DirectionalRotationPlugin = _TweenLite._gsScope._gsDefine.plugin({
   propName: "directionalRotation",
   version: "0.3.1",
   API: 2,
   //called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
-  init: function init(target, value, tween, index) {
-    if (_typeof(value) !== "object") {
+  init: function (target, value, tween, index) {
+    if (typeof value !== "object") {
       value = {
         rotation: value
       };
@@ -7751,7 +7754,7 @@ var DirectionalRotationPlugin = _TweenLite._gsScope._gsDefine.plugin({
     return true;
   },
   //called each time the values should be updated, and the ratio gets passed as the only parameter (typically it's a value between 0 and 1, but it can exceed those when using an ease like Elastic.easeOut or Back.easeOut, etc.)
-  set: function set(ratio) {
+  set: function (ratio) {
     var pt;
 
     if (ratio !== 1) {
@@ -7786,10 +7789,21 @@ var _TweenLite = _interopRequireWildcard(require("./TweenLite.js"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+/*!
+ * VERSION: 2.1.3
+ * DATE: 2019-05-17
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ */
 
+/* eslint-disable */
 _TweenLite._gsScope._gsDefine("TimelineLite", ["core.Animation", "core.SimpleTimeline", "TweenLite"], function () {
-  var TimelineLite = function TimelineLite(vars) {
+  var TimelineLite = function (vars) {
     _TweenLite.SimpleTimeline.call(this, vars);
 
     var self = this,
@@ -7821,7 +7835,7 @@ _TweenLite._gsScope._gsDefine("TimelineLite", ["core.Animation", "core.SimpleTim
       _lazyTweens = TweenLiteInternals.lazyTweens,
       _lazyRender = TweenLiteInternals.lazyRender,
       _globals = _TweenLite._gsScope._gsDefine.globals,
-      _copy = function _copy(vars) {
+      _copy = function (vars) {
     var copy = {},
         p;
 
@@ -7831,7 +7845,7 @@ _TweenLite._gsScope._gsDefine("TimelineLite", ["core.Animation", "core.SimpleTim
 
     return copy;
   },
-      _applyCycle = function _applyCycle(vars, targets, i) {
+      _applyCycle = function (vars, targets, i) {
     var alt = vars.cycle,
         p,
         val;
@@ -7844,19 +7858,17 @@ _TweenLite._gsScope._gsDefine("TimelineLite", ["core.Animation", "core.SimpleTim
     delete vars.cycle;
   },
       _pauseCallback = _internals.pauseCallback = function () {},
-      _slice = function _slice(a) {
+      _slice = function (a) {
     //don't use [].slice because that doesn't work in IE8 with a NodeList that's returned by querySelectorAll()
     var b = [],
         l = a.length,
         i;
 
-    for (i = 0; i !== l; b.push(a[i++])) {
-      ;
-    }
+    for (i = 0; i !== l; b.push(a[i++]));
 
     return b;
   },
-      _defaultImmediateRender = function _defaultImmediateRender(tl, toVars, fromVars, defaultFalse) {
+      _defaultImmediateRender = function (tl, toVars, fromVars, defaultFalse) {
     //default to immediateRender:true unless otherwise set in toVars, fromVars or if defaultFalse is passed in as true
     var ir = "immediateRender";
 
@@ -7867,12 +7879,12 @@ _TweenLite._gsScope._gsDefine("TimelineLite", ["core.Animation", "core.SimpleTim
     return toVars;
   },
       //for distributing values across an array. Can accept a number, a function or (most commonly) a function which can contain the following properties: {base, amount, from, ease, grid, axis, length, each}. Returns a function that expects the following parameters: index, target, array. Recognizes the following
-  _distribute = function _distribute(v) {
+  _distribute = function (v) {
     if (typeof v === "function") {
       return v;
     }
 
-    var vars = _typeof(v) === "object" ? v : {
+    var vars = typeof v === "object" ? v : {
       each: v
     },
         //n:1 is just to indicate v was a number; we leverage that later to set v according to the length we get. If a number is passed in, we treat it like the old stagger value where 0.1, for example, would mean that things would be distributed with 0.1 between each element in the array rather than a total "amount" that's chunked out among them all.
@@ -8870,7 +8882,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 /* eslint-disable */
 _TweenLite._gsScope._gsDefine("TimelineMax", ["TimelineLite", "TweenLite", "easing.Ease"], function () {
-  var TimelineMax = function TimelineMax(vars) {
+  var TimelineMax = function (vars) {
     _TimelineLite.default.call(this, vars);
 
     this._repeat = this.vars.repeat || 0;
@@ -9524,7 +9536,7 @@ var _RAD2DEG = 180 / Math.PI,
     _r3 = [],
     _corProps = {},
     _globals = _TweenLite._gsScope._gsDefine.globals,
-    Segment = function Segment(a, b, c, d) {
+    Segment = function (a, b, c, d) {
   if (c === d) {
     //if c and d match, the final autoRotate value could lock at -90 degrees, so differentiate them slightly.
     c = d - (d - b) / 1000000;
@@ -9544,7 +9556,7 @@ var _RAD2DEG = 180 / Math.PI,
   this.ba = b - a;
 },
     _correlate = ",x,y,z,left,top,right,bottom,marginTop,marginLeft,marginRight,marginBottom,paddingLeft,paddingTop,paddingRight,paddingBottom,backgroundPosition,backgroundPosition_y,",
-    cubicToQuadratic = function cubicToQuadratic(a, b, c, d) {
+    cubicToQuadratic = function (a, b, c, d) {
   var q1 = {
     a: a
   },
@@ -9568,7 +9580,7 @@ var _RAD2DEG = 180 / Math.PI,
   q3.c = q4.a = (q3.b + q4.b) / 2;
   return [q1, q2, q3, q4];
 },
-    _calculateControlPoints = function _calculateControlPoints(a, curviness, quad, basic, correlate) {
+    _calculateControlPoints = function (a, curviness, quad, basic, correlate) {
   var l = a.length - 1,
       ii = 0,
       cp1 = a[0].a,
@@ -9643,7 +9655,7 @@ var _RAD2DEG = 180 / Math.PI,
     a.splice(ii, 1, qb[0], qb[1], qb[2], qb[3]);
   }
 },
-    _parseAnchors = function _parseAnchors(values, p, correlate, prepend) {
+    _parseAnchors = function (values, p, correlate, prepend) {
   var a = [],
       l,
       i,
@@ -9685,7 +9697,7 @@ var _RAD2DEG = 180 / Math.PI,
   a[i] = new Segment(values[i][p], 0, 0, values[i + 1][p]);
   return a;
 },
-    bezierThrough = function bezierThrough(values, curviness, quadratic, basic, correlate, prepend) {
+    bezierThrough = function (values, curviness, quadratic, basic, correlate, prepend) {
   var obj = {},
       props = [],
       first = prepend || values[0],
@@ -9791,7 +9803,7 @@ var _RAD2DEG = 180 / Math.PI,
 
   return obj;
 },
-    _parseBezierData = function _parseBezierData(values, type, prepend) {
+    _parseBezierData = function (values, type, prepend) {
   type = type || "soft";
   var obj = {},
       inc = type === "cubic" ? 3 : 2,
@@ -9853,7 +9865,7 @@ var _RAD2DEG = 180 / Math.PI,
 
   return obj;
 },
-    _addCubicLengths = function _addCubicLengths(a, steps, resolution) {
+    _addCubicLengths = function (a, steps, resolution) {
   var inc = 1 / resolution,
       j = a.length,
       d,
@@ -9885,7 +9897,7 @@ var _RAD2DEG = 180 / Math.PI,
     }
   }
 },
-    _parseLengthData = function _parseLengthData(obj, resolution) {
+    _parseLengthData = function (obj, resolution) {
   resolution = resolution >> 0 || 6;
   var a = [],
       lengths = [],
@@ -9934,7 +9946,7 @@ var _RAD2DEG = 180 / Math.PI,
   API: 2,
   global: true,
   //gets called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
-  init: function init(target, vars, tween) {
+  init: function (target, vars, tween) {
     this._target = target;
 
     if (vars instanceof Array) {
@@ -10019,7 +10031,7 @@ var _RAD2DEG = 180 / Math.PI,
     return true;
   },
   //called each time the values should be updated, and the ratio gets passed as the only parameter (typically it's a value between 0 and 1, but it can exceed those when using an ease like Elastic.easeOut or Back.easeOut, etc.)
-  set: function set(v) {
+  set: function (v) {
     var segments = this._segCount,
         func = this._func,
         target = this._target,
@@ -10187,7 +10199,7 @@ BezierPlugin._cssRegister = function () {
       CSSPropTween = _internals.CSSPropTween;
 
   _internals._registerComplexSpecialProp("bezier", {
-    parser: function parser(t, e, prop, cssp, pt, plugin) {
+    parser: function (t, e, prop, cssp, pt, plugin) {
       if (e instanceof Array) {
         e = {
           values: e
@@ -10361,7 +10373,7 @@ _TweenLite._gsScope._gsDefine("easing.Back", ["easing.Ease"], function () {
       _2PI = Math.PI * 2,
       _HALF_PI = Math.PI / 2,
       _class = gs._class,
-      _create = function _create(n, f) {
+      _create = function (n, f) {
     var C = _class("easing." + n, function () {}, true),
         p = C.prototype = new _TweenLite.Ease();
 
@@ -10371,7 +10383,7 @@ _TweenLite._gsScope._gsDefine("easing.Back", ["easing.Ease"], function () {
   },
       _easeReg = _TweenLite.Ease.register || function () {},
       //put an empty function in place just as a safety measure in case someone loads an OLD version of TweenLite.js where Ease.register doesn't exist.
-  _wrap = function _wrap(name, EaseOut, EaseIn, EaseInOut, aliases) {
+  _wrap = function (name, EaseOut, EaseIn, EaseInOut, aliases) {
     var C = _class("easing." + name, {
       easeOut: new EaseOut(),
       easeIn: new EaseIn(),
@@ -10382,7 +10394,7 @@ _TweenLite._gsScope._gsDefine("easing.Back", ["easing.Ease"], function () {
 
     return C;
   },
-      EasePoint = function EasePoint(time, value, next) {
+      EasePoint = function (time, value, next) {
     this.t = time;
     this.v = value;
 
@@ -10394,7 +10406,7 @@ _TweenLite._gsScope._gsDefine("easing.Back", ["easing.Ease"], function () {
     }
   },
       //Back
-  _createBack = function _createBack(n, f) {
+  _createBack = function (n, f) {
     var C = _class("easing." + n, function (overshoot) {
       this._p1 = overshoot || overshoot === 0 ? overshoot : 1.70158;
       this._p2 = this._p1 * 1.525;
@@ -10660,7 +10672,7 @@ _TweenLite._gsScope._gsDefine("easing.Back", ["easing.Ease"], function () {
   })); //Elastic
 
 
-  _createElastic = function _createElastic(n, f, def) {
+  _createElastic = function (n, f, def) {
     var C = _class("easing." + n, function (amplitude, period) {
       this._p1 = amplitude >= 1 ? amplitude : 1; //note: if amplitude is < 1, we simply adjust the period for a more natural feel. Otherwise the math doesn't work right and the curve starts at 1.
 
@@ -10707,7 +10719,7 @@ _TweenLite._gsScope._gsDefine("easing.Back", ["easing.Ease"], function () {
   }));
 
   _class("easing.EaseLookup", {
-    find: function find(s) {
+    find: function (s) {
       return _TweenLite.Ease.map[s];
     }
   }, true); //register the non-standard eases
@@ -25496,188 +25508,237 @@ var _lethargy = require("../node_modules/lethargy/lethargy");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+class SlideShow extends _dispatcher.Dispatcher {
+  constructor(sections, assets) {
+    super(sections);
+    this.$ = document.querySelector.bind(document);
+    this.$$ = document.querySelectorAll.bind(document);
+    this.assets = assets;
+    this.loaded = 0;
+    this.animations = {};
+    this.animations.lottie = {};
+    this.animations.main = {};
+    this.lethargy = new _lethargy.Lethargy();
+    this.sections = sections;
+    this.pastIndex = 1;
+    this.currentSectionIndex = 1;
+    this.upward = -1;
+    this.downward = 1;
+    this.firstRun = true;
+    this.isTweenBool = false;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var SlideShow =
-/*#__PURE__*/
-function (_Dispatcher) {
-  _inherits(SlideShow, _Dispatcher);
-
-  function SlideShow(sections, assets) {
-    var _this;
-
-    _classCallCheck(this, SlideShow);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SlideShow).call(this, sections));
-    _this.$ = document.querySelector.bind(document);
-    _this.$$ = document.querySelectorAll.bind(document);
-    _this.assets = assets;
-    _this.loaded = 0;
-    _this.animations = {};
-    _this.animations.lottie = {};
-    _this.animations.main = {};
-    _this.lethargy = new _lethargy.Lethargy();
-    _this.sections = sections;
-    _this.pastIndex = 1;
-    _this.currentSectionIndex = 1;
-    _this.upward = -1;
-    _this.downward = 1;
-    _this.firstRun = true;
-    _this.isTweenBool = false;
-
-    _TweenMax.TweenMax.set(_this.$$(".sections section.hidden"), {
+    _TweenMax.TweenMax.set(this.$$(".sections section.hidden"), {
       rotationY: -18,
       left: "130vw",
       scale: 0.8
     });
 
-    _TweenMax.TweenMax.set(_this.$(".sections"), {
+    _TweenMax.TweenMax.set(this.$(".sections"), {
       css: {
         pointerEvents: "none"
       }
     });
 
-    sections.forEach(function (slide) {
-      _this.createMainSectionTimeline(slide.dataset.section).then(function (response) {
-        _this.loaded++;
-        _this.animations.main[slide.dataset.section] = response.tl;
-        _this.animations.lottie[slide.dataset.section] = response.lottie;
+    sections.forEach(slide => {
+      try {
+        this.createMainSectionTimeline(slide.dataset.section).then(response => {
+          this.loaded++;
+          this.animations.main[slide.dataset.section] = response.tl;
+          this.animations.lottie[slide.dataset.section] = response.lottie;
 
-        if (_this.loaded === sections.length) {
-          _this.dispatch("ready", {
-            loaded: true
-          });
-        }
-      });
+          if (this.loaded === sections.length) {
+            this.dispatch("ready", {
+              loaded: true
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Unabled to create main timeline: ", slide.dataset.section);
+      }
     });
-    return _this;
   }
 
-  _createClass(SlideShow, [{
-    key: "handleArrowKeys",
-    value: function handleArrowKeys(event) {
-      if (event.defaultPrevented) {
-        return; // Do nothing if the event was already processed
-      }
-
-      switch (event.key) {
-        case "Down":
-        case "ArrowDown":
-        case "Right":
-        case "ArrowRight":
-          this.checkSlideState();
-          this.next();
-          break;
-
-        case "Up":
-        case "ArrowUp":
-        case "Left":
-        case "ArrowLeft":
-          this.checkSlideState();
-          this.prev();
-          break;
-      }
-
-      event.preventDefault();
+  handleArrowKeys(event) {
+    if (event.defaultPrevented) {
+      return;
     }
-  }, {
-    key: "handleWheel",
-    value: function handleWheel(event) {
-      if (!this.lethargy.check(event)) return;
-      var scrollDelta = Math.sign(event.deltaY);
-      this.checkSlideState();
 
-      if (!this.isTweenBool && scrollDelta === this.downward) {
+    switch (event.key) {
+      case "Down":
+      case "ArrowDown":
+      case "Right":
+      case "ArrowRight":
+        this.checkSlideState();
         this.next();
-      } else if (!this.isTweenBool && scrollDelta === this.upward) {
+        break;
+
+      case "Up":
+      case "ArrowUp":
+      case "Left":
+      case "ArrowLeft":
+        this.checkSlideState();
         this.prev();
-      }
+        break;
     }
-  }, {
-    key: "checkSlideState",
-    value: function checkSlideState() {
-      var _this2 = this;
 
-      this.isTweenBool = false;
-      this.sections.forEach(function ($sect) {
-        if (_TweenMax.TweenMax.isTweening($sect)) {
-          _this2.isTweenBool = true;
-        }
-      });
+    event.preventDefault();
+  }
 
-      if (this.currentSectionIndex > this.sections.length) {
-        this.currentSectionIndex = 1;
-      }
+  handleWheel(event) {
+    if (!this.lethargy.check(event)) return;
+    let scrollDelta = Math.sign(event.deltaY);
+    this.checkSlideState();
 
-      if (this.currentSectionIndex < 1) {
-        this.currentSectionIndex = this.sections.length;
-      }
-
-      if (this.pastIndex < 1) {
-        this.pastIndex = this.sections.length;
-      }
-
-      if (this.pastIndex > this.sections.length) {
-        this.pastIndex = 1;
-      }
+    if (!this.isTweenBool && scrollDelta === this.downward) {
+      this.next();
+    } else if (!this.isTweenBool && scrollDelta === this.upward) {
+      this.prev();
     }
-  }, {
-    key: "next",
-    value: function next() {
-      var _this4 = this;
+  }
 
-      this.firstRun = false;
-      var tl = new _TweenMax.TimelineMax();
-      var sectionToShow = this.sections[this.currentSectionIndex - 1];
-      var sectionToHide = this.sections[this.pastIndex - 1];
-      var sectionName = sectionToShow.dataset.section;
-      var sectionToHideName = sectionToHide.dataset.section;
-      this.animations.lottie[sectionToHideName].pause();
-      this.animations.lottie[sectionName].pause();
-      tl.to(sectionToHide, 0.3, {
+  checkSlideState() {
+    this.isTweenBool = false;
+    this.sections.forEach($sect => {
+      if (_TweenMax.TweenMax.isTweening($sect)) {
+        this.isTweenBool = true;
+      }
+    });
+
+    if (this.currentSectionIndex > this.sections.length) {
+      this.currentSectionIndex = 1;
+    }
+
+    if (this.currentSectionIndex < 1) {
+      this.currentSectionIndex = this.sections.length;
+    }
+
+    if (this.pastIndex < 1) {
+      this.pastIndex = this.sections.length;
+    }
+
+    if (this.pastIndex > this.sections.length) {
+      this.pastIndex = 1;
+    }
+  }
+
+  next() {
+    this.firstRun = false;
+    let tl = new _TweenMax.TimelineMax();
+    let sectionToShow = this.sections[this.currentSectionIndex - 1];
+    let sectionToHide = this.sections[this.pastIndex - 1];
+    let sectionName = sectionToShow.dataset.section;
+    let sectionToHideName = sectionToHide.dataset.section;
+    this.animations.lottie[sectionToHideName].pause();
+    this.animations.lottie[sectionName].pause();
+    tl.to(sectionToHide, 0.3, {
+      z: -150,
+      ease: _TweenMax.Power1.easeOut,
+      zIndex: 0,
+      onComplete: function () {
+        setTimeout(() => {
+          _TweenMax.TweenMax.set(this.target, {
+            rotationY: -18,
+            left: "130vw",
+            scale: 0.8,
+            visibility: "hidden"
+          });
+        }, 300);
+      }
+    });
+    tl.to(sectionToShow, 0.4, {
+      left: 0,
+      ease: _TweenMax.Power1.easeOut,
+      z: 20,
+      zIndex: 1,
+      visibility: "visible"
+    }, "-=0.15");
+    tl.to(sectionToShow, 0.65, {
+      rotationY: 0,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.35");
+    tl.to(sectionToShow, 0.4, {
+      rotationX: -15,
+      scale: 1,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.11");
+    tl.to(sectionToShow, 0.35, {
+      rotationX: 0,
+      rotationZ: 0,
+      z: 0,
+      ease: _TweenMax.Power1.easeOut,
+      onComplete: () => {
+        this.animations.main[sectionName].resume();
+        this.animations.lottie[sectionName].play();
+      }
+    }, "-=0.35");
+    this.pastIndex = this.currentSectionIndex;
+    this.currentSectionIndex++;
+  }
+
+  prev() {
+    if (this.firstRun) return;
+    this.pastIndex--;
+    this.currentSectionIndex--;
+    let tl = new _TweenMax.TimelineMax();
+
+    if (this.currentSectionIndex === 0) {
+      this.urrentSectionIndex = this.sections.length;
+    }
+
+    if (this.pastIndex === 0) {
+      this.pastIndex = this.sections.length;
+    }
+
+    let sectionToShow = this.sections[this.pastIndex - 1];
+    let sectionToHide = this.sections[this.currentSectionIndex - 1];
+    let sectionName = sectionToShow.dataset.section;
+    let sectionToHideName = sectionToHide.dataset.section;
+
+    if (this.currentSectionIndex !== 1) {
+      tl.set(sectionToShow, {
         z: -150,
         ease: _TweenMax.Power1.easeOut,
         zIndex: 0,
-        onComplete: function onComplete() {
-          var _this3 = this;
-
-          setTimeout(function () {
-            _TweenMax.TweenMax.set(_this3.target, {
-              rotationY: -18,
-              left: "130vw",
-              scale: 0.8,
-              visibility: "hidden"
-            });
-          }, 300);
-        }
-      });
-      tl.to(sectionToShow, 0.4, {
-        left: 0,
-        ease: _TweenMax.Power1.easeOut,
-        z: 20,
-        zIndex: 1,
-        visibility: "visible"
-      }, "-=0.15");
-      tl.to(sectionToShow, 0.65, {
         rotationY: 0,
-        ease: _TweenMax.Power1.easeOut
-      }, "-=0.35");
+        scale: 1,
+        left: 0,
+        visibility: "visible"
+      });
+    } else {
+      this.firstRun = true;
+    }
+
+    this.animations.lottie[sectionName].pause();
+    this.animations.lottie[sectionToHideName].pause();
+    tl.to(sectionToHide, 0.35, {
+      rotationX: -15,
+      ease: _TweenMax.Power1.easeOut
+    });
+    tl.to(sectionToHide, 0.4, {
+      rotationX: 0,
+      z: 20,
+      scale: 0.8,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.25");
+    tl.to(sectionToHide, 0.2, {
+      rotationZ: -3,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.15");
+    tl.to(sectionToHide, 0.4, {
+      rotationZ: 0,
+      rotationY: -18,
+      left: "130vw",
+      z: 0,
+      scale: 0.8,
+      ease: _TweenMax.Power1.easeOut,
+      onComplete: function () {
+        _TweenMax.TweenMax.set(this.target, {
+          visibility: "hidden"
+        });
+      }
+    }, "-=0.15");
+
+    if (this.currentSectionIndex !== 1) {
       tl.to(sectionToShow, 0.4, {
         rotationX: -15,
         scale: 1,
@@ -25688,188 +25749,79 @@ function (_Dispatcher) {
         rotationZ: 0,
         z: 0,
         ease: _TweenMax.Power1.easeOut,
-        onComplete: function onComplete() {
-          _this4.animations.main[sectionName].resume();
-
-          _this4.animations.lottie[sectionName].play();
+        onComplete: () => {
+          this.animations.lottie[sectionName].play();
+          this.animations.main[sectionName].play();
         }
       }, "-=0.35");
-      this.pastIndex = this.currentSectionIndex;
-      this.currentSectionIndex++;
     }
-  }, {
-    key: "prev",
-    value: function prev() {
-      var _this5 = this;
+  }
 
-      if (this.firstRun) return;
-      this.pastIndex--;
-      this.currentSectionIndex--;
-      var tl = new _TweenMax.TimelineMax();
+  async createMainSectionTimeline(name) {
+    const lottie = await this.getLottieTween(name);
+    const tree = new _TweenMax.TimelineMax({
+      paused: true
+    });
+    const h3 = this.$("." + name + " h3");
+    const h2 = this.$("." + name + " h2");
+    const subtitle = this.$("." + name + " .title p");
+    const title_border = this.$("." + name + " .title");
+    const p_first_letter = this.$("." + name + " .copy span.first-letter");
+    const p_body_copy = this.$("." + name + " .copy span.body-copy");
 
-      if (this.currentSectionIndex === 0) {
-        this.urrentSectionIndex = this.sections.length;
-      }
+    _TweenMax.TweenMax.set(h3, {
+      y: "+=" + h3.clientHeight / 2 + "px"
+    });
 
-      if (this.pastIndex === 0) {
-        this.pastIndex = this.sections.length;
-      }
+    _TweenMax.TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
+      opacity: 0,
+      y: "+=20px",
+      ease: _TweenMax.Power2.easeOut
+    });
 
-      var sectionToShow = this.sections[this.pastIndex - 1];
-      var sectionToHide = this.sections[this.currentSectionIndex - 1];
-      var sectionName = sectionToShow.dataset.section;
-      var sectionToHideName = sectionToHide.dataset.section;
+    tree.to(h3, 1, {
+      opacity: 1,
+      y: 0,
+      ease: _TweenMax.Power1.easeOut
+    });
+    tree.call(() => {
+      lottie.play();
+    }, null, null, "-=1");
+    tree.staggerTo([h2, subtitle], 0.93, {
+      autoAlpha: 1,
+      y: "-=20px",
+      ease: _TweenMax.Power2.easeOut
+    }, 0.08, "-=0.5");
+    tree.fromTo(title_border, 0.25, {
+      borderRightColor: "rgba(0,0,0,0)"
+    }, {
+      borderRightColor: "rgba(0,0,0,1)"
+    }, "-=0.8");
+    tree.staggerTo([p_first_letter, p_body_copy], 0.93, {
+      autoAlpha: 1,
+      y: "-=20px",
+      ease: _TweenMax.Power2.easeOut
+    }, 0.08, "-=0.8");
+    return {
+      tl: tree,
+      lottie
+    };
+  }
 
-      if (this.currentSectionIndex !== 1) {
-        tl.set(sectionToShow, {
-          z: -150,
-          ease: _TweenMax.Power1.easeOut,
-          zIndex: 0,
-          rotationY: 0,
-          scale: 1,
-          left: 0,
-          visibility: "visible"
-        });
-      } else {
-        this.firstRun = true;
-      }
+  async getLottieTween(name) {
+    let tmpAnim = await _lottieWeb.default.loadAnimation({
+      wrapper: this.$("." + name + " .lottie"),
+      renderer: "svg",
+      loop: true,
+      autoplay: false,
+      animationData: this.assets.getResult(name),
+      width: "100%",
+      height: "100%"
+    });
+    return tmpAnim;
+  }
 
-      this.animations.lottie[sectionName].pause();
-      this.animations.lottie[sectionToHideName].pause();
-      tl.to(sectionToHide, 0.35, {
-        rotationX: -15,
-        ease: _TweenMax.Power1.easeOut
-      });
-      tl.to(sectionToHide, 0.4, {
-        rotationX: 0,
-        z: 20,
-        scale: 0.8,
-        ease: _TweenMax.Power1.easeOut
-      }, "-=0.25");
-      tl.to(sectionToHide, 0.2, {
-        rotationZ: -3,
-        ease: _TweenMax.Power1.easeOut
-      }, "-=0.15");
-      tl.to(sectionToHide, 0.4, {
-        rotationZ: 0,
-        rotationY: -18,
-        left: "130vw",
-        z: 0,
-        scale: 0.8,
-        ease: _TweenMax.Power1.easeOut,
-        onComplete: function onComplete() {
-          _TweenMax.TweenMax.set(this.target, {
-            visibility: "hidden"
-          });
-        }
-      }, "-=0.15");
-
-      if (this.currentSectionIndex !== 1) {
-        tl.to(sectionToShow, 0.4, {
-          rotationX: -15,
-          scale: 1,
-          ease: _TweenMax.Power1.easeOut
-        }, "-=0.11");
-        tl.to(sectionToShow, 0.35, {
-          rotationX: 0,
-          rotationZ: 0,
-          z: 0,
-          ease: _TweenMax.Power1.easeOut,
-          onComplete: function onComplete() {
-            _this5.animations.lottie[sectionName].play();
-
-            _this5.animations.main[sectionName].play();
-          }
-        }, "-=0.35");
-      }
-    }
-  }, {
-    key: "createMainSectionTimeline",
-    value: function createMainSectionTimeline(name) {
-      var _this6 = this;
-
-      return new Promise(function (resolve, reject) {
-        var tree = new _TweenMax.TimelineMax({
-          paused: true
-        });
-
-        var h3 = _this6.$("." + name + " h3");
-
-        var h2 = _this6.$("." + name + " h2");
-
-        var subtitle = _this6.$("." + name + " .title p");
-
-        var title_border = _this6.$("." + name + " .title");
-
-        var p_first_letter = _this6.$("." + name + " .copy span.first-letter");
-
-        var p_body_copy = _this6.$("." + name + " .copy span.body-copy");
-
-        _TweenMax.TweenMax.set(h3, {
-          y: "+=" + h3.clientHeight / 2 + "px"
-        });
-
-        _TweenMax.TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
-          opacity: 0,
-          y: "+=20px",
-          ease: _TweenMax.Power2.easeOut
-        });
-
-        _this6.getLottieTween(name).then(function (lottie) {
-          tree.to(h3, 1, {
-            opacity: 1,
-            y: 0,
-            ease: _TweenMax.Power1.easeOut
-          });
-          tree.call(function () {
-            lottie.play();
-          }, null, null, "-=1");
-          tree.staggerTo([h2, subtitle], 0.93, {
-            autoAlpha: 1,
-            y: "-=20px",
-            ease: _TweenMax.Power2.easeOut
-          }, 0.08, "-=0.5");
-          tree.fromTo(title_border, 0.25, {
-            borderRightColor: "rgba(0,0,0,0)"
-          }, {
-            borderRightColor: "rgba(0,0,0,1)"
-          }, "-=0.8");
-          tree.staggerTo([p_first_letter, p_body_copy], 0.93, {
-            autoAlpha: 1,
-            y: "-=20px",
-            ease: _TweenMax.Power2.easeOut
-          }, 0.08, "-=0.8");
-          resolve({
-            tl: tree,
-            lottie: lottie
-          });
-        });
-      });
-    }
-  }, {
-    key: "getLottieTween",
-    value: function getLottieTween(name) {
-      var _this7 = this;
-
-      var promise = new Promise(function (resolve, reject) {
-        var tmpAnim = _lottieWeb.default.loadAnimation({
-          wrapper: _this7.$("." + name + " .lottie"),
-          renderer: "svg",
-          loop: true,
-          autoplay: false,
-          animationData: _this7.assets.getResult(name),
-          width: "100%",
-          height: "100%"
-        });
-
-        resolve(tmpAnim);
-      });
-      return promise;
-    }
-  }]);
-
-  return SlideShow;
-}(_dispatcher.Dispatcher);
+}
 
 exports.SlideShow = SlideShow;
 },{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
@@ -25901,15 +25853,9 @@ var _lottieWeb = _interopRequireDefault(require("lottie-web"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 var G = document.querySelectorAll(".lotties");
 
-var MR = function MR(X) {
+var MR = function (X) {
   return Math.random() * X;
 };
 
@@ -25975,69 +25921,54 @@ for (var i = 0; i < G.length; i++) {
   _lottieWeb.default.loadAnimation(temp_anim_data);
 }
 
-var App =
-/*#__PURE__*/
-function () {
-  function App() {
-    _classCallCheck(this, App);
-
+class App {
+  constructor() {
     this.$ = document.querySelector.bind(document);
     this.$$ = document.querySelectorAll.bind(document);
     this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(this.init.bind(this));
   }
 
-  _createClass(App, [{
-    key: "init",
-    value: function init() {
-      this.slide_ctrl = new _slideShow.SlideShow(this.$$(".sections section"), this.queue);
-      this.slide_ctrl.addListener("ready", function (e) {
-        return console.log("e");
+  init() {
+    this.slide_ctrl = new _slideShow.SlideShow(this.$$(".sections section"), this.queue);
+    this.slide_ctrl.addListener("ready", e => console.log("e"));
+    document.addEventListener("wheel", this.slide_ctrl.handleWheel.bind(this.slide_ctrl));
+    window.addEventListener("keydown", this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl), true);
+  }
+
+  onProgress(event) {
+    this.progress = Math.round(event.loaded * 100);
+    console.log("General progress", this.progress);
+  }
+
+  site_load() {
+    this.queue = new _preloadJs.default.LoadQueue();
+    this.progress = 0;
+    this.queue.on("progress", this.onProgress);
+    return new Promise((resolve, reject) => {
+      this.queue.on("complete", e => {
+        resolve(e);
       });
-      document.addEventListener("wheel", this.slide_ctrl.handleWheel.bind(this.slide_ctrl));
-      window.addEventListener("keydown", this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl), true);
-    }
-  }, {
-    key: "onProgress",
-    value: function onProgress(event) {
-      this.progress = Math.round(event.loaded * 100);
-      console.log("General progress", this.progress);
-    }
-  }, {
-    key: "site_load",
-    value: function site_load() {
-      var _this = this;
+      this.queue.loadManifest([{
+        id: "tinker",
+        src: "https://s3-us-west-2.amazonaws.com/lottietest/tinker.json"
+      }, {
+        id: "explorer",
+        src: "https://s3-us-west-2.amazonaws.com/lottietest/explorer.json"
+      }, {
+        id: "developer",
+        src: "https://s3-us-west-2.amazonaws.com/lottietest/developer.json"
+      }, {
+        id: "animator",
+        src: "https://s3-us-west-2.amazonaws.com/lottietest/animator.json"
+      }]);
+    });
+  }
 
-      this.queue = new _preloadJs.default.LoadQueue();
-      this.progress = 0;
-      this.queue.on("progress", this.onProgress);
-      return new Promise(function (resolve, reject) {
-        _this.queue.on("complete", function (e) {
-          resolve(e);
-        });
+}
 
-        _this.queue.loadManifest([{
-          id: "tinker",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/tinker.json"
-        }, {
-          id: "explorer",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/explorer.json"
-        }, {
-          id: "developer",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/developer.json"
-        }, {
-          id: "animator",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/animator.json"
-        }]);
-      });
-    }
-  }]);
-
-  return App;
-}();
-
-var Portfolio = new App();
-},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+const Portfolio = new App();
+},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js"}],"../../../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -26065,7 +25996,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59356" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64695" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -26240,5 +26171,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","app.js"], null)
+},{}]},{},["../../../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","app.js"], null)
 //# sourceMappingURL=/app.c328ef1a.js.map

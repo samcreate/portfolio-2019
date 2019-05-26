@@ -369,21 +369,19 @@ section:not(.in-transition) #floor-shadow {
   top: 0;
   left: 0;
 }
-.jellyfish {
+.plankton {
   position: absolute;
-  transform: translate3d(0, 0, 0);
-  z-index: -3;
+  transform: translateZ(529px);
   top: -55%;
   left: -25%;
+  pointer-events: none;
 }
-.lotties {
-  transform: translateZ(529px);
+.plankton > div {
   transform-style: preserve-3d;
   width: 220px;
-  position: relative;
   position: absolute;
 }
-.lotties svg path {
+.plankton > div svg path {
   stroke: #fff !important;
 }
 @-moz-keyframes rotating {

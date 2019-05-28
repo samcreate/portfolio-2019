@@ -25490,7 +25490,145 @@ GroupEffect.prototype.init = function(data,element){
 
 }).call(this);
 
-},{}],"slide-show.js":[function(require,module,exports) {
+},{}],"../node_modules/gsap/CSSRulePlugin.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.CSSRulePlugin = void 0;
+
+var _TweenLite = _interopRequireWildcard(require("./TweenLite.js"));
+
+var _CSSPlugin = _interopRequireDefault(require("./CSSPlugin.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/*!
+ * VERSION: 0.6.8
+ * DATE: 2019-02-22
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ */
+
+/* eslint-disable */
+_TweenLite._gsScope._gsDefine("plugins.CSSRulePlugin", ["plugins.TweenPlugin", "TweenLite", "plugins.CSSPlugin"], function () {
+  /** @constructor **/
+  var CSSRulePlugin = function () {
+    _TweenLite.TweenPlugin.call(this, "cssRule");
+
+    this._overwriteProps.length = 0;
+  },
+      _doc = _TweenLite._gsScope.document,
+      _superSetRatio = _CSSPlugin.default.prototype.setRatio,
+      p = CSSRulePlugin.prototype = new _CSSPlugin.default();
+
+  p._propName = "cssRule";
+  p.constructor = CSSRulePlugin;
+  CSSRulePlugin.version = "0.6.8";
+  CSSRulePlugin.API = 2;
+  /**
+   * Searches the style sheets in the document for a particular selector like ".myClass" or "a" or "a:hover" or ":after" and
+   * returns a reference to that style sheet (or an array of them in the case of a pseudo selector like ":after"). Then you
+   * can animate the individual properties of the style sheet.
+   *
+   * @param {!string} selector a string describing the selector, like ".myClass" or "a" or "a:hover" or ":after"
+   * @return a reference to the style sheet (or an array of them in the case of a pseudo selector). If none was found, null is returned (or an empty array for a pseudo selector)
+   */
+
+  CSSRulePlugin.getRule = function (selector) {
+    var ruleProp = _doc.all ? "rules" : "cssRules",
+        ss = _doc.styleSheets,
+        i = ss.length,
+        pseudo = selector.charAt(0) === ":",
+        j,
+        curSS,
+        cs,
+        a;
+    selector = (pseudo ? "" : ",") + selector.split("::").join(":").toLowerCase() + ","; //note: old versions of IE report tag name selectors as upper case, so we just change everything to lowercase.
+
+    if (pseudo) {
+      a = [];
+    }
+
+    while (--i > -1) {
+      //Firefox may throw insecure operation errors when css is loaded from other domains, so try/catch.
+      try {
+        curSS = ss[i][ruleProp];
+
+        if (!curSS) {
+          continue;
+        }
+
+        j = curSS.length;
+      } catch (e) {
+        console.log(e);
+        continue;
+      }
+
+      while (--j > -1) {
+        cs = curSS[j];
+
+        if (cs.selectorText && ("," + cs.selectorText.split("::").join(":").toLowerCase() + ",").indexOf(selector) !== -1) {
+          //note: IE adds an extra ":" to pseudo selectors, so .myClass:after becomes .myClass::after, so we need to strip the extra one out.
+          if (pseudo) {
+            a.push(cs.style);
+          } else {
+            return cs.style;
+          }
+        }
+      }
+    }
+
+    return a;
+  }; // @private gets called when the tween renders for the first time. This kicks everything off, recording start/end values, etc.
+
+
+  p._onInitTween = function (target, value, tween) {
+    if (target.cssText === undefined) {
+      return false;
+    }
+
+    var div = target._gsProxy = target._gsProxy || _doc.createElement("div");
+
+    this._ss = target;
+    this._proxy = div.style;
+    div.style.cssText = target.cssText;
+
+    _CSSPlugin.default.prototype._onInitTween.call(this, div, value, tween); //we just offload all the work to the regular CSSPlugin and then copy the cssText back over to the rule in the setRatio() method. This allows us to have all of the updates to CSSPlugin automatically flow through to CSSRulePlugin instead of having to maintain both
+
+
+    return true;
+  }; // @private gets called every time the tween updates, passing the new ratio (typically a value between 0 and 1, but not always (for example, if an Elastic.easeOut is used, the value can jump above 1 mid-tween). It will always start and 0 and end at 1.
+
+
+  p.setRatio = function (v) {
+    _superSetRatio.call(this, v);
+
+    var proxy = this._proxy,
+        ss = this._ss,
+        i = proxy.length;
+
+    while (--i > -1) {
+      ss[proxy[i]] = proxy[proxy[i]];
+    }
+  };
+
+  _TweenLite.TweenPlugin.activate([CSSRulePlugin]);
+
+  return CSSRulePlugin;
+}, true);
+
+var CSSRulePlugin = _TweenLite.globals.CSSRulePlugin;
+exports.default = exports.CSSRulePlugin = CSSRulePlugin;
+},{"./TweenLite.js":"../node_modules/gsap/TweenLite.js","./CSSPlugin.js":"../node_modules/gsap/CSSPlugin.js"}],"slide-show.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25505,6 +25643,8 @@ var _TweenMax = require("gsap/TweenMax");
 var _lottieWeb = _interopRequireDefault(require("lottie-web"));
 
 var _lethargy = require("../node_modules/lethargy/lethargy");
+
+var _CSSRulePlugin = _interopRequireDefault(require("gsap/CSSRulePlugin"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25526,6 +25666,7 @@ class SlideShow extends _dispatcher.Dispatcher {
     this.downward = 1;
     this.firstRun = true;
     this.isTweenBool = false;
+    this.sectionGradientOpacity = 0.15;
 
     _TweenMax.TweenMax.set(this.$$(".sections section.hidden"), {
       rotationY: -18,
@@ -25628,30 +25769,60 @@ class SlideShow extends _dispatcher.Dispatcher {
     let sectionToHide = this.sections[this.pastIndex - 1];
     let sectionName = sectionToShow.dataset.section;
     let sectionToHideName = sectionToHide.dataset.section;
+
+    let ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + sectionToHideName + "::before");
+
+    let ruleForShow = _CSSRulePlugin.default.getRule("#app .sections section." + sectionName + "::before");
+
     this.animations.lottie[sectionToHideName].pause();
     this.animations.lottie[sectionName].pause();
-    tl.to(sectionToHide, 0.3, {
-      z: -150,
-      ease: _TweenMax.Power1.easeOut,
-      zIndex: 0,
-      onComplete: function () {
-        setTimeout(() => {
-          _TweenMax.TweenMax.set(this.target, {
-            rotationY: -18,
-            left: "130vw",
-            scale: 0.8,
-            visibility: "hidden"
-          });
-        }, 300);
-        this.$("#app").classList.add("about-tilt-off");
+
+    _TweenMax.TweenMax.to(ruleForShow, 0, {
+      cssRule: {
+        opacity: this.sectionGradientOpacity
       }
-    });
+    }, 0);
+
+    if (sectionName !== sectionToHideName) {
+      tl.to(sectionToHide, 0.3, {
+        z: -150,
+        ease: _TweenMax.Power1.easeOut,
+        zIndex: 0,
+        onComplete: () => {
+          setTimeout(() => {
+            _TweenMax.TweenMax.set(sectionToHide, {
+              rotationY: -18,
+              left: "130vw",
+              scale: 0.8,
+              visibility: "hidden"
+            });
+          }, 300);
+        }
+      });
+      tl.to(ruleForHide, 0.3, {
+        cssRule: {
+          opacity: this.sectionGradientOpacity
+        }
+      }, 0);
+    }
+
     tl.to(sectionToShow, 0.4, {
       left: 0,
       ease: _TweenMax.Power1.easeOut,
       z: 20,
       zIndex: 1,
-      visibility: "visible"
+      visibility: "visible",
+      onComplete: () => {
+        _TweenMax.TweenMax.to(ruleForShow, 1, {
+          cssRule: {
+            opacity: 0
+          }
+        });
+
+        this.dispatch("slideState", {
+          visible: true
+        });
+      }
     }, "-=0.15");
     tl.to(sectionToShow, 0.65, {
       rotationY: 0,
@@ -25686,10 +25857,19 @@ class SlideShow extends _dispatcher.Dispatcher {
       this.pastIndex = this.sections.length;
     }
 
+    if (this.currentSectionIndex === 0) {
+      this.currentSectionIndex = this.sections.length;
+    }
+
+    console.log("prev: sectionToShow:", this.pastIndex - 1, " sectionToHide:", this.currentSectionIndex - 1, this.currentSectionIndex);
     let sectionToShow = this.sections[this.pastIndex - 1];
     let sectionToHide = this.sections[this.currentSectionIndex - 1];
     let sectionName = sectionToShow.dataset.section;
     let sectionToHideName = sectionToHide.dataset.section;
+
+    let ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + sectionToHideName + "::before");
+
+    let ruleForShow = _CSSRulePlugin.default.getRule("#app .sections section." + sectionName + "::before");
 
     if (this.currentSectionIndex !== 1) {
       tl.set(sectionToShow, {
@@ -25700,6 +25880,12 @@ class SlideShow extends _dispatcher.Dispatcher {
         scale: 1,
         left: 0,
         visibility: "visible"
+      });
+
+      _TweenMax.TweenMax.to(ruleForShow, 0, {
+        cssRule: {
+          opacity: this.sectionGradientOpacity
+        }
       });
     } else {
       this.firstRun = true;
@@ -25717,6 +25903,11 @@ class SlideShow extends _dispatcher.Dispatcher {
       scale: 0.8,
       ease: _TweenMax.Power1.easeOut
     }, "-=0.25");
+    tl.to(ruleForHide, 0.4, {
+      cssRule: {
+        opacity: this.sectionGradientOpacity
+      }
+    }, "-=0.4");
     tl.to(sectionToHide, 0.2, {
       rotationZ: -3,
       ease: _TweenMax.Power1.easeOut
@@ -25741,6 +25932,11 @@ class SlideShow extends _dispatcher.Dispatcher {
         scale: 1,
         ease: _TweenMax.Power1.easeOut
       }, "-=0.11");
+      tl.to(ruleForShow, 0.3, {
+        cssRule: {
+          opacity: 0
+        }
+      }, "-=0.4");
       tl.to(sectionToShow, 0.35, {
         rotationX: 0,
         rotationZ: 0,
@@ -25752,7 +25948,9 @@ class SlideShow extends _dispatcher.Dispatcher {
         }
       }, "-=0.35");
     } else {
-      this.$("#app").classList.remove("about-tilt-off");
+      this.dispatch("slideState", {
+        visible: false
+      });
     }
   }
 
@@ -25823,7 +26021,7 @@ class SlideShow extends _dispatcher.Dispatcher {
 }
 
 exports.SlideShow = SlideShow;
-},{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
+},{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js","gsap/CSSRulePlugin":"../node_modules/gsap/CSSRulePlugin.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
 /*!
 * @license PreloadJS
 * Visit http://createjs.com/ for documentation, updates and examples.
@@ -26310,7 +26508,140 @@ module.exports = {
   }],
   "markers": []
 };
-},{}],"app.js":[function(require,module,exports) {
+},{}],"utily.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Utily = void 0;
+
+class Utily {}
+
+exports.Utily = Utily;
+Utily.$ = document.querySelector.bind(document);
+Utily.$$ = document.querySelectorAll.bind(document);
+
+Utily.MR = function (X) {
+  return Math.random() * X;
+};
+},{}],"plankton.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _TweenMax = require("gsap/TweenMax");
+
+var _lottieWeb = _interopRequireDefault(require("lottie-web"));
+
+var _utily = require("./utily");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Plankton {
+  constructor(where, json_data, how_many) {
+    const loc = _utily.Utily.$(where);
+
+    _lottieWeb.default.setQuality("low");
+
+    this.plankton = [];
+    this.paused = false;
+
+    for (let index = 0; index < how_many; index++) {
+      let tmp_div = document.createElement("div");
+      tmp_div.setAttribute("class", "life");
+
+      let _tmp_anim = _lottieWeb.default.loadAnimation({
+        wrapper: tmp_div,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        animationData: json_data
+      });
+
+      this.plankton.push(_tmp_anim);
+
+      _TweenMax.TweenMax.set(tmp_div, {
+        x: _utily.Utily.MR(window.innerWidth),
+        y: _utily.Utily.MR(window.innerHeight)
+      });
+
+      let frame = Math.floor(_utily.Utily.MR(100));
+      setTimeout(() => {
+        _tmp_anim.goToAndPlay(frame, true);
+      }, frame);
+      loc.appendChild(tmp_div);
+    }
+
+    this.planktonLife = _utily.Utily.$$(".life");
+    this.init_anim();
+    window.onresize = this.handleResize.bind(this);
+  }
+
+  init_anim() {
+    let W = window.innerWidth,
+        H = window.innerHeight,
+        C = 10;
+
+    _TweenMax.TweenMax.killDelayedCallsTo(this.init_anim.bind(this));
+
+    _TweenMax.TweenMax.delayedCall(C * 1, this.init_anim.bind(this));
+
+    for (var i = this.planktonLife.length; i--;) {
+      var c = C,
+          animBunch = [],
+          GWidth = this.planktonLife[i].offsetWidth,
+          GHeight = this.planktonLife[i].offsetHeight;
+
+      while (c--) {
+        animBunch.push({
+          x: _utily.Utily.MR(W - GWidth),
+          y: _utily.Utily.MR(H - GHeight)
+        });
+      }
+
+      if (this.planktonLife[i].T) {
+        this.planktonLife[i].T.kill();
+      }
+
+      this.planktonLife[i].T = _TweenMax.TweenMax.to(this.planktonLife[i], C * 120, {
+        bezier: {
+          timeResolution: 0,
+          type: "soft",
+          values: animBunch
+        },
+        delay: i * _utily.Utily.MR(0.8),
+        ease: _TweenMax.Power2.easeOut
+      });
+    }
+  }
+
+  handleResize() {
+    _TweenMax.TweenMax.killDelayedCallsTo(this.init_anim.bind(this));
+
+    _TweenMax.TweenMax.delayedCall(_utily.Utily.MR(0.9), this.init_anim.bind(this));
+  }
+
+  pause(bool) {
+    if (bool === this.paused) return;
+    this.plankton.forEach(plank => {
+      if (bool) {
+        plank.pause();
+      } else {
+        plank.play();
+      }
+
+      this.paused = bool;
+    });
+  }
+
+}
+
+exports.default = Plankton;
+},{"gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _mouse = require("./mouse");
@@ -26325,12 +26656,14 @@ var _lottieWeb = _interopRequireDefault(require("lottie-web"));
 
 var _loader = _interopRequireDefault(require("./json/loader.json"));
 
+var _plankton = _interopRequireDefault(require("./plankton"));
+
+var _utily = require("./utily");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class App {
   constructor() {
-    this.$ = document.querySelector.bind(document);
-    this.$$ = document.querySelectorAll.bind(document);
     this.loader_anim = {};
     this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(this.init.bind(this));
@@ -26338,22 +26671,35 @@ class App {
 
   init() {
     let tl = new _TweenMax.TimelineMax();
-    let h1 = this.$(".about h1");
-    let p = this.$(".about p");
-    let icons = this.$$(".about li");
-    let image = this.$(".about .image-container");
-    let bg = this.$(".bg");
-    tl.set([h1, p, icons], {
+
+    let h1 = _utily.Utily.$(".about h1");
+
+    let p = _utily.Utily.$(".about p");
+
+    let icons = _utily.Utily.$$(".about li");
+
+    let image = _utily.Utily.$(".about .image-container");
+
+    let bg = _utily.Utily.$(".bg");
+
+    let plankton = _utily.Utily.$$(".plankton");
+
+    let scrollIndicator = _utily.Utily.$(".scroll-indicator");
+
+    tl.set([h1, p, image], {
       autoAlpha: 0,
       y: "+=20px"
+    });
+    tl.set([icons], {
+      autoAlpha: 0,
+      y: "+=60px"
     });
     tl.set([bg], {
       autoAlpha: 0
     });
-    tl.set([image], {
-      opacity: 0
-    });
-    this.$("#app").classList.remove("loading");
+
+    _utily.Utily.$("#app").classList.remove("loading");
+
     tl.to(this.loaderEl, 1, {
       autoAlpha: 0,
       ease: _TweenMax.Power1.easeOut
@@ -26367,22 +26713,46 @@ class App {
       y: "-=20px",
       ease: _TweenMax.Power2.easeOut
     }, 0.08, "-=0.4");
-    tl.staggerTo(icons, 0.5, {
+    tl.staggerTo(icons, 0.8, {
       autoAlpha: 1,
-      y: "-=20px",
+      y: "-=40px",
       ease: _TweenMax.Power2.easeOut
-    }, 0.04, "-=0.50");
+    }, 0.06, "-=0.90");
     tl.to(image, 0.5, {
-      opacity: 1
-    }, "-=0.8");
-    this.slide_ctrl = new _slideShow.SlideShow(this.$$(".sections section"), this.queue);
+      autoAlpha: 1,
+      y: "-=20px"
+    }, "-=1.5");
+    tl.to(plankton, 1, {
+      autoAlpha: 1,
+      y: "-=20px"
+    }, "-=1.6");
+    tl.to(scrollIndicator, 0.5, {
+      autoAlpha: 1,
+      x: "+=20",
+      repeat: -1,
+      yoyo: true,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=1");
+    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), 3);
+    this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
     this.slide_ctrl.addListener("ready", e => console.log("e"));
+    this.slide_ctrl.addListener("slideState", e => {
+      if (e.visible) {
+        _utily.Utily.$("#app").classList.add("about-tilt-off");
+
+        _utily.Utily.$(".plankton").style.visibility = "hidden";
+        _utily.Utily.$(".scroll-indicator-container").style.visibility = "hidden";
+      } else {
+        _utily.Utily.$("#app").classList.remove("about-tilt-off");
+
+        _utily.Utily.$(".plankton").style.visibility = "visible";
+        _utily.Utily.$(".scroll-indicator-container").style.visibility = "visible";
+      }
+
+      this.plankton_ctrl.pause(e.visible);
+    });
     document.addEventListener("wheel", this.slide_ctrl.handleWheel.bind(this.slide_ctrl));
-    window.addEventListener("keydown", this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl), true); // this.plankton_ctrl = new Plankton(
-    //   ".plankton",
-    //   this.queue.getResult("plankton"),
-    //   1
-    // );
+    window.addEventListener("keydown", this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl), true);
   }
 
   onProgress(event) {
@@ -26392,10 +26762,10 @@ class App {
   }
 
   site_load() {
-    this.loaderEl = this.$(".loader");
+    this.loaderEl = _utily.Utily.$(".loader");
     document.body.style.setProperty("--loaded", "100%");
     this.loader_anim.font = _lottieWeb.default.loadAnimation({
-      wrapper: this.$(".bt-ldr"),
+      wrapper: _utily.Utily.$(".bt-ldr"),
       renderer: "svg",
       loop: true,
       autoplay: true,
@@ -26404,7 +26774,7 @@ class App {
       height: "100%"
     });
     this.loader_anim.back = _lottieWeb.default.loadAnimation({
-      wrapper: this.$(".tp-ldr"),
+      wrapper: _utily.Utily.$(".tp-ldr"),
       renderer: "svg",
       loop: true,
       autoplay: true,
@@ -26451,7 +26821,7 @@ class App {
 }
 
 const Portfolio = new App();
-},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./json/loader.json":"json/loader.json"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./json/loader.json":"json/loader.json","./plankton":"plankton.js","./utily":"utily.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -26479,7 +26849,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52450" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63223" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

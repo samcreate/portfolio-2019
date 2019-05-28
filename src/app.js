@@ -4,11 +4,10 @@ import preloadjs from "preload-js";
 import { TimelineMax, TweenMax, Power1, Power2 } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import loaderJson from "./json/loader.json";
-
+import Plankton from "./plankton";
+import { Utily as u } from "./utily";
 class App {
   constructor() {
-    this.$ = document.querySelector.bind(document);
-    this.$$ = document.querySelectorAll.bind(document);
     this.loader_anim = {};
     this.mouse_ctrl = new Mouse();
     this.site_load().then(this.init.bind(this));
@@ -16,22 +15,26 @@ class App {
 
   init() {
     let tl = new TimelineMax();
-    let h1 = this.$(".about h1");
-    let p = this.$(".about p");
-    let icons = this.$$(".about li");
-    let image = this.$(".about .image-container");
-    let bg = this.$(".bg");
-    tl.set([h1, p, icons], {
+    let h1 = u.$(".about h1");
+    let p = u.$(".about p");
+    let icons = u.$$(".about li");
+    let image = u.$(".about .image-container");
+    let bg = u.$(".bg");
+    let plankton = u.$$(".plankton");
+    let scrollIndicator = u.$(".scroll-indicator");
+    tl.set([h1, p, image], {
       autoAlpha: 0,
       y: "+=20px"
+    });
+    tl.set([icons], {
+      autoAlpha: 0,
+      y: "+=60px"
     });
     tl.set([bg], {
       autoAlpha: 0
     });
-    tl.set([image], {
-      opacity: 0
-    });
-    this.$("#app").classList.remove("loading");
+
+    u.$("#app").classList.remove("loading");
     tl.to(this.loaderEl, 1, {
       autoAlpha: 0,
       ease: Power1.easeOut
@@ -54,22 +57,62 @@ class App {
     );
     tl.staggerTo(
       icons,
-      0.5,
-      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-      0.04,
-      "-=0.50"
+      0.8,
+      { autoAlpha: 1, y: "-=40px", ease: Power2.easeOut },
+      0.06,
+      "-=0.90"
     );
     tl.to(
       image,
       0.5,
       {
-        opacity: 1
+        autoAlpha: 1,
+        y: "-=20px"
       },
-      "-=0.8"
+      "-=1.5"
+    );
+    tl.to(
+      plankton,
+      1,
+      {
+        autoAlpha: 1,
+        y: "-=20px"
+      },
+      "-=1.6"
+    );
+    tl.to(
+      scrollIndicator,
+      0.5,
+      {
+        autoAlpha: 1,
+        x: "+=20",
+        repeat: -1,
+        yoyo: true,
+        ease: Power1.easeOut
+      },
+      "-=1"
     );
 
-    this.slide_ctrl = new SlideShow(this.$$(".sections section"), this.queue);
+    this.plankton_ctrl = new Plankton(
+      ".plankton",
+      this.queue.getResult("plankton"),
+      3
+    );
+    this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
     this.slide_ctrl.addListener("ready", e => console.log("e"));
+    this.slide_ctrl.addListener("slideState", e => {
+      if (e.visible) {
+        u.$("#app").classList.add("about-tilt-off");
+        u.$(".plankton").style.visibility = "hidden";
+        u.$(".scroll-indicator-container").style.visibility = "hidden";
+      } else {
+        u.$("#app").classList.remove("about-tilt-off");
+        u.$(".plankton").style.visibility = "visible";
+        u.$(".scroll-indicator-container").style.visibility = "visible";
+      }
+
+      this.plankton_ctrl.pause(e.visible);
+    });
 
     document.addEventListener(
       "wheel",
@@ -80,12 +123,6 @@ class App {
       this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl),
       true
     );
-
-    // this.plankton_ctrl = new Plankton(
-    //   ".plankton",
-    //   this.queue.getResult("plankton"),
-    //   1
-    // );
   }
 
   onProgress(event) {
@@ -95,10 +132,10 @@ class App {
   }
 
   site_load() {
-    this.loaderEl = this.$(".loader");
+    this.loaderEl = u.$(".loader");
     document.body.style.setProperty("--loaded", "100%");
     this.loader_anim.font = lottie.loadAnimation({
-      wrapper: this.$(".bt-ldr"),
+      wrapper: u.$(".bt-ldr"),
       renderer: "svg",
       loop: true,
       autoplay: true,
@@ -107,7 +144,7 @@ class App {
       height: "100%"
     });
     this.loader_anim.back = lottie.loadAnimation({
-      wrapper: this.$(".tp-ldr"),
+      wrapper: u.$(".tp-ldr"),
       renderer: "svg",
       loop: true,
       autoplay: true,

@@ -5,9 +5,13 @@ export default class Plankton {
   constructor(where, json_data, how_many) {
     const loc = u.$(where);
     lottie.setQuality("low");
+    this.plankton = [];
+    this.paused = false;
+
     for (let index = 0; index < how_many; index++) {
       let tmp_div = document.createElement("div");
       tmp_div.setAttribute("class", "life");
+
       let _tmp_anim = lottie.loadAnimation({
         wrapper: tmp_div,
         renderer: "svg",
@@ -15,7 +19,11 @@ export default class Plankton {
         autoplay: false,
         animationData: json_data
       });
-      TweenMax.set(tmp_div, { x: u.MR(1000), y: u.MR(1000) });
+      this.plankton.push(_tmp_anim);
+      TweenMax.set(tmp_div, {
+        x: u.MR(window.innerWidth),
+        y: u.MR(window.innerHeight)
+      });
       let frame = Math.floor(u.MR(100));
       setTimeout(() => {
         _tmp_anim.goToAndPlay(frame, true);
@@ -59,5 +67,17 @@ export default class Plankton {
   handleResize() {
     TweenMax.killDelayedCallsTo(this.init_anim.bind(this));
     TweenMax.delayedCall(u.MR(0.9), this.init_anim.bind(this));
+  }
+
+  pause(bool) {
+    if (bool === this.paused) return;
+    this.plankton.forEach(plank => {
+      if (bool) {
+        plank.pause();
+      } else {
+        plank.play();
+      }
+      this.paused = bool;
+    });
   }
 }

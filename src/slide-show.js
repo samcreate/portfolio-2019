@@ -2,6 +2,7 @@ import { Dispatcher } from "./dispatcher";
 import { TweenMax, Power2, Power1, TimelineMax } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import { Lethargy } from "../node_modules/lethargy/lethargy";
+import CSSRulePlugin from "gsap/CSSRulePlugin";
 
 export class SlideShow extends Dispatcher {
   constructor(sections, assets) {
@@ -23,6 +24,7 @@ export class SlideShow extends Dispatcher {
     this.downward = 1;
     this.firstRun = true;
     this.isTweenBool = false;
+    this.sectionGradientOpacity = 0.15;
 
     TweenMax.set(this.$$(".sections section.hidden"), {
       rotationY: -18,
@@ -125,26 +127,47 @@ export class SlideShow extends Dispatcher {
     let sectionToHide = this.sections[this.pastIndex - 1];
     let sectionName = sectionToShow.dataset.section;
     let sectionToHideName = sectionToHide.dataset.section;
+    let ruleForHide = CSSRulePlugin.getRule(
+      "#app .sections section." + sectionToHideName + "::before"
+    );
+    let ruleForShow = CSSRulePlugin.getRule(
+      "#app .sections section." + sectionName + "::before"
+    );
 
     this.animations.lottie[sectionToHideName].pause();
     this.animations.lottie[sectionName].pause();
 
-    tl.to(sectionToHide, 0.3, {
-      z: -150,
-      ease: Power1.easeOut,
-      zIndex: 0,
-      onComplete: function() {
-        setTimeout(() => {
-          TweenMax.set(this.target, {
-            rotationY: -18,
-            left: "130vw",
-            scale: 0.8,
-            visibility: "hidden"
-          });
-        }, 300);
-        this.$("#app").classList.add("about-tilt-off");
-      }
-    });
+    TweenMax.to(
+      ruleForShow,
+      0,
+      { cssRule: { opacity: this.sectionGradientOpacity } },
+      0
+    );
+
+    if (sectionName !== sectionToHideName) {
+      tl.to(sectionToHide, 0.3, {
+        z: -150,
+        ease: Power1.easeOut,
+        zIndex: 0,
+        onComplete: () => {
+          setTimeout(() => {
+            TweenMax.set(sectionToHide, {
+              rotationY: -18,
+              left: "130vw",
+              scale: 0.8,
+              visibility: "hidden"
+            });
+          }, 300);
+        }
+      });
+      tl.to(
+        ruleForHide,
+        0.3,
+        { cssRule: { opacity: this.sectionGradientOpacity } },
+        0
+      );
+    }
+
     tl.to(
       sectionToShow,
       0.4,
@@ -153,7 +176,13 @@ export class SlideShow extends Dispatcher {
         ease: Power1.easeOut,
         z: 20,
         zIndex: 1,
-        visibility: "visible"
+        visibility: "visible",
+        onComplete: () => {
+          TweenMax.to(ruleForShow, 1, { cssRule: { opacity: 0 } });
+          this.dispatch("slideState", {
+            visible: true
+          });
+        }
       },
       "-=0.15"
     );
@@ -199,10 +228,27 @@ export class SlideShow extends Dispatcher {
       this.pastIndex = this.sections.length;
     }
 
+    if (this.currentSectionIndex === 0) {
+      this.currentSectionIndex = this.sections.length;
+    }
+
+    console.log(
+      "prev: sectionToShow:",
+      this.pastIndex - 1,
+      " sectionToHide:",
+      this.currentSectionIndex - 1,
+      this.currentSectionIndex
+    );
     let sectionToShow = this.sections[this.pastIndex - 1];
     let sectionToHide = this.sections[this.currentSectionIndex - 1];
     let sectionName = sectionToShow.dataset.section;
     let sectionToHideName = sectionToHide.dataset.section;
+    let ruleForHide = CSSRulePlugin.getRule(
+      "#app .sections section." + sectionToHideName + "::before"
+    );
+    let ruleForShow = CSSRulePlugin.getRule(
+      "#app .sections section." + sectionName + "::before"
+    );
     if (this.currentSectionIndex !== 1) {
       tl.set(sectionToShow, {
         z: -150,
@@ -212,6 +258,10 @@ export class SlideShow extends Dispatcher {
         scale: 1,
         left: 0,
         visibility: "visible"
+      });
+
+      TweenMax.to(ruleForShow, 0, {
+        cssRule: { opacity: this.sectionGradientOpacity }
       });
     } else {
       this.firstRun = true;
@@ -229,6 +279,14 @@ export class SlideShow extends Dispatcher {
       0.4,
       { rotationX: 0, z: 20, scale: 0.8, ease: Power1.easeOut },
       "-=0.25"
+    );
+    tl.to(
+      ruleForHide,
+      0.4,
+      {
+        cssRule: { opacity: this.sectionGradientOpacity }
+      },
+      "-=0.4"
     );
     tl.to(
       sectionToHide,
@@ -256,8 +314,20 @@ export class SlideShow extends Dispatcher {
       tl.to(
         sectionToShow,
         0.4,
-        { rotationX: -15, scale: 1, ease: Power1.easeOut },
+        {
+          rotationX: -15,
+          scale: 1,
+          ease: Power1.easeOut
+        },
         "-=0.11"
+      );
+      tl.to(
+        ruleForShow,
+        0.3,
+        {
+          cssRule: { opacity: 0 }
+        },
+        "-=0.4"
       );
       tl.to(
         sectionToShow,
@@ -275,7 +345,9 @@ export class SlideShow extends Dispatcher {
         "-=0.35"
       );
     } else {
-      this.$("#app").classList.remove("about-tilt-off");
+      this.dispatch("slideState", {
+        visible: false
+      });
     }
   }
 

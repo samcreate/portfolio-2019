@@ -142,6 +142,7 @@ export class SlideShow extends Dispatcher {
             visibility: "hidden"
           });
         }, 300);
+        this.$("#app").classList.add("about-tilt-off");
       }
     });
     tl.to(
@@ -194,9 +195,6 @@ export class SlideShow extends Dispatcher {
 
     let tl = new TimelineMax();
 
-    if (this.currentSectionIndex === 0) {
-      this.urrentSectionIndex = this.sections.length;
-    }
     if (this.pastIndex === 0) {
       this.pastIndex = this.sections.length;
     }
@@ -276,6 +274,8 @@ export class SlideShow extends Dispatcher {
         },
         "-=0.35"
       );
+    } else {
+      this.$("#app").classList.remove("about-tilt-off");
     }
   }
 
@@ -303,7 +303,7 @@ export class SlideShow extends Dispatcher {
       },
       null,
       null,
-      "-=1"
+      "-=0.9"
     );
     tree.staggerTo(
       [h2, subtitle],

@@ -1,19 +1,25 @@
-import { TweenMax, Power4 } from "gsap/TweenMax";
+import { TweenMax, Power2 } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import { Utily as u } from "./utily";
 export default class Plankton {
   constructor(where, json_data, how_many) {
     const loc = u.$(where);
+    lottie.setQuality("low");
     for (let index = 0; index < how_many; index++) {
       let tmp_div = document.createElement("div");
       tmp_div.setAttribute("class", "life");
-      lottie.loadAnimation({
+      let _tmp_anim = lottie.loadAnimation({
         wrapper: tmp_div,
         renderer: "svg",
         loop: true,
-        autoplay: true,
+        autoplay: false,
         animationData: json_data
       });
+      TweenMax.set(tmp_div, { x: u.MR(1000), y: u.MR(1000) });
+      let frame = Math.floor(u.MR(100));
+      setTimeout(() => {
+        _tmp_anim.goToAndPlay(frame, true);
+      }, frame);
 
       loc.appendChild(tmp_div);
     }
@@ -42,10 +48,10 @@ export default class Plankton {
       if (this.planktonLife[i].T) {
         this.planktonLife[i].T.kill();
       }
-      this.planktonLife[i].T = TweenMax.to(this.planktonLife[i], C * 60, {
+      this.planktonLife[i].T = TweenMax.to(this.planktonLife[i], C * 120, {
         bezier: { timeResolution: 0, type: "soft", values: animBunch },
-        delay: i * u.MR(0.35),
-        ease: Power4.easeOut
+        delay: i * u.MR(0.8),
+        ease: Power2.easeOut
       });
     }
   }

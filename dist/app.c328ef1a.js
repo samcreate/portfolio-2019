@@ -26584,7 +26584,7 @@ class Plankton {
   init_anim() {
     let W = window.innerWidth,
         H = window.innerHeight,
-        C = 10;
+        C = 20;
 
     _TweenMax.TweenMax.killDelayedCallsTo(this.init_anim.bind(this));
 
@@ -26670,22 +26670,37 @@ class App {
   }
 
   init() {
-    let tl = new _TweenMax.TimelineMax();
+    const tl = new _TweenMax.TimelineMax();
 
-    let h1 = _utily.Utily.$(".about h1");
+    const h1 = _utily.Utily.$(".about h1");
 
-    let p = _utily.Utily.$(".about p");
+    const p = _utily.Utily.$(".about p");
 
-    let icons = _utily.Utily.$$(".about li");
+    const icons = _utily.Utily.$$(".about li");
 
-    let image = _utily.Utily.$(".about .image-container");
+    const image = _utily.Utily.$(".about .image-container");
 
-    let bg = _utily.Utily.$(".bg");
+    const bg = _utily.Utily.$(".bg");
 
-    let plankton = _utily.Utily.$$(".plankton");
+    const plankton = _utily.Utily.$$(".plankton");
 
-    let scrollIndicator = _utily.Utily.$(".scroll-indicator");
+    const scrollIndicator = _utily.Utily.$(".scroll-indicator");
 
+    const homeButton = _utily.Utily.$("li.home");
+
+    homeButton.addEventListener("click", e => {
+      e.preventDefault();
+      const parent = e.path[3];
+
+      _TweenMax.TweenMax.to(parent, 0.8, {
+        y: "-=30",
+        opacity: 0,
+        ease: _TweenMax.Power2.easeIn,
+        onComplete: () => {
+          console.log("switch to home screen");
+        }
+      });
+    });
     tl.set([h1, p, image], {
       autoAlpha: 0,
       y: "+=20px"
@@ -26715,7 +26730,7 @@ class App {
     }, 0.08, "-=0.4");
     tl.staggerTo(icons, 0.8, {
       autoAlpha: 1,
-      y: "-=40px",
+      y: "-=20px",
       ease: _TweenMax.Power2.easeOut
     }, 0.06, "-=0.90");
     tl.to(image, 0.5, {
@@ -26726,7 +26741,7 @@ class App {
       autoAlpha: 1,
       y: "-=20px"
     }, "-=1.6");
-    tl.to(scrollIndicator, 0.5, {
+    tl.to(scrollIndicator, 0.6, {
       autoAlpha: 1,
       x: "+=20",
       repeat: -1,

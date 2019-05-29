@@ -39,7 +39,7 @@ export default class Plankton {
   init_anim() {
     let W = window.innerWidth,
       H = window.innerHeight,
-      C = 10;
+      C = 20;
     TweenMax.killDelayedCallsTo(this.init_anim.bind(this));
     TweenMax.delayedCall(C * 1, this.init_anim.bind(this));
     for (var i = this.planktonLife.length; i--; ) {

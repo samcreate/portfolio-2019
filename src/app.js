@@ -1,7 +1,7 @@
 import { Mouse } from "./mouse";
 import { SlideShow } from "./slide-show";
 import preloadjs from "preload-js";
-import { TimelineMax, TweenMax, Power1, Power2 } from "gsap/TweenMax";
+import { TimelineMax, TweenMax, Power1, Power2, Power3 } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import loaderJson from "./json/loader.json";
 import Plankton from "./plankton";
@@ -14,14 +14,29 @@ class App {
   }
 
   init() {
-    let tl = new TimelineMax();
-    let h1 = u.$(".about h1");
-    let p = u.$(".about p");
-    let icons = u.$$(".about li");
-    let image = u.$(".about .image-container");
-    let bg = u.$(".bg");
-    let plankton = u.$$(".plankton");
-    let scrollIndicator = u.$(".scroll-indicator");
+    const tl = new TimelineMax();
+    const h1 = u.$(".about h1");
+    const p = u.$(".about p");
+    const icons = u.$$(".about li");
+    const image = u.$(".about .image-container");
+    const bg = u.$(".bg");
+    const plankton = u.$$(".plankton");
+    const scrollIndicator = u.$(".scroll-indicator");
+    const homeButton = u.$("li.home");
+
+    homeButton.addEventListener("click", e => {
+      e.preventDefault();
+      const parent = e.path[3];
+      TweenMax.to(parent, 0.8, {
+        y: "-=30",
+        opacity: 0,
+        ease: Power2.easeIn,
+        onComplete: () => {
+          console.log("switch to home screen");
+        }
+      });
+    });
+
     tl.set([h1, p, image], {
       autoAlpha: 0,
       y: "+=20px"
@@ -58,7 +73,7 @@ class App {
     tl.staggerTo(
       icons,
       0.8,
-      { autoAlpha: 1, y: "-=40px", ease: Power2.easeOut },
+      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
       0.06,
       "-=0.90"
     );
@@ -82,7 +97,7 @@ class App {
     );
     tl.to(
       scrollIndicator,
-      0.5,
+      0.6,
       {
         autoAlpha: 1,
         x: "+=20",

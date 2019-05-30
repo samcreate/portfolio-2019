@@ -129,38 +129,42 @@ class App {
       },
       0.6
     );
-    window.fart = this;
-    this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
-    this.slide_ctrl.addListener("ready", e => console.log("e"));
-    this.slide_ctrl.addListener("slideState", e => {
-      if (e.visible) {
-        u.$("#app").classList.add("about-tilt-off");
-        u.$(".plankton").style.opacity = 0;
-        u.$(".scroll-indicator-container").style.visibility = "hidden";
-        u.$(".home").classList.add("visible");
-        u.$("#app").className = e.section;
-        this.dotCycleTween.pause(0);
-      } else {
-        u.$("#app").classList.remove("about-tilt-off");
-        u.$(".plankton").style.opacity = 1;
-        u.$(".scroll-indicator-container").style.visibility = "visible";
-        u.$("#app").className = "";
-        u.$(".home").classList.remove("visible");
-        this.dotCycleTween.resume(0);
-      }
 
-      this.plankton_ctrl.pause(e.visible);
-    });
+    if (u.isMobile()) {
+      //console.log("is mobile");
+    } else {
+      console.log("not mobile");
+      this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
 
-    homeButton.addEventListener("click", e => {
-      e.preventDefault();
-      this.slide_ctrl.handleGoHome();
-    });
+      this.slide_ctrl.addListener("slideState", e => {
+        if (e.visible) {
+          u.$("#app").classList.add("about-tilt-off");
+          u.$(".plankton").style.opacity = 0;
+          u.$(".scroll-indicator-container").style.visibility = "hidden";
+          u.$(".home").classList.add("visible");
+          u.$("#app").className = e.section;
+          this.dotCycleTween.pause(0);
+        } else {
+          u.$("#app").classList.remove("about-tilt-off");
+          u.$(".plankton").style.opacity = 1;
+          u.$(".scroll-indicator-container").style.visibility = "visible";
+          u.$("#app").className = "";
+          u.$(".home").classList.remove("visible");
+          this.dotCycleTween.resume(0);
+        }
+
+        this.plankton_ctrl.pause(e.visible);
+      });
+
+      homeButton.addEventListener("click", e => {
+        e.preventDefault();
+        this.slide_ctrl.handleGoHome();
+      });
+    }
   }
 
   onProgress(event) {
     this.progress = Math.round(event.loaded * 100);
-    console.log("General progress", this.progress);
     document.body.style.setProperty("--loaded", 100 - this.progress + "%");
   }
 

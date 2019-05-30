@@ -4,6 +4,7 @@ import lottie from "lottie-web";
 import { Lethargy } from "../node_modules/lethargy/lethargy";
 import CSSRulePlugin from "gsap/CSSRulePlugin";
 import { Utily as u } from "./utily";
+
 export class SlideShow extends Dispatcher {
   constructor(sections, assets) {
     super(sections);

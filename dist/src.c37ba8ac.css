@@ -9,6 +9,13 @@
   --easing: cubic-bezier(0.7, 0, 0.2, 1);
   --baseline: 1;
   --degs: 9deg;
+  --loaded: 100%;
+  --mouse-x: 0;
+  --mouse-y: 0;
+  --rot-x: 1;
+  --rot-xvw: -1vw;
+  --rot-yvw: 1vw;
+  --rot-y: -1;
 }
 ::selection {
   background: rgba(237,73,86,0.99);
@@ -37,6 +44,7 @@ a:hover {
 }
 html {
   scroll-behavior: smooth;
+  touch-action: manipulation;
 }
 html,
 body {
@@ -51,6 +59,14 @@ body {
   color: #000;
   font-family: 'Montserrat';
   font-family: 'Esteban';
+}
+@media only screen and (max-width: 600px) {
+  html,
+  body {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 h1,
 h2,
@@ -73,6 +89,13 @@ h5 {
   justify-items: center;
   align-items: center;
   pointer-events: none;
+}
+@media only screen and (max-width: 600px) {
+  #app {
+    height: 100%;
+    perspective: none;
+    scroll-behavior: smooth;
+  }
 }
 #app .loader {
   pointer-events: all;
@@ -126,7 +149,11 @@ h5 {
   transmform: translateY('-30px');
   opacity: 0;
 }
-#app nav opacity,
+@media only screen and (max-width: 600px) {
+  #app nav {
+    display: none;
+  }
+}
 #app nav ol {
   padding: 0;
   margin: 0;
@@ -272,6 +299,19 @@ h5 {
   grid-column-gap: 5vw;
   transform: translateZ(-229px) scale(1.2);
   pointer-events: auto;
+  scroll-behavior: smooth;
+}
+@media only screen and (max-width: 600px) {
+  #app .about {
+    width: 100vw;
+    height: 130vh;
+    transform: none;
+    padding: 10vw;
+    z-index: 999;
+    position: relative;
+    top: -230vh;
+    overflow: hidden;
+  }
 }
 #app .about .copy {
   grid-column-end: span 2;
@@ -290,6 +330,12 @@ h5 {
   padding-top: 10px;
   align-items: center;
 }
+@media only screen and (max-width: 600px) {
+  #app .about .copy ul {
+    transform: translateY(-20px);
+    width: 100%;
+  }
+}
 #app .about .copy ul li {
   width: 2em;
   list-style: none;
@@ -297,6 +343,11 @@ h5 {
   margin: 0;
   padding: 0;
   opacity: 1;
+}
+@media only screen and (max-width: 600px) {
+  #app .about .copy ul li {
+    width: 9vw;
+  }
 }
 #app .about .copy ul li::after {
   content: '';
@@ -360,6 +411,14 @@ h5 {
   left: -1.9vw;
   z-index: -1;
 }
+@media only screen and (max-width: 600px) {
+  #app .about .image-container {
+    margin: 0;
+    padding: 0;
+    display: block;
+    justify-items: stretch;
+  }
+}
 #app .about .image {
   perspective: 5000px;
   transform-style: preserve-3d;
@@ -371,6 +430,19 @@ h5 {
   position: relative;
   border: 1rem #fff solid;
   background: #fff;
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image {
+    position: relative;
+    transform-style: flat;
+    transform: scale(1) !important;
+    transform-origin: center;
+    margin: 0px auto;
+    perspective: none;
+    width: 72vw;
+    height: 103vw;
+    top: 40px;
+  }
 }
 #app:not(.about-tilt-off) .image {
   transform: translateZ(0px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
@@ -450,6 +522,15 @@ h5 {
 #app:not(.about-tilt-off) .bg {
   transform: translateZ(-280px) scale(2.3) rotateX(calc(2deg * var(--rot-x, 0))) rotateY(calc(2deg * var(--rot-y, 0)));
 }
+@media only screen and (max-width: 600px) {
+  #app .bg {
+    position: fixed;
+    transform: scale(1) !important;
+    z-index: -99;
+    width: 100vw;
+    height: 100vh;
+  }
+}
 #app .sections {
   perspective: 550px;
   width: 100vw;
@@ -458,6 +539,13 @@ h5 {
   display: grid;
   place-items: center;
   position: relative;
+  scroll-behavior: smooth;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections {
+    position: static;
+    margin-top: 130vh;
+  }
 }
 #app .sections .title {
   text-transform: uppercase;
@@ -469,6 +557,11 @@ h5 {
   padding-right: 1rem;
   text-align: right;
   transform: translateZ(0);
+}
+@media only screen and (max-width: 600px) {
+  #app .sections .title {
+    position: static;
+  }
 }
 #app .sections .title h2::after {
   display: block;
@@ -525,6 +618,11 @@ h5 {
   z-index: 3;
   line-height: 1.4;
 }
+@media only screen and (max-width: 600px) {
+  #app .sections p.copy {
+    position: static;
+  }
+}
 #app .sections p.copy span {
   display: block;
 }
@@ -562,6 +660,14 @@ h5 {
 #app .sections section.transition-in .lottie:after {
   top: 37vh;
   opacity: 1;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section {
+    position: initial;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll !important;
+    scroll-behavior: smooth;
+  }
 }
 #app .sections section.tinker {
   background: #cde3cd;
@@ -684,12 +790,27 @@ section:not(.in-transition) #floor-shadow {
   pointer-events: none;
   z-index: -1;
   transition: opacity 1s;
+  border: 1px solid #f00;
+}
+@media only screen and (max-width: 600px) {
+  .plankton {
+    top: 0;
+    left: 0;
+    transform: none;
+    position: fixed;
+    z-index: -225;
+  }
 }
 .plankton > div {
   transform-style: preserve-3d;
   width: 220px;
   position: absolute;
   opacity: 0;
+}
+@media only screen and (max-width: 600px) {
+  .plankton > div {
+    width: 160px;
+  }
 }
 .plankton > div svg path {
   stroke: #fff !important;

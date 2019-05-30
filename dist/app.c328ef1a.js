@@ -25628,7 +25628,24 @@ _TweenLite._gsScope._gsDefine("plugins.CSSRulePlugin", ["plugins.TweenPlugin", "
 
 var CSSRulePlugin = _TweenLite.globals.CSSRulePlugin;
 exports.default = exports.CSSRulePlugin = CSSRulePlugin;
-},{"./TweenLite.js":"../node_modules/gsap/TweenLite.js","./CSSPlugin.js":"../node_modules/gsap/CSSPlugin.js"}],"slide-show.js":[function(require,module,exports) {
+},{"./TweenLite.js":"../node_modules/gsap/TweenLite.js","./CSSPlugin.js":"../node_modules/gsap/CSSPlugin.js"}],"utily.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Utily = void 0;
+
+class Utily {}
+
+exports.Utily = Utily;
+Utily.$ = document.querySelector.bind(document);
+Utily.$$ = document.querySelectorAll.bind(document);
+
+Utily.MR = function (X) {
+  return Math.random() * X;
+};
+},{}],"slide-show.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25645,6 +25662,8 @@ var _lottieWeb = _interopRequireDefault(require("lottie-web"));
 var _lethargy = require("../node_modules/lethargy/lethargy");
 
 var _CSSRulePlugin = _interopRequireDefault(require("gsap/CSSRulePlugin"));
+
+var _utily = require("./utily");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25667,6 +25686,7 @@ class SlideShow extends _dispatcher.Dispatcher {
     this.firstRun = true;
     this.isTweenBool = false;
     this.sectionGradientOpacity = 0.15;
+    this.currentSectionName;
 
     _TweenMax.TweenMax.set(this.$$(".sections section.hidden"), {
       rotationY: -18,
@@ -25697,6 +25717,31 @@ class SlideShow extends _dispatcher.Dispatcher {
         console.error("Unabled to create main timeline: ", slide.dataset.section);
       }
     });
+    console.log("CureentSectionIndex: ", this.currentSectionIndex, " pastIndex: ", this.pastIndex);
+    this.setUpEventlisteners();
+  }
+
+  setUpEventlisteners() {
+    document.addEventListener("wheel", this.handleWheel.bind(this));
+    window.addEventListener("keydown", this.handleArrowKeys.bind(this), true);
+  }
+
+  handleGoHome() {
+    this.firstRun = true;
+    const tl = new _TweenMax.TimelineMax();
+    console.log("this.currentSectionName", "section." + this.currentSectionName, _utily.Utily.$("section." + this.currentSectionName));
+
+    const sectionToHide = _utily.Utily.$("section." + this.currentSectionName);
+
+    const ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + this.currentSectionName + "::before");
+
+    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
+    this.dispatch("slideState", {
+      visible: false,
+      section: this.currentSectionName
+    });
+    this.pastIndex = 1;
+    this.currentSectionIndex = 1;
   }
 
   handleArrowKeys(event) {
@@ -25764,15 +25809,15 @@ class SlideShow extends _dispatcher.Dispatcher {
 
   next() {
     this.firstRun = false;
-    let tl = new _TweenMax.TimelineMax();
-    let sectionToShow = this.sections[this.currentSectionIndex - 1];
-    let sectionToHide = this.sections[this.pastIndex - 1];
-    let sectionName = sectionToShow.dataset.section;
-    let sectionToHideName = sectionToHide.dataset.section;
+    const tl = new _TweenMax.TimelineMax();
+    const sectionToShow = this.sections[this.currentSectionIndex - 1];
+    const sectionToHide = this.sections[this.pastIndex - 1];
+    const sectionName = sectionToShow.dataset.section;
+    const sectionToHideName = sectionToHide.dataset.section;
 
-    let ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + sectionToHideName + "::before");
+    const ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + sectionToHideName + "::before");
 
-    let ruleForShow = _CSSRulePlugin.default.getRule("#app .sections section." + sectionName + "::before");
+    const ruleForShow = _CSSRulePlugin.default.getRule("#app .sections section." + sectionName + "::before");
 
     this.animations.lottie[sectionToHideName].pause();
     this.animations.lottie[sectionName].pause();
@@ -25806,6 +25851,11 @@ class SlideShow extends _dispatcher.Dispatcher {
       }, 0);
     }
 
+    this.currentSectionName = sectionName;
+    this.dispatch("slideState", {
+      visible: true,
+      section: sectionName
+    });
     tl.to(sectionToShow, 0.4, {
       left: 0,
       ease: _TweenMax.Power1.easeOut,
@@ -25817,10 +25867,6 @@ class SlideShow extends _dispatcher.Dispatcher {
           cssRule: {
             opacity: 0
           }
-        });
-
-        this.dispatch("slideState", {
-          visible: true
         });
       }
     }, "-=0.15");
@@ -25859,9 +25905,15 @@ class SlideShow extends _dispatcher.Dispatcher {
 
     if (this.currentSectionIndex === 0) {
       this.currentSectionIndex = this.sections.length;
-    }
+    } // console.log(
+    //   "prev: sectionToShow:",
+    //   this.pastIndex - 1,
+    //   " sectionToHide:",
+    //   this.currentSectionIndex - 1,
+    //   this.currentSectionIndex
+    // );
 
-    console.log("prev: sectionToShow:", this.pastIndex - 1, " sectionToHide:", this.currentSectionIndex - 1, this.currentSectionIndex);
+
     let sectionToShow = this.sections[this.pastIndex - 1];
     let sectionToHide = this.sections[this.currentSectionIndex - 1];
     let sectionName = sectionToShow.dataset.section;
@@ -25893,6 +25945,43 @@ class SlideShow extends _dispatcher.Dispatcher {
 
     this.animations.lottie[sectionName].pause();
     this.animations.lottie[sectionToHideName].pause();
+    this.dispatch("slideState", {
+      visible: true,
+      section: sectionName
+    });
+    this.currentSectionName = sectionName;
+    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
+
+    if (this.currentSectionIndex !== 1) {
+      tl.to(sectionToShow, 0.4, {
+        rotationX: -15,
+        scale: 1,
+        ease: _TweenMax.Power1.easeOut
+      }, "-=0.11");
+      tl.to(ruleForShow, 0.3, {
+        cssRule: {
+          opacity: 0
+        }
+      }, "-=0.4");
+      tl.to(sectionToShow, 0.35, {
+        rotationX: 0,
+        rotationZ: 0,
+        z: 0,
+        ease: _TweenMax.Power1.easeOut,
+        onComplete: () => {
+          this.animations.lottie[sectionName].play();
+          this.animations.main[sectionName].play();
+        }
+      }, "-=0.35");
+    } else {
+      this.dispatch("slideState", {
+        visible: false,
+        section: sectionName
+      });
+    }
+  }
+
+  hideSlideAnim(tl, sectionToHide, ruleForHide) {
     tl.to(sectionToHide, 0.35, {
       rotationX: -15,
       ease: _TweenMax.Power1.easeOut
@@ -25925,33 +26014,6 @@ class SlideShow extends _dispatcher.Dispatcher {
         });
       }
     }, "-=0.15");
-
-    if (this.currentSectionIndex !== 1) {
-      tl.to(sectionToShow, 0.4, {
-        rotationX: -15,
-        scale: 1,
-        ease: _TweenMax.Power1.easeOut
-      }, "-=0.11");
-      tl.to(ruleForShow, 0.3, {
-        cssRule: {
-          opacity: 0
-        }
-      }, "-=0.4");
-      tl.to(sectionToShow, 0.35, {
-        rotationX: 0,
-        rotationZ: 0,
-        z: 0,
-        ease: _TweenMax.Power1.easeOut,
-        onComplete: () => {
-          this.animations.lottie[sectionName].play();
-          this.animations.main[sectionName].play();
-        }
-      }, "-=0.35");
-    } else {
-      this.dispatch("slideState", {
-        visible: false
-      });
-    }
   }
 
   async createMainSectionTimeline(name) {
@@ -26021,7 +26083,7 @@ class SlideShow extends _dispatcher.Dispatcher {
 }
 
 exports.SlideShow = SlideShow;
-},{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js","gsap/CSSRulePlugin":"../node_modules/gsap/CSSRulePlugin.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
+},{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js","gsap/CSSRulePlugin":"../node_modules/gsap/CSSRulePlugin.js","./utily":"utily.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
 /*!
 * @license PreloadJS
 * Visit http://createjs.com/ for documentation, updates and examples.
@@ -26508,23 +26570,6 @@ module.exports = {
   }],
   "markers": []
 };
-},{}],"utily.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Utily = void 0;
-
-class Utily {}
-
-exports.Utily = Utily;
-Utily.$ = document.querySelector.bind(document);
-Utily.$$ = document.querySelectorAll.bind(document);
-
-Utily.MR = function (X) {
-  return Math.random() * X;
-};
 },{}],"plankton.js":[function(require,module,exports) {
 "use strict";
 
@@ -26593,8 +26638,8 @@ class Plankton {
     for (var i = this.planktonLife.length; i--;) {
       var c = C,
           animBunch = [],
-          GWidth = this.planktonLife[i].offsetWidth,
-          GHeight = this.planktonLife[i].offsetHeight;
+          GWidth = this.planktonLife[i].offsetWidth / 2,
+          GHeight = this.planktonLife[i].offsetHeight / 2;
 
       while (c--) {
         animBunch.push({
@@ -26670,6 +26715,7 @@ class App {
   }
 
   init() {
+    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), 3);
     const tl = new _TweenMax.TimelineMax();
 
     const h1 = _utily.Utily.$(".about h1");
@@ -26682,25 +26728,14 @@ class App {
 
     const bg = _utily.Utily.$(".bg");
 
-    const plankton = _utily.Utily.$$(".plankton");
+    const plankton = _utily.Utily.$$(".plankton .life");
 
     const scrollIndicator = _utily.Utily.$(".scroll-indicator");
 
     const homeButton = _utily.Utily.$("li.home");
 
-    homeButton.addEventListener("click", e => {
-      e.preventDefault();
-      const parent = e.path[3];
+    const dots = _utily.Utily.$$("li.dot a");
 
-      _TweenMax.TweenMax.to(parent, 0.8, {
-        y: "-=30",
-        opacity: 0,
-        ease: _TweenMax.Power2.easeIn,
-        onComplete: () => {
-          console.log("switch to home screen");
-        }
-      });
-    });
     tl.set([h1, p, image], {
       autoAlpha: 0,
       y: "+=20px"
@@ -26737,10 +26772,14 @@ class App {
       autoAlpha: 1,
       y: "-=20px"
     }, "-=1.5");
-    tl.to(plankton, 1, {
-      autoAlpha: 1,
-      y: "-=20px"
-    }, "-=1.6");
+    tl.staggerFromTo(plankton, 1, {
+      opacity: 0,
+      scale: 0
+    }, {
+      opacity: 1,
+      scale: 1,
+      ease: _TweenMax.Elastic.easeOut.config(1, 0.5)
+    }, 5, "-=0.0");
     tl.to(scrollIndicator, 0.6, {
       autoAlpha: 1,
       x: "+=20",
@@ -26748,26 +26787,49 @@ class App {
       yoyo: true,
       ease: _TweenMax.Power1.easeOut
     }, "-=1");
-    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), 3);
+    this.dotCycleTween = new _TweenMax.TimelineMax();
+    this.dotCycleTween.staggerTo(dots, 1, {
+      cycle: {
+        //an array of values
+        backgroundColor: ["rgb(241,103,100)", "rgb(141,236,193)", "rgb(70,114,141)", "#502455"]
+      },
+      repeat: -1,
+      repeatDelay: 1,
+      yoyo: true,
+      ease: _TweenMax.Power2.easeOut
+    }, 0.6);
+    window.fart = this;
     this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
     this.slide_ctrl.addListener("ready", e => console.log("e"));
     this.slide_ctrl.addListener("slideState", e => {
       if (e.visible) {
         _utily.Utily.$("#app").classList.add("about-tilt-off");
 
-        _utily.Utily.$(".plankton").style.visibility = "hidden";
+        _utily.Utily.$(".plankton").style.opacity = 0;
         _utily.Utily.$(".scroll-indicator-container").style.visibility = "hidden";
+
+        _utily.Utily.$(".home").classList.add("visible");
+
+        _utily.Utily.$("#app").className = e.section;
+        this.dotCycleTween.pause(0);
       } else {
         _utily.Utily.$("#app").classList.remove("about-tilt-off");
 
-        _utily.Utily.$(".plankton").style.visibility = "visible";
+        _utily.Utily.$(".plankton").style.opacity = 1;
         _utily.Utily.$(".scroll-indicator-container").style.visibility = "visible";
+        _utily.Utily.$("#app").className = "";
+
+        _utily.Utily.$(".home").classList.remove("visible");
+
+        this.dotCycleTween.resume(0);
       }
 
       this.plankton_ctrl.pause(e.visible);
     });
-    document.addEventListener("wheel", this.slide_ctrl.handleWheel.bind(this.slide_ctrl));
-    window.addEventListener("keydown", this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl), true);
+    homeButton.addEventListener("click", e => {
+      e.preventDefault();
+      this.slide_ctrl.handleGoHome();
+    });
   }
 
   onProgress(event) {
@@ -26864,7 +26926,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63223" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50429" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

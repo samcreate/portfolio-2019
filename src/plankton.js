@@ -45,8 +45,8 @@ export default class Plankton {
     for (var i = this.planktonLife.length; i--; ) {
       var c = C,
         animBunch = [],
-        GWidth = this.planktonLife[i].offsetWidth,
-        GHeight = this.planktonLife[i].offsetHeight;
+        GWidth = this.planktonLife[i].offsetWidth / 2,
+        GHeight = this.planktonLife[i].offsetHeight / 2;
       while (c--) {
         animBunch.push({
           x: u.MR(W - GWidth),

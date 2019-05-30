@@ -3,7 +3,7 @@ import { TweenMax, Power2, Power1, TimelineMax } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import { Lethargy } from "../node_modules/lethargy/lethargy";
 import CSSRulePlugin from "gsap/CSSRulePlugin";
-
+import { Utily as u } from "./utily";
 export class SlideShow extends Dispatcher {
   constructor(sections, assets) {
     super(sections);
@@ -25,6 +25,7 @@ export class SlideShow extends Dispatcher {
     this.firstRun = true;
     this.isTweenBool = false;
     this.sectionGradientOpacity = 0.15;
+    this.currentSectionName;
 
     TweenMax.set(this.$$(".sections section.hidden"), {
       rotationY: -18,
@@ -56,6 +57,45 @@ export class SlideShow extends Dispatcher {
         );
       }
     });
+    console.log(
+      "CureentSectionIndex: ",
+      this.currentSectionIndex,
+      " pastIndex: ",
+      this.pastIndex
+    );
+
+    this.setUpEventlisteners();
+  }
+
+  setUpEventlisteners() {
+    document.addEventListener("wheel", this.handleWheel.bind(this));
+    window.addEventListener("keydown", this.handleArrowKeys.bind(this), true);
+  }
+
+  handleGoHome() {
+    this.firstRun = true;
+
+    const tl = new TimelineMax();
+
+    console.log(
+      "this.currentSectionName",
+      "section." + this.currentSectionName,
+      u.$("section." + this.currentSectionName)
+    );
+    const sectionToHide = u.$("section." + this.currentSectionName);
+    const ruleForHide = CSSRulePlugin.getRule(
+      "#app .sections section." + this.currentSectionName + "::before"
+    );
+
+    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
+
+    this.dispatch("slideState", {
+      visible: false,
+      section: this.currentSectionName
+    });
+
+    this.pastIndex = 1;
+    this.currentSectionIndex = 1;
   }
 
   handleArrowKeys(event) {
@@ -122,15 +162,15 @@ export class SlideShow extends Dispatcher {
 
   next() {
     this.firstRun = false;
-    let tl = new TimelineMax();
-    let sectionToShow = this.sections[this.currentSectionIndex - 1];
-    let sectionToHide = this.sections[this.pastIndex - 1];
-    let sectionName = sectionToShow.dataset.section;
-    let sectionToHideName = sectionToHide.dataset.section;
-    let ruleForHide = CSSRulePlugin.getRule(
+    const tl = new TimelineMax();
+    const sectionToShow = this.sections[this.currentSectionIndex - 1];
+    const sectionToHide = this.sections[this.pastIndex - 1];
+    const sectionName = sectionToShow.dataset.section;
+    const sectionToHideName = sectionToHide.dataset.section;
+    const ruleForHide = CSSRulePlugin.getRule(
       "#app .sections section." + sectionToHideName + "::before"
     );
-    let ruleForShow = CSSRulePlugin.getRule(
+    const ruleForShow = CSSRulePlugin.getRule(
       "#app .sections section." + sectionName + "::before"
     );
 
@@ -167,7 +207,11 @@ export class SlideShow extends Dispatcher {
         0
       );
     }
-
+    this.currentSectionName = sectionName;
+    this.dispatch("slideState", {
+      visible: true,
+      section: sectionName
+    });
     tl.to(
       sectionToShow,
       0.4,
@@ -179,9 +223,6 @@ export class SlideShow extends Dispatcher {
         visibility: "visible",
         onComplete: () => {
           TweenMax.to(ruleForShow, 1, { cssRule: { opacity: 0 } });
-          this.dispatch("slideState", {
-            visible: true
-          });
         }
       },
       "-=0.15"
@@ -232,13 +273,13 @@ export class SlideShow extends Dispatcher {
       this.currentSectionIndex = this.sections.length;
     }
 
-    console.log(
-      "prev: sectionToShow:",
-      this.pastIndex - 1,
-      " sectionToHide:",
-      this.currentSectionIndex - 1,
-      this.currentSectionIndex
-    );
+    // console.log(
+    //   "prev: sectionToShow:",
+    //   this.pastIndex - 1,
+    //   " sectionToHide:",
+    //   this.currentSectionIndex - 1,
+    //   this.currentSectionIndex
+    // );
     let sectionToShow = this.sections[this.pastIndex - 1];
     let sectionToHide = this.sections[this.currentSectionIndex - 1];
     let sectionName = sectionToShow.dataset.section;
@@ -269,6 +310,56 @@ export class SlideShow extends Dispatcher {
 
     this.animations.lottie[sectionName].pause();
     this.animations.lottie[sectionToHideName].pause();
+    this.dispatch("slideState", {
+      visible: true,
+      section: sectionName
+    });
+    this.currentSectionName = sectionName;
+
+    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
+    if (this.currentSectionIndex !== 1) {
+      tl.to(
+        sectionToShow,
+        0.4,
+        {
+          rotationX: -15,
+          scale: 1,
+          ease: Power1.easeOut
+        },
+        "-=0.11"
+      );
+      tl.to(
+        ruleForShow,
+        0.3,
+        {
+          cssRule: { opacity: 0 }
+        },
+        "-=0.4"
+      );
+      tl.to(
+        sectionToShow,
+        0.35,
+        {
+          rotationX: 0,
+          rotationZ: 0,
+          z: 0,
+          ease: Power1.easeOut,
+          onComplete: () => {
+            this.animations.lottie[sectionName].play();
+            this.animations.main[sectionName].play();
+          }
+        },
+        "-=0.35"
+      );
+    } else {
+      this.dispatch("slideState", {
+        visible: false,
+        section: sectionName
+      });
+    }
+  }
+
+  hideSlideAnim(tl, sectionToHide, ruleForHide) {
     tl.to(sectionToHide, 0.35, {
       rotationX: -15,
       ease: Power1.easeOut
@@ -310,45 +401,6 @@ export class SlideShow extends Dispatcher {
       },
       "-=0.15"
     );
-    if (this.currentSectionIndex !== 1) {
-      tl.to(
-        sectionToShow,
-        0.4,
-        {
-          rotationX: -15,
-          scale: 1,
-          ease: Power1.easeOut
-        },
-        "-=0.11"
-      );
-      tl.to(
-        ruleForShow,
-        0.3,
-        {
-          cssRule: { opacity: 0 }
-        },
-        "-=0.4"
-      );
-      tl.to(
-        sectionToShow,
-        0.35,
-        {
-          rotationX: 0,
-          rotationZ: 0,
-          z: 0,
-          ease: Power1.easeOut,
-          onComplete: () => {
-            this.animations.lottie[sectionName].play();
-            this.animations.main[sectionName].play();
-          }
-        },
-        "-=0.35"
-      );
-    } else {
-      this.dispatch("slideState", {
-        visible: false
-      });
-    }
   }
 
   async createMainSectionTimeline(name) {

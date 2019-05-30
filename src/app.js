@@ -1,7 +1,14 @@
 import { Mouse } from "./mouse";
 import { SlideShow } from "./slide-show";
 import preloadjs from "preload-js";
-import { TimelineMax, TweenMax, Power1, Power2, Power3 } from "gsap/TweenMax";
+import {
+  TimelineMax,
+  TweenMax,
+  Power1,
+  Power2,
+  Elastic,
+  SteppedEase
+} from "gsap/TweenMax";
 import lottie from "lottie-web";
 import loaderJson from "./json/loader.json";
 import Plankton from "./plankton";
@@ -14,28 +21,22 @@ class App {
   }
 
   init() {
+    this.plankton_ctrl = new Plankton(
+      ".plankton",
+      this.queue.getResult("plankton"),
+      3
+    );
+
     const tl = new TimelineMax();
     const h1 = u.$(".about h1");
     const p = u.$(".about p");
     const icons = u.$$(".about li");
     const image = u.$(".about .image-container");
     const bg = u.$(".bg");
-    const plankton = u.$$(".plankton");
+    const plankton = u.$$(".plankton .life");
     const scrollIndicator = u.$(".scroll-indicator");
     const homeButton = u.$("li.home");
-
-    homeButton.addEventListener("click", e => {
-      e.preventDefault();
-      const parent = e.path[3];
-      TweenMax.to(parent, 0.8, {
-        y: "-=30",
-        opacity: 0,
-        ease: Power2.easeIn,
-        onComplete: () => {
-          console.log("switch to home screen");
-        }
-      });
-    });
+    const dots = u.$$("li.dot a");
 
     tl.set([h1, p, image], {
       autoAlpha: 0,
@@ -86,15 +87,15 @@ class App {
       },
       "-=1.5"
     );
-    tl.to(
+    tl.staggerFromTo(
       plankton,
       1,
-      {
-        autoAlpha: 1,
-        y: "-=20px"
-      },
-      "-=1.6"
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, ease: Elastic.easeOut.config(1, 0.5) },
+      5,
+      "-=0.0"
     );
+
     tl.to(
       scrollIndicator,
       0.6,
@@ -107,37 +108,54 @@ class App {
       },
       "-=1"
     );
-
-    this.plankton_ctrl = new Plankton(
-      ".plankton",
-      this.queue.getResult("plankton"),
-      3
+    this.dotCycleTween = new TimelineMax();
+    this.dotCycleTween.staggerTo(
+      dots,
+      1,
+      {
+        cycle: {
+          //an array of values
+          backgroundColor: [
+            "rgb(241,103,100)",
+            "rgb(141,236,193)",
+            "rgb(70,114,141)",
+            "#502455"
+          ]
+        },
+        repeat: -1,
+        repeatDelay: 1,
+        yoyo: true,
+        ease: Power2.easeOut
+      },
+      0.6
     );
+    window.fart = this;
     this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
     this.slide_ctrl.addListener("ready", e => console.log("e"));
     this.slide_ctrl.addListener("slideState", e => {
       if (e.visible) {
         u.$("#app").classList.add("about-tilt-off");
-        u.$(".plankton").style.visibility = "hidden";
+        u.$(".plankton").style.opacity = 0;
         u.$(".scroll-indicator-container").style.visibility = "hidden";
+        u.$(".home").classList.add("visible");
+        u.$("#app").className = e.section;
+        this.dotCycleTween.pause(0);
       } else {
         u.$("#app").classList.remove("about-tilt-off");
-        u.$(".plankton").style.visibility = "visible";
+        u.$(".plankton").style.opacity = 1;
         u.$(".scroll-indicator-container").style.visibility = "visible";
+        u.$("#app").className = "";
+        u.$(".home").classList.remove("visible");
+        this.dotCycleTween.resume(0);
       }
 
       this.plankton_ctrl.pause(e.visible);
     });
 
-    document.addEventListener(
-      "wheel",
-      this.slide_ctrl.handleWheel.bind(this.slide_ctrl)
-    );
-    window.addEventListener(
-      "keydown",
-      this.slide_ctrl.handleArrowKeys.bind(this.slide_ctrl),
-      true
-    );
+    homeButton.addEventListener("click", e => {
+      e.preventDefault();
+      this.slide_ctrl.handleGoHome();
+    });
   }
 
   onProgress(event) {

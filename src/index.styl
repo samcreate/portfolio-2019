@@ -1,3 +1,24 @@
+@font-face {
+    font-family: 'montserrat_blackregular';
+    src: url('fonts/montserrat-black-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-black-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'estebanregular';
+    src: url('fonts/esteban-regular-webfont.woff2') format('woff2'),
+         url('fonts/esteban-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 media_queries = {
   mobile  : "only screen and (max-width: 600px)",
   tablet  : "only screen and (min-width: 601px) and (max-width: 800px)",
@@ -34,6 +55,14 @@ for_breakpoint(breakpoints)
 ::selection {
   background: rgba(237, 73, 86, 0.99);
   color:white;
+}
+
+*{
+    +for_breakpoint(mobile){
+        transform-style: preserve-3d !important;
+        backface-visibility: hidden !important;
+
+    }
 }
 
 a,p,h2,h3{
@@ -73,8 +102,9 @@ body {
     font-size: 20px;
     line-height: 1.7
     color:black;
-    font-family: 'Montserrat';
-    font-family: 'Esteban';
+    font-family: 'montserrat_blackregular';
+    font-family: 'estebanregular';
+
 
     +for_breakpoint(mobile){
         overflow-y: auto;
@@ -83,7 +113,7 @@ body {
     }
 }
 h1,h2,h3,h4,h5,h5{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'montserrat_blackregular', sans-serif;
     font-weight: 900;
     padding: 0px;
     margin: 0px;
@@ -112,12 +142,22 @@ h1,h2,h3,h4,h5,h5{
         transform-style: preserve-3d;
         perspective: 50px; 
         position:fixed;
+        +for_breakpoint(mobile){
+            position:relative;
+        }
         .tp-ldr,.bt-ldr{
             
             width:10vw; 
             position:fixed;
             transform: translateZ(0px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
             transform-origin: center;
+            +for_breakpoint(mobile){
+                width:50vw; 
+                transform: none;
+                position:absolute;
+                top:35vh
+                height:30vw; 
+            }
             & path{
                 stroke-width: 3;
             } 
@@ -332,12 +372,12 @@ h1,h2,h3,h4,h5,h5{
         +for_breakpoint(mobile){
 
             width: 100vw;
-            height: 130vh;
+            height: 138vh;
             transform: none;
-            padding: 10vw;
+            padding: 12vw;
             z-index: 999;
             position:relative;
-            top:-230vh;
+            top:-243vh;
             overflow hidden
         }
         .copy{
@@ -382,7 +422,7 @@ h1,h2,h3,h4,h5,h5{
                         opacity:0;
                         transition: opacity 0.3s;
                     }
-                    &:hover::after{
+                    &:hover::after,&:focus::after{
                         
                         opacity:1;
                     }
@@ -395,7 +435,7 @@ h1,h2,h3,h4,h5,h5{
                         pointer-events: auto;
                         z-index:1;
                         transition: opacity 0.1s;
-                        &:hover{
+                        &:hover,&:focus::after{
                             opacity:0.8 !important;
                         }
                     }
@@ -425,6 +465,9 @@ h1,h2,h3,h4,h5,h5{
             -webkit-hyphens: auto;
             -ms-hyphens: auto;
             hyphens: auto !important;
+            +for_breakpoint(mobile){
+                font-size:10vw;
+            }
             &::after{
                 content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(141,236,193)'/%3E%3C/svg%3E");    
                 display:block;
@@ -437,6 +480,10 @@ h1,h2,h3,h4,h5,h5{
                 top: -1.6vw;
                 left: -1.9vw;    
                 z-index:-1;
+                +for_breakpoint(mobile){
+                    width:15vw;
+                    height:15vw;
+                }
             }
         }
         
@@ -445,7 +492,7 @@ h1,h2,h3,h4,h5,h5{
                 margin:0;
                 padding:0;
                 display:block;
-                justify-items: stretch;
+                
             }
         }
         
@@ -565,6 +612,8 @@ h1,h2,h3,h4,h5,h5{
              z-index: -99;
              width: 100vw;
              height: 100vh;
+             left: -5vw;
+             top: -6vw;
          }
     }
 }
@@ -583,7 +632,7 @@ h1,h2,h3,h4,h5,h5{
     +for_breakpoint(mobile){
         
         position:static;
-        margin-top:130vh;
+        margin-top:140vh;
     }
     .title{
         text-transform: uppercase;
@@ -599,7 +648,7 @@ h1,h2,h3,h4,h5,h5{
             position:static;
         }
         h2{
-            
+
             &::after{
                 display:block;
                 width:7vw;
@@ -608,11 +657,19 @@ h1,h2,h3,h4,h5,h5{
                 transform-origin: 50% 50%;
                 transform: translateZ(0);
                 position: absolute;
-                top: -2vw;
+                top: -6vw;
                 left: -4vw;    
                 z-index:-1;
+                +for_breakpoint(mobile){
+                    width: 20vw;
+                    height: 20vw;
+                }
                 
             }
+            +for_breakpoint(mobile){
+                font-size:11vw;
+            }
+            
         }
         
         p{
@@ -632,6 +689,13 @@ h1,h2,h3,h4,h5,h5{
         position: relative;
         z-index:1;
         left: -5vw;
+        +for_breakpoint(mobile){
+            
+            transform: scale(2.9);
+            left:-2vw;
+            padding-bottom:2vh;
+            padding-top:3vh;
+        }
     }
     h3{
         position: fixed;
@@ -649,9 +713,16 @@ h1,h2,h3,h4,h5,h5{
         opacity:0;
         transform: translateZ(0);
         color: #DEEFDB;
+        +for_breakpoint(mobile){
+            opacity:1;
+            top: 40vh;
+            transform: rotate(90deg) scale(2);
+            transform-origin: center;
+            position: absolute;
+        }
     }
     p.copy{
-        font-size: 0.7em;
+
         font-size:calc(13px + 0.20vw);
         width: 35vw;
         min-width:320px;
@@ -662,6 +733,7 @@ h1,h2,h3,h4,h5,h5{
         line-height: 1.4;
         +for_breakpoint(mobile){
             position:static;
+            font-size:calc(13px + 1vw);
         }
         span{
             display:block;
@@ -672,6 +744,11 @@ h1,h2,h3,h4,h5,h5{
                 line-height: 1;
                 padding-right: calc(10px + 2vw)
                 padding-left: 2.1vw;
+                +for_breakpoint(mobile){
+                    padding-left: 5.1vw;
+                    padding-right: calc(29px + 2vw);
+                }
+                    
                 &::after{
                     display:block;
                     width: calc(40px + 7.6vw);
@@ -684,6 +761,10 @@ h1,h2,h3,h4,h5,h5{
                     top: 0;
                     left: 0;    
                     z-index:-1;
+                    +for_breakpoint(mobile){
+                        width: calc(55px + 7.6vw);
+                        height: calc(55px + 7.6vw);
+                    }
                 }
             }
         }
@@ -706,9 +787,7 @@ h1,h2,h3,h4,h5,h5{
         }
         +for_breakpoint(mobile){
             position:initial;
-            -webkit-overflow-scrolling: touch;
-            overflow-y: scroll !important; 
-            scroll-behavior: smooth;
+            height: 140vh;
 
         }
     }
@@ -903,9 +982,28 @@ section:not(.in-transition) #floor-shadow{
 }
 
 
-// @media only screen and (max-width : 414px) {
-      
-// }
+@media (orientation: landscape) {
+    body > * {
+        display:none !important; 
+    }
 
+
+    body::before{
+        display:grid;
+        align-items: center;
+        justify-items: center;
+        content:'Look at you rotate your phone! 👏';
+        width:100vw;
+        height:100vh;
+        z-index: 40;
+        background:none
+        position:fixed;
+        opacity:1;
+        color:white;
+        font-size:8vw;
+        overflow hidden;
+        text-align: center;
+    }
+}
 
 

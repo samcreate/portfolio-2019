@@ -1,22 +1,17 @@
 import { Mouse } from "./mouse";
 import { SlideShow } from "./slide-show";
 import preloadjs from "preload-js";
-import {
-  TimelineMax,
-  TweenMax,
-  Power1,
-  Power2,
-  Elastic,
-  SteppedEase
-} from "gsap/TweenMax";
+import { TimelineMax, TweenMax, Power1, Power2, Elastic } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import loaderJson from "./json/loader.json";
 import Plankton from "./plankton";
 import { Utily as u } from "./utily";
+import Mobile from "./mobile";
+
 class App {
   constructor() {
     this.loader_anim = {};
-    this.mouse_ctrl = new Mouse();
+    //this.mouse_ctrl = new Mouse();
     this.site_load().then(this.init.bind(this));
   }
 
@@ -24,7 +19,7 @@ class App {
     this.plankton_ctrl = new Plankton(
       ".plankton",
       this.queue.getResult("plankton"),
-      3
+      u.isMobile() ? 1 : 3
     );
 
     const tl = new TimelineMax();
@@ -131,9 +126,8 @@ class App {
     );
 
     if (u.isMobile()) {
-      //console.log("is mobile");
+      this.mobile = new Mobile(u.$$(".sections section"), this.queue);
     } else {
-      console.log("not mobile");
       this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
 
       this.slide_ctrl.addListener("slideState", e => {
@@ -189,6 +183,7 @@ class App {
       width: "100%",
       height: "100%"
     });
+
     this.queue = new preloadjs.LoadQueue();
     this.progress = 0;
     this.queue.on("progress", this.onProgress);

@@ -27,7 +27,8 @@
     "lottie-web": "^5.5.3",
     "preload-js": "^0.6.3",
     "prettier": "^1.17.0",
-    "utily": "^0.2.4"
+    "utily": "^0.2.4",
+    "waypoints": "^4.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -1,3 +1,15 @@
+@font-face {
+  font-family: 'montserrat_blackregular';
+  src: url("montserrat-black-webfont.c5a544bd.woff2") format('woff2'), url("montserrat-black-webfont.9c96383f.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'estebanregular';
+  src: url("esteban-regular-webfont.450a1a3b.woff2") format('woff2'), url("esteban-regular-webfont.c7041f03.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 *,
 *::before,
 *::after {
@@ -20,6 +32,12 @@
 ::selection {
   background: rgba(237,73,86,0.99);
   color: #fff;
+}
+@media only screen and (max-width: 600px) {
+  * {
+    transform-style: preserve-3d !important;
+    backface-visibility: hidden !important;
+  }
 }
 a,
 p,
@@ -57,8 +75,8 @@ body {
   font-size: 20px;
   line-height: 1.7;
   color: #000;
-  font-family: 'Montserrat';
-  font-family: 'Esteban';
+  font-family: 'montserrat_blackregular';
+  font-family: 'estebanregular';
 }
 @media only screen and (max-width: 600px) {
   html,
@@ -73,7 +91,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'montserrat_blackregular', sans-serif;
   font-weight: 900;
   padding: 0px;
   margin: 0px;
@@ -106,12 +124,27 @@ h5 {
   perspective: 50px;
   position: fixed;
 }
+@media only screen and (max-width: 600px) {
+  #app .loader {
+    position: relative;
+  }
+}
 #app .loader .tp-ldr,
 #app .loader .bt-ldr {
   width: 10vw;
   position: fixed;
   transform: translateZ(0px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
   transform-origin: center;
+}
+@media only screen and (max-width: 600px) {
+  #app .loader .tp-ldr,
+  #app .loader .bt-ldr {
+    width: 50vw;
+    transform: none;
+    position: absolute;
+    top: 35vh;
+    height: 30vw;
+  }
 }
 #app .loader .tp-ldr path,
 #app .loader .bt-ldr path {
@@ -304,12 +337,12 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .about {
     width: 100vw;
-    height: 130vh;
+    height: 138vh;
     transform: none;
-    padding: 10vw;
+    padding: 12vw;
     z-index: 999;
     position: relative;
-    top: -230vh;
+    top: -243vh;
     overflow: hidden;
   }
 }
@@ -361,7 +394,8 @@ h5 {
   opacity: 0;
   transition: opacity 0.3s;
 }
-#app .about .copy ul li:hover::after {
+#app .about .copy ul li:hover::after,
+#app .about .copy ul li:focus::after {
   opacity: 1;
 }
 #app .about .copy ul li a {
@@ -373,7 +407,8 @@ h5 {
   z-index: 1;
   transition: opacity 0.1s;
 }
-#app .about .copy ul li a:hover {
+#app .about .copy ul li a:hover,
+#app .about .copy ul li a:focus::after {
   opacity: 0.8 !important;
 }
 #app .about .copy ul li.instagram a {
@@ -399,6 +434,11 @@ h5 {
   -ms-hyphens: auto;
   hyphens: auto !important;
 }
+@media only screen and (max-width: 600px) {
+  #app .about h1 {
+    font-size: 10vw;
+  }
+}
 #app .about h1::after {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(141,236,193)'/%3E%3C/svg%3E");
   display: block;
@@ -412,11 +452,16 @@ h5 {
   z-index: -1;
 }
 @media only screen and (max-width: 600px) {
+  #app .about h1::after {
+    width: 15vw;
+    height: 15vw;
+  }
+}
+@media only screen and (max-width: 600px) {
   #app .about .image-container {
     margin: 0;
     padding: 0;
     display: block;
-    justify-items: stretch;
   }
 }
 #app .about .image {
@@ -529,6 +574,8 @@ h5 {
     z-index: -99;
     width: 100vw;
     height: 100vh;
+    left: -5vw;
+    top: -6vw;
   }
 }
 #app .sections {
@@ -544,7 +591,7 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections {
     position: static;
-    margin-top: 130vh;
+    margin-top: 140vh;
   }
 }
 #app .sections .title {
@@ -571,9 +618,20 @@ h5 {
   transform-origin: 50% 50%;
   transform: translateZ(0);
   position: absolute;
-  top: -2vw;
+  top: -6vw;
   left: -4vw;
   z-index: -1;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections .title h2::after {
+    width: 20vw;
+    height: 20vw;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #app .sections .title h2 {
+    font-size: 11vw;
+  }
 }
 #app .sections .title p {
   text-transform: initial;
@@ -589,6 +647,14 @@ h5 {
   position: relative;
   z-index: 1;
   left: -5vw;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections .lottie {
+    transform: scale(2.9);
+    left: -2vw;
+    padding-bottom: 2vh;
+    padding-top: 3vh;
+  }
 }
 #app .sections h3 {
   position: fixed;
@@ -607,8 +673,16 @@ h5 {
   transform: translateZ(0);
   color: #deefdb;
 }
+@media only screen and (max-width: 600px) {
+  #app .sections h3 {
+    opacity: 1;
+    top: 40vh;
+    transform: rotate(90deg) scale(2);
+    transform-origin: center;
+    position: absolute;
+  }
+}
 #app .sections p.copy {
-  font-size: 0.7em;
   font-size: calc(13px + 0.2vw);
   width: 35vw;
   min-width: 320px;
@@ -621,6 +695,7 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections p.copy {
     position: static;
+    font-size: calc(13px + 1vw);
   }
 }
 #app .sections p.copy span {
@@ -634,6 +709,12 @@ h5 {
   padding-right: calc(10px + 2vw);
   padding-left: 2.1vw;
 }
+@media only screen and (max-width: 600px) {
+  #app .sections p.copy span.first-letter {
+    padding-left: 5.1vw;
+    padding-right: calc(29px + 2vw);
+  }
+}
 #app .sections p.copy span.first-letter::after {
   display: block;
   width: calc(40px + 7.6vw);
@@ -646,6 +727,12 @@ h5 {
   top: 0;
   left: 0;
   z-index: -1;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections p.copy span.first-letter::after {
+    width: calc(55px + 7.6vw);
+    height: calc(55px + 7.6vw);
+  }
 }
 #app .sections section {
   position: absolute;
@@ -664,9 +751,7 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections section {
     position: initial;
-    -webkit-overflow-scrolling: touch;
-    overflow-y: scroll !important;
-    scroll-behavior: smooth;
+    height: 140vh;
   }
 }
 #app .sections section.tinker {
@@ -814,6 +899,27 @@ section:not(.in-transition) #floor-shadow {
 }
 .plankton > div svg path {
   stroke: #fff !important;
+}
+@media (orientation: landscape) {
+  body > * {
+    display: none !important;
+  }
+  body::before {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    content: 'Look at you rotate your phone! 👏';
+    width: 100vw;
+    height: 100vh;
+    z-index: 40;
+    background: none;
+    position: fixed;
+    opacity: 1;
+    color: #fff;
+    font-size: 8vw;
+    overflow: hidden;
+    text-align: center;
+  }
 }
 @-moz-keyframes rotating {
   from {

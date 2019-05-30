@@ -26697,7 +26697,113 @@ class Plankton {
 }
 
 exports.default = Plankton;
-},{"gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js"}],"app.js":[function(require,module,exports) {
+},{"gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js"}],"mobile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _lottieWeb = _interopRequireDefault(require("lottie-web"));
+
+var _utily = require("./utily");
+
+var _TweenMax = require("gsap/TweenMax");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Mobile {
+  constructor(sections, assets) {
+    this.assets = assets;
+    this.lotties = {};
+    this.observers = [];
+    this.textAnimations = {};
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.2
+    };
+    sections.forEach((slide, i) => {
+      try {
+        this.observers[i] = new IntersectionObserver(this.handleObservable.bind(this), observerOptions);
+        this.getLottieTween(slide.dataset.section).then(res => {
+          this.lotties[slide.dataset.section] = res;
+        });
+        this.getAnimation(slide.dataset.section).then(res => {
+          this.textAnimations[slide.dataset.section] = res;
+        });
+        this.observers[i].observe(slide);
+      } catch (error) {
+        console.error("Unabled to create lotties: ", slide.dataset.section);
+      }
+    });
+  }
+
+  handleObservable(e) {
+    let check = e[0];
+
+    if (check.isIntersecting) {
+      let target = check.target;
+      let sectionName = target.dataset.section;
+      this.lotties[sectionName].play(0);
+      this.textAnimations[sectionName].play(0);
+    } else {
+      this.lotties[check.target.dataset.section].stop();
+      this.textAnimations[check.target.dataset.section].reverse(0);
+    }
+  }
+
+  async getLottieTween(name) {
+    let tmpAnim = await _lottieWeb.default.loadAnimation({
+      wrapper: _utily.Utily.$("." + name + " .lottie"),
+      renderer: "svg",
+      loop: true,
+      autoplay: false,
+      animationData: this.assets.getResult(name),
+      width: "100%",
+      height: "100%"
+    });
+    return tmpAnim;
+  }
+
+  async getAnimation(name) {
+    const tl = new _TweenMax.TimelineMax({
+      paused: true
+    });
+
+    const h3 = _utily.Utily.$("." + name + " h3");
+
+    const h2 = _utily.Utily.$("." + name + " h2");
+
+    const subtitle = _utily.Utily.$("." + name + " .title p");
+
+    const p_first_letter = _utily.Utily.$("." + name + " .copy span.first-letter");
+
+    const p_body_copy = _utily.Utily.$("." + name + " .copy span.body-copy");
+
+    const title_border = _utily.Utily.$("." + name + " .title");
+
+    const allObj = [h3, h2, subtitle, p_first_letter, p_body_copy, title_border];
+
+    _TweenMax.TweenMax.set(allObj, {
+      opacity: 0,
+      y: "+=20px",
+      transformStyle: "preserve-3d"
+    });
+
+    tl.staggerTo(allObj.reverse(), 0.8, {
+      opacity: 1,
+      y: "-=20px",
+      ease: _TweenMax.Power1.easeOut
+    }, 0.3);
+    return tl;
+  }
+
+}
+
+exports.default = Mobile;
+},{"lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _mouse = require("./mouse");
@@ -26716,17 +26822,19 @@ var _plankton = _interopRequireDefault(require("./plankton"));
 
 var _utily = require("./utily");
 
+var _mobile = _interopRequireDefault(require("./mobile"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class App {
   constructor() {
-    this.loader_anim = {};
-    this.mouse_ctrl = new _mouse.Mouse();
+    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
+
     this.site_load().then(this.init.bind(this));
   }
 
   init() {
-    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), 3);
+    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 3);
     const tl = new _TweenMax.TimelineMax();
 
     const h1 = _utily.Utily.$(".about h1");
@@ -26810,9 +26918,9 @@ class App {
       ease: _TweenMax.Power2.easeOut
     }, 0.6);
 
-    if (_utily.Utily.isMobile()) {//console.log("is mobile");
+    if (_utily.Utily.isMobile()) {
+      this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
     } else {
-      console.log("not mobile");
       this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
       this.slide_ctrl.addListener("slideState", e => {
         if (e.visible) {
@@ -26911,7 +27019,7 @@ class App {
 }
 
 const Portfolio = new App();
-},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./json/loader.json":"json/loader.json","./plankton":"plankton.js","./utily":"utily.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./json/loader.json":"json/loader.json","./plankton":"plankton.js","./utily":"utily.js","./mobile":"mobile.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -26939,7 +27047,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58174" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57338" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

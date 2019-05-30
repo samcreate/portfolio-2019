@@ -189,7 +189,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./images\\me-shadow.png":[["me-shadow.5e9a21ce.png","images/me-shadow.png"],"images/me-shadow.png"],"./images\\me.png":[["me.2791075a.png","images/me.png"],"images/me.png"],"./images\\me-bg.png":[["me-bg.2540ea14.png","images/me-bg.png"],"images/me-bg.png"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./fonts\\montserrat-black-webfont.woff2":[["montserrat-black-webfont.c5a544bd.woff2","fonts/montserrat-black-webfont.woff2"],"fonts/montserrat-black-webfont.woff2"],"./fonts\\montserrat-black-webfont.woff":[["montserrat-black-webfont.9c96383f.woff","fonts/montserrat-black-webfont.woff"],"fonts/montserrat-black-webfont.woff"],"./fonts\\esteban-regular-webfont.woff2":[["esteban-regular-webfont.450a1a3b.woff2","fonts/esteban-regular-webfont.woff2"],"fonts/esteban-regular-webfont.woff2"],"./fonts\\esteban-regular-webfont.woff":[["esteban-regular-webfont.c7041f03.woff","fonts/esteban-regular-webfont.woff"],"fonts/esteban-regular-webfont.woff"],"./images\\me-shadow.png":[["me-shadow.5e9a21ce.png","images/me-shadow.png"],"images/me-shadow.png"],"./images\\me.png":[["me.2791075a.png","images/me.png"],"images/me.png"],"./images\\me-bg.png":[["me-bg.2540ea14.png","images/me-bg.png"],"images/me-bg.png"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -217,7 +217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58174" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57338" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

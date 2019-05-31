@@ -26792,7 +26792,7 @@ class Mobile {
       transformStyle: "preserve-3d"
     });
 
-    tl.staggerTo(allObj.reverse(), 0.8, {
+    tl.staggerTo(allObj.reverse(), 0.6, {
       opacity: 1,
       y: "-=20px",
       ease: _TweenMax.Power1.easeOut
@@ -26828,8 +26828,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
-
+    this.loader_anim = {};
+    this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(this.init.bind(this));
   }
 

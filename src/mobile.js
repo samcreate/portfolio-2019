@@ -86,7 +86,7 @@ export default class Mobile {
     });
     tl.staggerTo(
       allObj.reverse(),
-      0.8,
+      0.6,
       { opacity: 1, y: "-=20px", ease: Power1.easeOut },
       0.3
     );

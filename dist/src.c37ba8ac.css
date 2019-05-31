@@ -325,7 +325,7 @@ h5 {
   color: #fff;
   display: grid;
   position: fixed;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   width: 76vw;
   min-width: 320px;
   z-index: -1;
@@ -333,6 +333,21 @@ h5 {
   transform: translateZ(-229px) scale(1.2);
   pointer-events: auto;
   scroll-behavior: smooth;
+}
+@media only screen and (min-width: 1140px) and (max-width: 1600px) {
+  #app .about {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+@media only screen and (min-width: 866px) and (max-width: 1140px) {
+  #app .about {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 866px) {
+  #app .about {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
 }
 @media only screen and (max-width: 600px) {
   #app .about {
@@ -455,6 +470,7 @@ h5 {
   #app .about h1::after {
     width: 15vw;
     height: 15vw;
+    top: -4vw;
   }
 }
 @media only screen and (max-width: 600px) {
@@ -618,14 +634,16 @@ h5 {
   transform-origin: 50% 50%;
   transform: translateZ(0);
   position: absolute;
-  top: -6vw;
-  left: -4vw;
+  top: -2vw;
+  left: -3vw;
   z-index: -1;
 }
 @media only screen and (max-width: 600px) {
   #app .sections .title h2::after {
     width: 20vw;
     height: 20vw;
+    top: -6vw;
+    left: -4vw;
   }
 }
 @media only screen and (max-width: 600px) {
@@ -899,27 +917,6 @@ section:not(.in-transition) #floor-shadow {
 }
 .plankton > div svg path {
   stroke: #fff !important;
-}
-@media (orientation: landscape) {
-  body > * {
-    display: none !important;
-  }
-  body::before {
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    content: 'Look at you rotate your phone! 👏';
-    width: 100vw;
-    height: 100vh;
-    z-index: 40;
-    background: none;
-    position: fixed;
-    opacity: 1;
-    color: #fff;
-    font-size: 8vw;
-    overflow: hidden;
-    text-align: center;
-  }
 }
 @-moz-keyframes rotating {
   from {

@@ -21,7 +21,9 @@
 
 media_queries = {
   mobile  : "only screen and (max-width: 600px)",
-  tablet  : "only screen and (min-width: 601px) and (max-width: 800px)",
+  tablet  : "only screen and (min-width: 601px) and (max-width: 866px)",
+  tablet_md  : "only screen and (min-width: 866px) and (max-width: 1140px)",
+  tablet_xl  : "only screen and (min-width: 1140px) and (max-width: 1600px)",
   desktop : "only screen and (min-width: 801px)"
 }
 
@@ -361,7 +363,7 @@ h1,h2,h3,h4,h5,h5{
         color:white;
         display:grid;
         position:fixed;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr))
         width: 76vw;
         min-width:320px;
         z-index: -1;
@@ -369,6 +371,17 @@ h1,h2,h3,h4,h5,h5{
         transform: translateZ(-229px) scale(1.2);
         pointer-events: auto;
         scroll-behavior: smooth;
+        +for_breakpoint(tablet_xl){
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
+        }
+        +for_breakpoint(tablet_md){
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr))
+        }
+        +for_breakpoint(tablet){
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))
+        }
+        
+        
         +for_breakpoint(mobile){
 
             width: 100vw;
@@ -378,7 +391,7 @@ h1,h2,h3,h4,h5,h5{
             z-index: 999;
             position:relative;
             top:-243vh;
-            overflow hidden
+            overflow hidden;
         }
         .copy{
             grid-column-end: span 2;
@@ -483,6 +496,8 @@ h1,h2,h3,h4,h5,h5{
                 +for_breakpoint(mobile){
                     width:15vw;
                     height:15vw;
+                    top: -4vw;
+
                 }
             }
         }
@@ -657,12 +672,14 @@ h1,h2,h3,h4,h5,h5{
                 transform-origin: 50% 50%;
                 transform: translateZ(0);
                 position: absolute;
-                top: -6vw;
-                left: -4vw;    
+                top: -2vw;
+                left: -3vw;    
                 z-index:-1;
                 +for_breakpoint(mobile){
                     width: 20vw;
                     height: 20vw;
+                    top: -6vw;
+                    left: -4vw;  
                 }
                 
             }
@@ -982,28 +999,5 @@ section:not(.in-transition) #floor-shadow{
 }
 
 
-@media (orientation: landscape) {
-    body > * {
-        display:none !important; 
-    }
-
-
-    body::before{
-        display:grid;
-        align-items: center;
-        justify-items: center;
-        content:'Look at you rotate your phone! 👏';
-        width:100vw;
-        height:100vh;
-        z-index: 40;
-        background:none
-        position:fixed;
-        opacity:1;
-        color:white;
-        font-size:8vw;
-        overflow hidden;
-        text-align: center;
-    }
-}
 
 

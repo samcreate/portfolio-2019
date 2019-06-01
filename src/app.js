@@ -7,6 +7,7 @@ import loaderJson from "./json/loader.json";
 import Plankton from "./plankton";
 import { Utily as u } from "./utily";
 import Mobile from "./mobile";
+import Click from "./click";
 
 class App {
   constructor() {
@@ -124,7 +125,7 @@ class App {
       },
       0.6
     );
-
+    this.click_ctrl = new Click(u.$$("a"));
     if (u.isMobile()) {
       this.mobile = new Mobile(u.$$(".sections section"), this.queue);
     } else {

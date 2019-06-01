@@ -71,12 +71,12 @@ export default class Mobile {
     const p_body_copy = u.$("." + name + " .copy span.body-copy");
     const title_border = u.$("." + name + " .title");
     const allObj = [
-      h3,
-      h2,
       subtitle,
       p_first_letter,
       p_body_copy,
-      title_border
+      h2,
+      title_border,
+      h3
     ];
 
     TweenMax.set(allObj, {
@@ -85,10 +85,10 @@ export default class Mobile {
       transformStyle: "preserve-3d"
     });
     tl.staggerTo(
-      allObj.reverse(),
+      allObj,
       0.6,
       { opacity: 1, y: "-=20px", ease: Power1.easeOut },
-      0.3
+      0.4
     );
     return tl;
   }

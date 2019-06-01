@@ -46,9 +46,9 @@ export class SlideShow extends Dispatcher {
           this.animations.main[slide.dataset.section] = response.tl;
           this.animations.lottie[slide.dataset.section] = response.lottie;
           if (this.loaded === sections.length) {
-            this.dispatch("ready", {
-              loaded: true
-            });
+            // this.dispatch("ready", {
+            //   loaded: true
+            // });
           }
         });
       } catch (error) {

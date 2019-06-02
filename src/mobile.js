@@ -1,6 +1,6 @@
 import lottie from "lottie-web";
 import { Utily as u } from "./utily";
-import { TweenMax, Power2, Power1, TimelineMax } from "gsap/TweenMax";
+import { TweenMax, Power1, TimelineMax } from "gsap/TweenMax";
 
 export default class Mobile {
   constructor(sections, assets) {
@@ -8,14 +8,17 @@ export default class Mobile {
     this.lotties = {};
     this.observers = [];
     this.textAnimations = {};
+
     const observerOptions = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.2
+      threshold: 0.1
     };
 
     sections.forEach((slide, i) => {
       try {
+        slide.classList.add("is-mobile");
+
         this.observers[i] = new IntersectionObserver(
           this.handleObservable.bind(this),
           observerOptions
@@ -71,24 +74,21 @@ export default class Mobile {
     const p_body_copy = u.$("." + name + " .copy span.body-copy");
     const title_border = u.$("." + name + " .title");
     const allObj = [
-      subtitle,
-      p_first_letter,
-      p_body_copy,
-      h2,
-      title_border,
-      h3
+      [title_border, subtitle, h2],
+      h3,
+      [p_first_letter, p_body_copy]
     ];
-
+    console.log(allObj);
     TweenMax.set(allObj, {
       opacity: 0,
-      y: "+=20px",
+      y: "+=10px",
       transformStyle: "preserve-3d"
     });
     tl.staggerTo(
       allObj,
-      0.6,
-      { opacity: 1, y: "-=20px", ease: Power1.easeOut },
-      0.4
+      0.8,
+      { opacity: 1, y: "-=10px", ease: Power1.easeOut, delay: 0.5 },
+      0.3
     );
     return tl;
   }

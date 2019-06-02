@@ -26,12 +26,12 @@ export class Mouse {
       const rotX = (this.currY / innerHeight) * -2 + 1;
       const rotY = (this.currX / innerWidth) * 2 - 1;
 
-      document.body.style.setProperty("--mouse-x", this.currX);
-      document.body.style.setProperty("--mouse-y", this.currY);
       document.body.style.setProperty("--rot-x", rotX);
       document.body.style.setProperty("--rot-xvw", rotY + "vw");
       document.body.style.setProperty("--rot-yvw", rotX + "vw");
       document.body.style.setProperty("--rot-y", rotY);
+
+      console.log();
 
       this.update();
     });

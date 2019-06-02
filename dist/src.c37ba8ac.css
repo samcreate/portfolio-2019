@@ -326,11 +326,11 @@ h5 {
   color: #fff;
   display: grid;
   position: fixed;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   width: 76vw;
   min-width: 320px;
   z-index: -1;
   grid-column-gap: 5vw;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   transform: translateZ(-229px) scale(1.2);
   pointer-events: auto;
   scroll-behavior: smooth;
@@ -613,6 +613,7 @@ h5 {
   }
 }
 #app .sections .title {
+  grid-area: top;
   text-transform: uppercase;
   font-size: calc(16px + 2.9vw);
   position: fixed;
@@ -661,24 +662,24 @@ h5 {
   margin-top: 15px;
 }
 #app .sections .lottie {
+  grid-area: mid;
   min-width: 50vw;
   width: 50vw;
   z-index: 2;
-  position: relative;
+  position: absolute;
   z-index: 1;
-  left: -5vw;
+  margin-left: -10vw;
 }
 @media only screen and (max-width: 600px) {
   #app .sections .lottie {
     transform: scale(2.9);
-    left: -2vw;
     padding-bottom: 2vh;
     padding-top: 3vh;
   }
 }
 #app .sections h3 {
+  grid-area: mid;
   position: fixed;
-  top: 37vh;
   left: 0;
   display: grid;
   place-content: center;
@@ -703,14 +704,15 @@ h5 {
   }
 }
 #app .sections p.copy {
+  grid-area: foot;
   font-size: calc(13px + 0.2vw);
-  width: 35vw;
+  width: 39vw;
   min-width: 320px;
   position: fixed;
-  left: 63vw;
-  top: 66vh;
+  left: 60vw;
   z-index: 3;
   line-height: 1.4;
+  transition: top 0.2s;
 }
 @media only screen and (max-width: 600px) {
   #app .sections p.copy {
@@ -735,6 +737,9 @@ h5 {
   #app .sections p.copy span.first-letter {
     padding-left: 6.5vw;
     padding-right: calc(29px + 2vw);
+    height: 25vw;
+    width: 30vw;
+    padding-top: 25px;
   }
 }
 #app .sections p.copy span.first-letter::after {
@@ -765,6 +770,10 @@ h5 {
   display: grid;
   place-items: center;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.25fr 0.49fr 1.25fr;
+  grid-template-areas: "top" "mid" "foot";
 }
 #app .sections section.transition-in .lottie:after {
   top: 37vh;
@@ -773,27 +782,28 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections section {
     position: initial;
-    height: 140vh;
+    height: 150vh;
+    grid-template-rows: 0.45fr 0.55fr 1.6fr;
   }
 }
 #app .sections section.tinker {
   background: #cde3cd;
   z-index: 1;
 }
-#app .sections section.tinker:not(.in-transition) .lottie {
+#app .sections section.tinker:not(.is-mobile) .lottie {
   transform-origin: center;
   transform: rotateY(calc(-20deg * var(--rot-y, 0)));
 }
-#app .sections section.tinker:not(.in-transition) #circutboard {
+#app .sections section.tinker:not(.is-mobile) #circutboard {
   transform: translate3d(calc(calc(10 * var(--rot-xvw, 0)) + 30px), calc(calc(6 * var(--rot-yvw, 0)) + 152px), 0);
 }
-#app .sections section.tinker:not(.in-transition) #animated-speedlines-container {
+#app .sections section.tinker:not(.is-mobile) #animated-speedlines-container {
   transform: translate3d(calc(10 * var(--rot-xvw, 0)), calc(calc(6 * var(--rot-yvw, 0)) + 92px), 0);
 }
-#app .sections section.tinker:not(.in-transition) #floor-container {
+#app .sections section.tinker:not(.is-mobile) #floor-container {
   transform: translate3d(calc(5 * var(--rot-xvw, 0)), calc(calc(3 * var(--rot-yvw, 0)) + 92px), 0);
 }
-#app .sections section.tinker:not(.in-transition) #floor-shadow {
+#app .sections section.tinker:not(.is-mobile) #floor-shadow {
   transform: translate3d(calc(-2 * var(--rot-xvw, 0)), calc(calc(-2 * var(--rot-yvw, 0)) + 92px), 0);
 }
 #app .sections section.tinker ::selection {
@@ -802,9 +812,14 @@ h5 {
 #app .sections section.tinker a {
   color: #8ccfb3;
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift .6s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%238ccfb3' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  transition: color 0.2s;
 }
 #app .sections section.tinker a .click-confetti path {
   stroke: #8ccfb3 !important;
+}
+#app .sections section.tinker a:hover {
+  color: #f16764 !important;
+  opacity: 1;
 }
 #app .sections section.tinker::before {
   content: '';
@@ -816,8 +831,9 @@ h5 {
   opacity: 0;
   background: linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 100%);
 }
-#app .sections section.tinker .lottie .copy .first-letter {
-  color: #deefdb;
+#app .sections section.tinker .copy .first-letter {
+  min-height: 10vw;
+  padding-top: 25px;
 }
 #app .sections section.tinker .copy .first-letter::after {
   content: '';
@@ -834,21 +850,32 @@ h5 {
   background: #fff;
   z-index: 0;
 }
-#app .sections section.explorer:not(.in-transition) #allcouds {
+#app .sections section.explorer:not(.is-mobile) .lottie {
+  transform-origin: center;
+  transform: rotateY(calc(-10deg * var(--rot-y, 0)));
+}
+#app .sections section.explorer:not(.is-mobile) #allcouds {
   transform: translate3d(calc(calc(3 * var(--rot-xvw, 0)) + (-90px)), calc(calc(3 * var(--rot-yvw, 0)) + 20px), 0);
 }
-#app .sections section.explorer:not(.in-transition) #animated-speedlines-container {
-  transform: translate3d(calc(10 * var(--rot-xvw, 0)), calc(calc(6 * var(--rot-yvw, 0)) + 92px), 0);
-}
-#app .sections section.explorer:not(.in-transition) #explorer {
+#app .sections section.explorer:not(.is-mobile) #explorer {
   transform-origin: center;
   transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + (0px)), calc(calc(1.5 * var(--rot-yvw, 0)) + 50px), 0);
 }
-#app .sections section.explorer:not(.in-transition) #van-floor-shadow {
+#app .sections section.explorer:not(.is-mobile) #van-floor-shadow {
   transform: translate3d(calc(-2 * var(--rot-xvw, 0)), calc(calc(-2 * var(--rot-yvw, 0)) + 92px), 0);
 }
 #app .sections section.explorer ::selection {
   background: rgba(141,236,193,0.99);
+}
+#app .sections section.explorer a {
+  color: #8ccfb3;
+  transition: color 0.2s;
+}
+#app .sections section.explorer a .click-confetti path {
+  stroke: #ff9800 !important;
+}
+#app .sections section.explorer a:hover {
+  color: #8decc1 !important;
 }
 #app .sections section.explorer::before {
   content: '';
@@ -880,6 +907,23 @@ h5 {
 #app .sections section.developer {
   background: #eeafa4;
   z-index: 0;
+}
+#app .sections section.developer:not(.is-mobile) .lottie {
+  transform-origin: center;
+  transform: rotateY(calc(-20deg * var(--rot-y, 0)));
+}
+#app .sections section.developer:not(.is-mobile) #blocks > g {
+  transform: scale(0.9) translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + (900px)), calc(calc(1.5 * var(--rot-yvw, 0)) + 550px), 0);
+}
+#app .sections section.developer:not(.is-mobile) #animated-speedlines-container {
+  transform: translate3d(calc(10 * var(--rot-xvw, 0)), calc(calc(6 * var(--rot-yvw, 0)) + 92px), 0);
+}
+#app .sections section.developer:not(.is-mobile) #dev-all {
+  transform-origin: center;
+  transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + (0px)), calc(calc(1.5 * var(--rot-yvw, 0)) + 50px), 0);
+}
+#app .sections section.developer:not(.is-mobile) #dev-floor-shadow {
+  transform: translate3d(calc(-2 * var(--rot-xvw, 0)), calc(calc(-2 * var(--rot-yvw, 0)) + 92px), 0);
 }
 #app .sections section.developer ::selection {
   background: rgba(70,115,141,0.99);

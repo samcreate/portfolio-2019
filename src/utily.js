@@ -6,6 +6,10 @@ export class Utily {
     return Math.random() * X;
   };
 
+  static clamp = function(num, min, max) {
+    return num <= min ? min : num >= max ? max : num;
+  };
+
   static isMobile = function() {
     var isMobile = false; //initiate as false
     // device detection

@@ -155,12 +155,11 @@ class Mouse {
       } = window;
       const rotX = this.currY / innerHeight * -2 + 1;
       const rotY = this.currX / innerWidth * 2 - 1;
-      document.body.style.setProperty("--mouse-x", this.currX);
-      document.body.style.setProperty("--mouse-y", this.currY);
       document.body.style.setProperty("--rot-x", rotX);
       document.body.style.setProperty("--rot-xvw", rotY + "vw");
       document.body.style.setProperty("--rot-yvw", rotX + "vw");
       document.body.style.setProperty("--rot-y", rotY);
+      console.log();
       this.update();
     });
   }
@@ -25646,6 +25645,10 @@ Utily.MR = function (X) {
   return Math.random() * X;
 };
 
+Utily.clamp = function (num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
+};
+
 Utily.isMobile = function () {
   var isMobile = false; //initiate as false
   // device detection
@@ -26721,10 +26724,11 @@ class Mobile {
     const observerOptions = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.2
+      threshold: 0.1
     };
     sections.forEach((slide, i) => {
       try {
+        slide.classList.add("is-mobile");
         this.observers[i] = new IntersectionObserver(this.handleObservable.bind(this), observerOptions);
         this.getLottieTween(slide.dataset.section).then(res => {
           this.lotties[slide.dataset.section] = res;
@@ -26783,19 +26787,21 @@ class Mobile {
 
     const title_border = _utily.Utily.$("." + name + " .title");
 
-    const allObj = [subtitle, p_first_letter, p_body_copy, h2, title_border, h3];
+    const allObj = [[title_border, subtitle, h2], h3, [p_first_letter, p_body_copy]];
+    console.log(allObj);
 
     _TweenMax.TweenMax.set(allObj, {
       opacity: 0,
-      y: "+=20px",
+      y: "+=10px",
       transformStyle: "preserve-3d"
     });
 
-    tl.staggerTo(allObj, 0.6, {
+    tl.staggerTo(allObj, 0.8, {
       opacity: 1,
-      y: "-=20px",
-      ease: _TweenMax.Power1.easeOut
-    }, 0.4);
+      y: "-=10px",
+      ease: _TweenMax.Power1.easeOut,
+      delay: 0.5
+    }, 0.3);
     return tl;
   }
 
@@ -29070,8 +29076,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {};
-    this.mouse_ctrl = new _mouse.Mouse();
+    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
+
     this.site_load().then(this.init.bind(this));
   }
 
@@ -29290,7 +29296,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61000" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54260" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

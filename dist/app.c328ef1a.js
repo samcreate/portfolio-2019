@@ -29022,8 +29022,8 @@ class Click {
 
         document.body.style.setProperty("--click-width", width + "px");
         document.body.style.setProperty("--click-height", height + "px");
-        document.body.style.setProperty("--click-x", e.clientX + "px");
-        document.body.style.setProperty("--click-y", e.clientY + "px");
+        document.body.style.setProperty("--click-x", e.screenX + "px");
+        document.body.style.setProperty("--click-y", e.screenY + "px");
 
         let tmpAnim = _lottieWeb.default.loadAnimation({
           wrapper: container,
@@ -29040,6 +29040,11 @@ class Click {
           setTimeout(() => {
             if (e.target.hasAttribute("target")) {
               window.open(e.target.href);
+
+              if (_utily.Utily.isMobile()) {
+                document.location.href = e.target.href;
+              }
+
               tmpAnim.destroy();
             } else {
               document.location.href = e.target.href;
@@ -29082,8 +29087,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {};
-    this.mouse_ctrl = new _mouse.Mouse();
+    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
+
     this.site_load().then(this.init.bind(this));
   }
 
@@ -29175,6 +29180,8 @@ class App {
 
     if (_utily.Utily.isMobile()) {
       this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
+
+      _utily.Utily.$("#app").classList.add("is-mobile");
     } else {
       this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
       this.slide_ctrl.addListener("slideState", e => {
@@ -29302,7 +29309,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54047" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57797" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

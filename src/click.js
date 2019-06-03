@@ -20,8 +20,8 @@ export default class Click {
           document.body.style.setProperty("--click-width", width + "px");
           document.body.style.setProperty("--click-height", height + "px");
 
-          document.body.style.setProperty("--click-x", e.clientX + "px");
-          document.body.style.setProperty("--click-y", e.clientY + "px");
+          document.body.style.setProperty("--click-x", e.screenX + "px");
+          document.body.style.setProperty("--click-y", e.screenY + "px");
 
           let tmpAnim = lottie.loadAnimation({
             wrapper: container,
@@ -38,6 +38,9 @@ export default class Click {
             setTimeout(() => {
               if (e.target.hasAttribute("target")) {
                 window.open(e.target.href);
+                if (u.isMobile()) {
+                  document.location.href = e.target.href;
+                }
                 tmpAnim.destroy();
               } else {
                 document.location.href = e.target.href;

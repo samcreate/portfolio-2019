@@ -20,7 +20,7 @@
   --duration: 0.4s;
   --easing: cubic-bezier(0.7, 0, 0.2, 1);
   --baseline: 1;
-  --degs: 9deg;
+  --degs: 8deg;
   --loaded: 100%;
   --mouse-x: 0;
   --mouse-y: 0;
@@ -367,7 +367,7 @@ h5 {
 }
 @media only screen and (min-width: 601px) and (max-width: 866px) {
   #app .about {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
 @media only screen and (max-width: 600px) {
@@ -495,6 +495,9 @@ h5 {
     top: -4vw;
   }
 }
+#app .about .image-container {
+  min-width: 300px;
+}
 @media only screen and (max-width: 600px) {
   #app .about .image-container {
     margin: 0;
@@ -503,15 +506,129 @@ h5 {
   }
 }
 #app .about .image {
-  perspective: 5000px;
+  perspective: 700px;
   transform-style: preserve-3d;
-  height: 23rem;
-  width: 16rem;
+  backface-visibility: hidden;
   justify-items: center;
   align-items: center;
   display: flex;
   position: relative;
-  border: 1rem #fff solid;
+  width: 80%;
+  padding-top: 118%;
+  transform: scale(0.8);
+}
+#app .about .image > div {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image > div {
+    transform-style: flat;
+  }
+}
+#app .about .image .img-bg {
+  background: #e3e3e3;
+  width: 90%;
+  left: 6%;
+}
+#app:not(.about-tilt-off) .img-bg {
+  transform: scale(1.6) translateZ(-100px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .img-bg {
+    transform: scale(1);
+    width: 98%;
+    left: 0;
+    background: none;
+  }
+}
+#app .about .image .anim-bg {
+  background-image: url("anim-bg.57ac43bd.svg");
+  background-repeat: no-repeat;
+  right: 2%;
+}
+#app:not(.about-tilt-off) .anim-bg {
+  transform: scale(1.2) translateZ(50px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .anim-bg {
+    transform: scale(1);
+  }
+}
+#app .about .image .tinker-bg {
+  background-image: url("tinker-bg.df306a06.svg");
+  background-repeat: no-repeat;
+  top: 7%;
+  left: 4%;
+}
+#app:not(.about-tilt-off) .tinker-bg {
+  transform: scale(1.1) translateZ(100px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .tinker-bg {
+    transform: scale(1);
+  }
+}
+#app .about .image .explore-bg {
+  background-image: url("explore-bg.4098c85d.svg");
+  background-repeat: no-repeat;
+  top: 12%;
+  left: 27%;
+}
+#app:not(.about-tilt-off) .explore-bg {
+  transform: scale(0.54) translateZ(150px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .explore-bg {
+    transform: scale(0.54);
+  }
+}
+#app .about .image .dev-bg {
+  background-image: url("dev-bg.41d739f5.svg");
+  background-repeat: no-repeat;
+  top: 42%;
+}
+#app:not(.about-tilt-off) .dev-bg {
+  transform: scale(0.8) translateZ(200px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .dev-bg {
+    transform: scale(1);
+  }
+}
+#app .about .image .halos {
+  background-image: url("halo-bg.cf5c8f85.svg");
+  background-repeat: no-repeat;
+  top: -6%;
+}
+#app:not(.about-tilt-off) .halos {
+  transform: scale(0.7) translateZ(275px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .halos {
+    transform: scale(0.7);
+  }
+}
+#app .about .image .me {
+  margin: 0px auto;
+  top: -2%;
+}
+#app .about .image .me img {
+  width: 100%;
+  margin: 0px auto;
+  left: 8%;
+}
+#app:not(.about-tilt-off) .me {
+  transform: scale(0.84) translateZ(300px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+}
+@media only screen and (max-width: 600px) {
+  #app .about .image .me {
+    transform: scale(1);
+  }
 }
 @media only screen and (max-width: 600px) {
   #app .about .image {
@@ -525,51 +642,6 @@ h5 {
     height: 103vw;
     top: 40px;
   }
-}
-#app:not(.about-tilt-off) .image {
-  transform: translateZ(0px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-}
-#app .about .image .shadow {
-  overflow: hidden;
-  transform-origin: bottom center;
-  background: url("me-shadow.5e9a21ce.png") no-repeat;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  top: 5%;
-  position: absolute;
-  z-index: 0;
-  transform: translateZ(150px) scale(0.92);
-}
-#app:not(.about-tilt-off) .shadow {
-  transform: translateZ(150px) scale(0.92) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-}
-#app .about .image .front {
-  overflow: hidden;
-  transform-origin: bottom center;
-  background: url("me.2791075a.png") no-repeat;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  top: 5%;
-  position: absolute;
-  z-index: 1;
-  transform: translateZ(200px) scale(0.9);
-}
-#app:not(.about-tilt-off) .front {
-  transform: translateZ(200px) scale(0.9) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-}
-#app .about .image .back {
-  z-index: -1;
-  background: url("me-bg.2540ea14.png") no-repeat;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  margin: 0 auto;
-  transform: translateZ(80px);
-}
-#app:not(.about-tilt-off) .back {
-  transform: translateZ(80px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
 }
 #app .about .scroll-indicator {
   opacity: 0;
@@ -646,7 +718,7 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections .title {
     position: static;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
 }
 #app .sections .title h2::after {
@@ -717,7 +789,7 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections h3 {
     opacity: 1;
-    top: 40vh;
+    top: 62%;
     transform: rotate(90deg) scale(2);
     transform-origin: center;
     position: absolute;
@@ -738,7 +810,7 @@ h5 {
   #app .sections p.copy {
     position: static;
     font-size: calc(13px + 1vw);
-    padding-top: 70px;
+    padding-top: 116px;
     align-self: start;
     min-width: 85vw;
   }
@@ -799,19 +871,29 @@ h5 {
   grid-template-areas: "top" "mid" "foot";
 }
 #app .sections section.transition-in .lottie:after {
-  top: 37vh;
+  top: 41vh;
   opacity: 1;
 }
 @media only screen and (max-width: 600px) {
   #app .sections section {
     position: initial;
-    height: 140vh;
+    height: 150vh;
     grid-template-rows: 0.4fr 0.55fr 1.6fr;
   }
 }
 #app .sections section.tinker {
   background: #cde3cd;
   z-index: 1;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section.tinker {
+    height: 130vh;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section.tinker .lottie {
+    padding-top: 6vh;
+  }
 }
 #app .sections section.tinker:not(.is-mobile) .lottie {
   transform-origin: center;
@@ -872,6 +954,11 @@ h5 {
 #app .sections section.explorer {
   background: #fff;
   z-index: 0;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section.explorer .lottie {
+    padding-top: 6vh;
+  }
 }
 #app .sections section.explorer:not(.is-mobile) .lottie {
   transform-origin: center;
@@ -937,6 +1024,11 @@ d
 #app .sections section.developer {
   background: #eeafa4;
   z-index: 0;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section.developer .lottie {
+    padding-top: 6vh;
+  }
 }
 #app .sections section.developer:not(.is-mobile) .lottie {
   transform-origin: center;
@@ -1004,6 +1096,26 @@ d
 #app .sections section.animator {
   background: #bca3bf;
   z-index: 0;
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section.animator {
+    height: 130vh;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #app .sections section.animator .lottie {
+    padding-top: 7vh;
+  }
+}
+#app .sections section.animator:not(.is-mobile) #anim-factory {
+  transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + (0px)), calc(calc(1.5 * var(--rot-yvw, 0)) + 0px), 0);
+}
+#app .sections section.animator:not(.is-mobile) #anim-floor {
+  transform-origin: center;
+  transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + (0px)), calc(calc(1.5 * var(--rot-yvw, 0)) -50px), 0);
+}
+#app .sections section.animator:not(.is-mobile) #anim-floor-shadow {
+  transform: translate3d(calc(-3 * var(--rot-xvw, 0)), calc(calc(-3 * var(--rot-yvw, 0)) + 55px), 0);
 }
 #app .sections section.animator ::selection {
   background: rgba(187,242,242,0.99);
@@ -1086,6 +1198,14 @@ d
 }
 #app.animator #confetti-holder .click-confetti path {
   stroke: #502455 !important;
+}
+#app.is-mobile #projection2,
+#app.is-mobile #webpage,
+#app.is-mobile #road,
+#app.is-mobile #headlights,
+#app.is-mobile #anim-factory,
+#app.is-mobile #anim-floor {
+  filter: none !important;
 }
 .plankton {
   position: absolute;

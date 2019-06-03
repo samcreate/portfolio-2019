@@ -45,7 +45,7 @@ for_breakpoint(breakpoints)
     --duration: 0.4s;
     --easing: cubic-bezier(0.7, 0, 0.2, 1);
     --baseline: 1;
-    --degs: 9deg;
+    --degs: 8deg;
     --loaded: 100%;
     --mouse-x: 0;
     --mouse-y: 0;
@@ -399,7 +399,7 @@ h1,h2,h3,h4,h5,h5{
             grid-template-columns: repeat(auto-fit, minmax(190px, 1fr))
         }
         +for_breakpoint(tablet){
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))
         }
         
         
@@ -531,19 +531,120 @@ h1,h2,h3,h4,h5,h5{
                 display:block;
                 
             }
+            min-width: 300px;
         }
         
         .image{
-            perspective: 5000px;
+            perspective: 700px;
             transform-style: preserve-3d;
-            height: 23rem;
-            width: 16rem;
+            backface-visibility: hidden;
             justify-items: center;
             align-items: center;
             display: flex;
             position: relative;
-            border: 1rem white solid;
-           
+            width: 80%;
+            padding-top: 118%;
+            transform: scale(0.8);
+            
+            & > div{
+                width:100%;
+                height:100%;
+                position:absolute;
+                top:0;
+                backface-visibility: hidden;
+                transform-style: preserve-3d;
+                +for_breakpoint(mobile){
+                    transform-style: flat;
+                }
+            }
+            .img-bg{
+                background: #E3E3E3;
+                width:90%;
+                left:6%
+                ^[0]:not(.about-tilt-off) .img-bg{
+                    transform:  scale(1.6) translateZ(-100px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(1);
+                    width:98%
+                    left:0;
+                    background:none;
+                }
+            }
+            .anim-bg{
+                background-image: url("./images/anim-bg.svg");
+                background-repeat: no-repeat;
+                right: 2%;
+                ^[0]:not(.about-tilt-off) .anim-bg{
+                    transform: scale(1.2) translateZ(50px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(1);
+                }
+            }
+            .tinker-bg{
+                background-image: url("./images/tinker-bg.svg");
+                background-repeat: no-repeat;
+                top: 7%;
+                left: 4%;
+                ^[0]:not(.about-tilt-off) .tinker-bg{
+                    transform: scale(1.1) translateZ(100px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(1);
+                }
+            }
+            .explore-bg{
+                background-image: url("./images/explore-bg.svg");
+                background-repeat: no-repeat;
+                
+                top: 12%;
+                left: 27%;
+                ^[0]:not(.about-tilt-off) .explore-bg{
+                    transform: scale(0.54) translateZ(150px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(0.54);
+                }
+            }
+            .dev-bg{
+                background-image: url("./images/dev-bg.svg");
+                background-repeat: no-repeat;
+    
+                top: 42%;
+                ^[0]:not(.about-tilt-off) .dev-bg{
+                    transform: scale(0.8) translateZ(200px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(1);
+                }
+            }
+            .halos{
+                background-image: url("./images/halo-bg.svg");
+                background-repeat: no-repeat;
+                top: -6%;
+                ^[0]:not(.about-tilt-off) .halos{
+                    transform: scale(0.70) translateZ(275px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(0.7);
+                }
+            }
+            .me{
+                img{
+                    width:100%;
+                    margin:0px auto;
+                    left: 8%;
+                }
+                margin:0px auto;
+                top: -2%;
+                ^[0]:not(.about-tilt-off) .me{
+                    transform: scale(0.84) translateZ(300px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
+                }
+                +for_breakpoint(mobile){
+                    transform: scale(1);
+                }
+            }
             +for_breakpoint(mobile){
                 position:relative;
                 transform-style: flat;
@@ -554,55 +655,6 @@ h1,h2,h3,h4,h5,h5{
                 width: 72vw;
                 height: 103vw;
                 top:40px;
-            }
-            ^[0]:not(.about-tilt-off) .image{
-               transform: translateZ(0px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-            }
-            .shadow {
-                overflow: hidden;
-                transform-origin: bottom center
-                background: url('images/me-shadow.png') no-repeat;
-                width: 100%;
-                height: 100%;
-                background-size: contain;
-                top: 5%;
-                position:absolute;
-                z-index: 0;
-                transform: translateZ(150px) scale(0.92);
-                ^[0]:not(.about-tilt-off) .shadow{
-                     transform: translateZ(150px) scale(0.92) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-                }
-                
-            
-            }
-            .front {
-                overflow: hidden;
-                transform-origin: bottom center
-                background: url('images/me.png') no-repeat;
-                width: 100%;
-                height: 100%;
-                background-size: contain;
-                top: 5%;
-                position:absolute;
-                z-index: 1;
-                transform: translateZ(200px) scale(0.9);
-                ^[0]:not(.about-tilt-off) .front{
-                    transform: translateZ(200px) scale(0.9) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-                }
-
-            }
-            .back {
-                z-index: -1;
-                background: url('images/me-bg.png') no-repeat;
-                width: 100%;
-                height: 100%;
-                background-size: contain;
-                margin: 0 auto;
-                transform: translateZ(80px);
-                ^[0]:not(.about-tilt-off) .back{
-                    transform: translateZ(80px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0))); 
-                }
-
             }
         }
      
@@ -684,7 +736,7 @@ h1,h2,h3,h4,h5,h5{
         transform: translateZ(0);
         +for_breakpoint(mobile){
             position:static;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
         h2{
 
@@ -756,7 +808,7 @@ h1,h2,h3,h4,h5,h5{
         color: #DEEFDB;
         +for_breakpoint(mobile){
             opacity:1;
-            top: 40vh;
+            top: 62%;
             transform: rotate(90deg) scale(2);
             transform-origin: center;
             position: absolute;
@@ -777,7 +829,7 @@ h1,h2,h3,h4,h5,h5{
         +for_breakpoint(mobile){
             position:static;
             font-size:calc(13px + 1vw);
-            padding-top:70px;
+            padding-top: 116px;
             align-self: start;
             min-width: 85vw;
         }
@@ -844,13 +896,13 @@ h1,h2,h3,h4,h5,h5{
     
         &.transition-in{
             .lottie:after{
-                top: 37vh;
+                top: 41vh;
                 opacity:1;
             }
         }
         +for_breakpoint(mobile){
             position:initial;
-            height: 140vh;
+            height: 150vh;
             grid-template-rows: 0.4fr 0.55fr 1.6fr;
             
         }
@@ -858,6 +910,15 @@ h1,h2,h3,h4,h5,h5{
 
     section.tinker {
 
+        +for_breakpoint(mobile){
+            height: 130vh;
+        }
+        
+        .lottie{
+            +for_breakpoint(mobile){
+                padding-top: 6vh;
+            }
+        }
         &:not(.is-mobile) .lottie {
             transform-origin: center;
             transform: rotateY(calc(-20deg * var(--rot-y, 0)));
@@ -930,6 +991,12 @@ h1,h2,h3,h4,h5,h5{
     }
 
     section.explorer {
+
+        .lottie{
+            +for_breakpoint(mobile){
+                padding-top: 6vh;
+            }
+        }
 
         background: white;
         z-index: 0;
@@ -1011,6 +1078,12 @@ h1,h2,h3,h4,h5,h5{
     }
 
     section.developer {
+
+        .lottie{
+            +for_breakpoint(mobile){
+                padding-top: 6vh;
+            }
+        }
         
         &:not(.is-mobile) .lottie {
             transform-origin: center;
@@ -1091,6 +1164,34 @@ h1,h2,h3,h4,h5,h5{
 
     }
     section.animator {
+
+        +for_breakpoint(mobile){
+            height: 130vh;
+        }
+
+        
+        .lottie{
+            +for_breakpoint(mobile){
+                padding-top:7vh;
+            }
+        }
+
+
+  
+        &:not(.is-mobile) .lottie {
+         
+        }
+
+        &:not(.is-mobile) #anim-factory{
+            transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0))+(-0px)), calc(calc(1.5 * var(--rot-yvw, 0))+00px), 0);
+        }
+        &:not(.is-mobile) #anim-floor{
+            transform-origin: center;
+            transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0))+(-0px)), calc(calc(1.5 * var(--rot-yvw, 0))-50px), 0);
+        }
+        &:not(.is-mobile) #anim-floor-shadow{
+            transform: translate3d(calc(-3 * var(--rot-xvw, 0)), calc(calc(-3 * var(--rot-yvw, 0))+55px), 0);
+        }
         
         ::selection {
             background:rgba(187,242,242,0.99);
@@ -1141,6 +1242,8 @@ h1,h2,h3,h4,h5,h5{
         .title h2::after{
                 content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(187,242,242)'/%3E%3C/svg%3E");
         }
+
+        
         
     }
     
@@ -1230,6 +1333,9 @@ h1,h2,h3,h4,h5,h5{
     }
 }
 
+#app.is-mobile #projection2, #app.is-mobile #webpage, #app.is-mobile #road, #app.is-mobile #headlights, #app.is-mobile #anim-factory, #app.is-mobile #anim-floor{
+    filter: none !important;
+}
 
 .plankton{ 
     position: absolute;

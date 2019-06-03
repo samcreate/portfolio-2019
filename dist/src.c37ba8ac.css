@@ -48,7 +48,7 @@ h3 {
 a {
   text-decoration: none;
   color: inherit;
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23ff9800' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 2s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23ff9800' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
   background-position: 0 100%;
   background-size: auto 3px;
   background-repeat: repeat-x;
@@ -172,9 +172,9 @@ h5 {
   right: 1vw;
   z-index: 99;
   opacity: 1;
-  height: 65px;
+  height: 70px;
   overflow: hidden;
-  width: 147px;
+  width: 180px;
   padding: 0;
   margin: 0;
   pointer-events: all;
@@ -260,10 +260,24 @@ h5 {
 }
 #app nav ol > li.home {
   transition: all var(--transition-time);
-  width: 39px;
-  height: 39px;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
   margin-right: 7px;
   transform-origin: center;
+}
+#app nav ol > li.home a {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='white' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  background-position: 0 100%;
+  background-size: auto 5px;
+  background-repeat: repeat-x;
+  padding-bottom: 69px;
+  width: 35px;
+  margin: 0px auto;
+  display: block;
+  position: static;
+  pointer-events: all !important;
+  z-index: 99;
 }
 #app nav ol > li.home.hidden {
   opacity: 0;
@@ -286,6 +300,9 @@ h5 {
 #app.tinker nav .home::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.57 66.57'%3E%3Cpath fill='%23cde3cd' d='M47.57 22.34v-.24L35.43 0 17.7 11.16V6.19l-3.77-2.17-3.77 2.17V16L.12 23.26 0 52.11v.22l8.04 4.76.37.22-.28-.39V39.28l7.86 4.54v17.99l8.04 4.76 23.55-14.74-.01-29.49zm-6.09 26.24l-3.63 2.1-3.63 2.1v-7.84l3.63-2.1 3.63-2.1v7.84z'/%3E%3C/svg%3E");
 }
+#app.explorer nav .home a {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='rgb(141,236,193)' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+}
 #app.explorer nav .home::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.57 66.57'%3E%3Cpath fill='white' d='M47.57 22.34v-.24L35.43 0 17.7 11.16V6.19l-3.77-2.17-3.77 2.17V16L.12 23.26 0 52.11v.22l8.04 4.76.37.22-.28-.39V39.28l7.86 4.54v17.99l8.04 4.76 23.55-14.74-.01-29.49zm-6.09 26.24l-3.63 2.1-3.63 2.1v-7.84l3.63-2.1 3.63-2.1v7.84z'/%3E%3C/svg%3E");
 }
@@ -293,12 +310,12 @@ h5 {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115 115'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(141,236,193)'/%3E%3C/svg%3E");
 }
 #app nav ol > li.home::after {
-  transition: background-image var(--transition-time);
+  transition: background-image var(--transition-time), opacity 0.2s;
   content: '';
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.57 66.57'%3E%3Cpath fill='rgb(141,236,193)' d='M47.57 22.34v-.24L35.43 0 17.7 11.16V6.19l-3.77-2.17-3.77 2.17V16L.12 23.26 0 52.11v.22l8.04 4.76.37.22-.28-.39V39.28l7.86 4.54v17.99l8.04 4.76 23.55-14.74-.01-29.49zm-6.09 26.24l-3.63 2.1-3.63 2.1v-7.84l3.63-2.1 3.63-2.1v7.84z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 17px;
+  background-size: 30px;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -308,8 +325,8 @@ h5 {
 #app nav ol > li.home::before {
   content: '';
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115 115'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(255,255,255)'/%3E%3C/svg%3E");
-  width: 100%;
-  height: 100%;
+  width: 101%;
+  height: 101%;
   animation: rotating 15s linear infinite;
   padding-bottom: 0.17em;
   position: absolute;
@@ -320,7 +337,10 @@ h5 {
   transition: opacity 0.6s;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 95%;
+  background-size: 92%;
+}
+#app nav ol > li.home:hover:after {
+  opacity: 0.5;
 }
 #app .about {
   color: #fff;
@@ -492,7 +512,6 @@ h5 {
   display: flex;
   position: relative;
   border: 1rem #fff solid;
-  background: #fff;
 }
 @media only screen and (max-width: 600px) {
   #app .about .image {
@@ -627,6 +646,7 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections .title {
     position: static;
+    margin-bottom: 30px;
   }
 }
 #app .sections .title h2::after {
@@ -718,6 +738,9 @@ h5 {
   #app .sections p.copy {
     position: static;
     font-size: calc(13px + 1vw);
+    padding-top: 70px;
+    align-self: start;
+    min-width: 85vw;
   }
 }
 #app .sections p.copy span {
@@ -739,7 +762,7 @@ h5 {
     padding-right: calc(29px + 2vw);
     height: 25vw;
     width: 30vw;
-    padding-top: 25px;
+    padding-top: 15px;
   }
 }
 #app .sections p.copy span.first-letter::after {
@@ -782,8 +805,8 @@ h5 {
 @media only screen and (max-width: 600px) {
   #app .sections section {
     position: initial;
-    height: 150vh;
-    grid-template-rows: 0.45fr 0.55fr 1.6fr;
+    height: 140vh;
+    grid-template-rows: 0.4fr 0.55fr 1.6fr;
   }
 }
 #app .sections section.tinker {
@@ -810,12 +833,12 @@ h5 {
   background: rgba(241,103,100,0.99);
 }
 #app .sections section.tinker a {
-  color: #8ccfb3;
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift .6s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%238ccfb3' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  color: #48ab82;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 2s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%238ccfb3' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
   transition: color 0.2s;
 }
 #app .sections section.tinker a .click-confetti path {
-  stroke: #8ccfb3 !important;
+  stroke: #f16764 !important;
 }
 #app .sections section.tinker a:hover {
   color: #f16764 !important;
@@ -904,6 +927,13 @@ h5 {
 #app .sections section.explorer .title h2::after {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(245,231,175)'/%3E%3C/svg%3E");
 }
+#app .sections section.explorer #road {
+  filter: url("#street");
+}
+#app .sections section.explorer #headlights {
+  filter: url("#SAND_dark-soft-anim");
+d
+}
 #app .sections section.developer {
   background: #eeafa4;
   z-index: 0;
@@ -927,6 +957,18 @@ h5 {
 }
 #app .sections section.developer ::selection {
   background: rgba(70,115,141,0.99);
+}
+#app .sections section.developer a {
+  color: #46738d;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%2346738D' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  transition: color 0.2s;
+}
+#app .sections section.developer a .click-confetti path {
+  stroke: #46738d !important;
+}
+#app .sections section.developer a:hover {
+  color: #fff !important;
+  opacity: 1;
 }
 #app .sections section.developer::before {
   content: '';
@@ -955,12 +997,28 @@ h5 {
 #app .sections section.developer .title h2::after {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(102,255,199)'/%3E%3C/svg%3E");
 }
+#app .sections section.developer #projection2,
+#app .sections section.developer #webpage {
+  filter: url("#SALT-more");
+}
 #app .sections section.animator {
   background: #bca3bf;
   z-index: 0;
 }
 #app .sections section.animator ::selection {
   background: rgba(187,242,242,0.99);
+}
+#app .sections section.animator a {
+  color: #502455;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23502455' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  transition: color 0.2s;
+}
+#app .sections section.animator a .click-confetti path {
+  stroke: #502455 !important;
+}
+#app .sections section.animator a:hover {
+  color: #fff !important;
+  opacity: 1;
 }
 #app .sections section.animator::before {
   content: '';
@@ -989,12 +1047,22 @@ h5 {
 #app .sections section.animator .title h2::after {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(187,242,242)'/%3E%3C/svg%3E");
 }
+#confetti-holder {
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
 .click-confetti {
   position: absolute;
   width: var(--click-width, 300px) !important;
   height: var(--click-height, 200px) !important;
-  top: calc(var(--click-height, 200px) / 3);
-  left: calc(var(--click-width, 300px) / -3);
+  top: calc(var(--click-y) + calc((var(--click-height) / 2)));
+  left: calc(var(--click-x) - calc(var(--click-width) / 2));
   z-index: 999;
   transform: none !important;
 }
@@ -1006,6 +1074,18 @@ h5 {
   top: 0;
   left: 0;
   z-index: 999;
+}
+#app.tinker #confetti-holder .click-confetti path {
+  stroke: #f16764 !important;
+}
+#app.explorer #confetti-holder .click-confetti path {
+  stroke: #ff9800 !important;
+}
+#app.developer #confetti-holder .click-confetti path {
+  stroke: #46738d !important;
+}
+#app.animator #confetti-holder .click-confetti path {
+  stroke: #502455 !important;
 }
 .plankton {
   position: absolute;

@@ -29002,6 +29002,8 @@ var _click = _interopRequireDefault(require("./json/click.json"));
 
 var _lottieWeb = _interopRequireDefault(require("lottie-web"));
 
+var _utily = require("./utily");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Click {
@@ -29015,9 +29017,13 @@ class Click {
         let height = width / 3 - width;
         let container = document.createElement("div");
         container.className = "click-confetti";
-        e.target.appendChild(container);
+
+        _utily.Utily.$("#confetti-holder").appendChild(container);
+
         document.body.style.setProperty("--click-width", width + "px");
         document.body.style.setProperty("--click-height", height + "px");
+        document.body.style.setProperty("--click-x", e.clientX + "px");
+        document.body.style.setProperty("--click-y", e.clientY + "px");
 
         let tmpAnim = _lottieWeb.default.loadAnimation({
           wrapper: container,
@@ -29042,14 +29048,14 @@ class Click {
         });
         tmpAnim.play();
         return false;
-      }, false);
+      }, true);
     });
   }
 
 }
 
 exports.default = Click;
-},{"./json/click.json":"json/click.json","lottie-web":"../node_modules/lottie-web/build/player/lottie.js"}],"app.js":[function(require,module,exports) {
+},{"./json/click.json":"json/click.json","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _mouse = require("./mouse");
@@ -29076,8 +29082,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
-
+    this.loader_anim = {};
+    this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(this.init.bind(this));
   }
 
@@ -29199,7 +29205,7 @@ class App {
       homeButton.addEventListener("click", e => {
         e.preventDefault();
         this.slide_ctrl.handleGoHome();
-      });
+      }, true);
     }
   }
 
@@ -29296,7 +29302,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54260" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54047" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -74,7 +74,7 @@ a,p,h2,h3{
 a{
     text-decoration: none;
     color:inherit;
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23ff9800' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 2s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23ff9800' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
     background-position: 0 100%;
     background-size: auto 3px;
     background-repeat: repeat-x;
@@ -195,9 +195,9 @@ h1,h2,h3,h4,h5,h5{
         right:1vw;
         z-index: 99;
         opacity:1;
-        height: 65px;
+        height: 70px;
         overflow: hidden;
-        width: 147px;
+        width: 180px;
         padding:0;
         margin:0;
         pointer-events: all;
@@ -268,7 +268,7 @@ h1,h2,h3,h4,h5,h5{
                 }
 
                 ^[0].explorer nav .dot{
-                   border-color:rgb(141,236,193)
+                    border-color:rgb(141,236,193)
                 }
 
                 ^[0].developer nav .developer, &.developer.cycle{
@@ -282,6 +282,21 @@ h1,h2,h3,h4,h5,h5{
 
             &.home{
                 transition: all var(--transition-time);
+                cursor: pointer;
+                a{
+                    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='white' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+                    background-position: 0 100%;
+                    background-size: auto 5px;
+                    background-repeat: repeat-x;
+                    padding-bottom: 69px;
+                    width:35px;
+                    margin:0px auto;
+                    display:block;
+                    position: static;
+                    pointer-events: all !important;
+                    z-index: 99;
+                }
+                
                 &.hidden{
                     opacity:0;
                     a{
@@ -294,8 +309,8 @@ h1,h2,h3,h4,h5,h5{
                         pointer-events: all !important;
                     }
                 }
-                width: 39px;
-                height: 39px;
+                width: 60px;
+                height: 60px;
                 margin-right: 7px;
                 transform-origin: center;
 
@@ -312,6 +327,10 @@ h1,h2,h3,h4,h5,h5{
                 ^[0].tinker nav .home::after{
                     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.57 66.57'%3E%3Cpath fill='%23cde3cd' d='M47.57 22.34v-.24L35.43 0 17.7 11.16V6.19l-3.77-2.17-3.77 2.17V16L.12 23.26 0 52.11v.22l8.04 4.76.37.22-.28-.39V39.28l7.86 4.54v17.99l8.04 4.76 23.55-14.74-.01-29.49zm-6.09 26.24l-3.63 2.1-3.63 2.1v-7.84l3.63-2.1 3.63-2.1v7.84z'/%3E%3C/svg%3E");
                 }
+                ^[0].explorer nav .home a{
+                    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='rgb(141,236,193)' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+                }
+          
 
                 ^[0].explorer nav .home::after{
                     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.57 66.57'%3E%3Cpath fill='white' d='M47.57 22.34v-.24L35.43 0 17.7 11.16V6.19l-3.77-2.17-3.77 2.17V16L.12 23.26 0 52.11v.22l8.04 4.76.37.22-.28-.39V39.28l7.86 4.54v17.99l8.04 4.76 23.55-14.74-.01-29.49zm-6.09 26.24l-3.63 2.1-3.63 2.1v-7.84l3.63-2.1 3.63-2.1v7.84z'/%3E%3C/svg%3E");
@@ -322,12 +341,12 @@ h1,h2,h3,h4,h5,h5{
                 }
 
                 &::after{
-                    transition: background-image var(--transition-time)
+                    transition: background-image var(--transition-time), opacity 0.2s
                     content: ''
                     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.57 66.57'%3E%3Cpath fill='rgb(141,236,193)' d='M47.57 22.34v-.24L35.43 0 17.7 11.16V6.19l-3.77-2.17-3.77 2.17V16L.12 23.26 0 52.11v.22l8.04 4.76.37.22-.28-.39V39.28l7.86 4.54v17.99l8.04 4.76 23.55-14.74-.01-29.49zm-6.09 26.24l-3.63 2.1-3.63 2.1v-7.84l3.63-2.1 3.63-2.1v7.84z'/%3E%3C/svg%3E");
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-size: 17px;
+                    background-size: 30px;
                     width:100%;
                     height 100%;
                     position: absolute;
@@ -337,8 +356,8 @@ h1,h2,h3,h4,h5,h5{
                 &::before{
                     content: ''  
                     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115 115'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(255,255,255)'/%3E%3C/svg%3E");  
-                    width:100%;
-                    height 100%;
+                    width:101%;
+                    height 101%;
                     animation: rotating 15s linear infinite;
                     padding-bottom: .17em;
                     position: absolute;
@@ -349,10 +368,10 @@ h1,h2,h3,h4,h5,h5{
                     transition: opacity 0.6s;
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-size: 95%;
+                    background-size: 92%;
                 }
                 &:hover:after{
-                    
+                    opacity: 0.5
                 }
 
             }
@@ -524,7 +543,7 @@ h1,h2,h3,h4,h5,h5{
             display: flex;
             position: relative;
             border: 1rem white solid;
-            background: white;
+           
             +for_breakpoint(mobile){
                 position:relative;
                 transform-style: flat;
@@ -550,9 +569,9 @@ h1,h2,h3,h4,h5,h5{
                 position:absolute;
                 z-index: 0;
                 transform: translateZ(150px) scale(0.92);
-                 ^[0]:not(.about-tilt-off) .shadow{
+                ^[0]:not(.about-tilt-off) .shadow{
                      transform: translateZ(150px) scale(0.92) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
-                 }
+                }
                 
             
             }
@@ -665,6 +684,7 @@ h1,h2,h3,h4,h5,h5{
         transform: translateZ(0);
         +for_breakpoint(mobile){
             position:static;
+            margin-bottom: 30px;
         }
         h2{
 
@@ -753,21 +773,13 @@ h1,h2,h3,h4,h5,h5{
         line-height: 1.4;
         transition: top 0.2s;
         
-        // +for_breakpoint(tablet){
-
-        //     width: 45vw;
-        // }
-        // +for_breakpoint(tablet_md){
-
-        //     width: 45vw;
-        //     left: 54vw;
-        // }
-        // +for_breakpoint(tablet_xl){
-        //     width: 38vw;
-        // }
+ 
         +for_breakpoint(mobile){
             position:static;
             font-size:calc(13px + 1vw);
+            padding-top:70px;
+            align-self: start;
+            min-width: 85vw;
         }
     
 
@@ -787,7 +799,7 @@ h1,h2,h3,h4,h5,h5{
                     padding-right: calc(29px + 2vw);
                     height: 25vw;
                     width: 30vw;
-                    padding-top: 25px;
+                    padding-top: 15px;
                 }
                     
                 &::after{
@@ -838,8 +850,9 @@ h1,h2,h3,h4,h5,h5{
         }
         +for_breakpoint(mobile){
             position:initial;
-            height: 150vh;
-            grid-template-rows: 0.45fr 0.55fr 1.6fr;
+            height: 140vh;
+            grid-template-rows: 0.4fr 0.55fr 1.6fr;
+            
         }
     }
 
@@ -869,13 +882,13 @@ h1,h2,h3,h4,h5,h5{
 
 
         a {
-            color: #8ccfb3
+            color: darken(#8ccfb3, 30%)
             
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift .6s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%238ccfb3' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 2s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%238ccfb3' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
 
             .click-confetti{
                 path{
-                    stroke:#8ccfb3 !important;
+                    stroke:rgb(241,103,100) !important;
                 }
             }
             transition: color 0.2s;
@@ -941,21 +954,19 @@ h1,h2,h3,h4,h5,h5{
         }
         a {
             color: #8ccfb3
-            
 
             .click-confetti{
                 path{
-                    stroke:rgb(255, 152, 0)!important;
+                    stroke:rgb(255, 152, 0) !important;
                 }
             }
             transition: color 0.2s;
             &:hover{
                 color: #8decc1 !important;
             }
-
-            
-           
         }
+
+        
         &::before{
             content:'';
             width:100vw;
@@ -989,6 +1000,14 @@ h1,h2,h3,h4,h5,h5{
             content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(245,231,175)'/%3E%3C/svg%3E");
             
         }
+
+        #road {
+            filter: url("#street");
+        }
+        #headlights{
+            filter: url("#SAND_dark-soft-anim"); d
+        }
+
     }
 
     section.developer {
@@ -1015,6 +1034,22 @@ h1,h2,h3,h4,h5,h5{
 
         ::selection {
             background:rgba(70,115,141,0.99);
+        }
+        a {
+            color: #46738D
+            
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%2346738D' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+
+            .click-confetti{
+                path{
+                    stroke:#46738D !important;
+                }
+            }
+            transition: color 0.2s;
+            &:hover{
+                color: white !important;
+                opacity:1;
+            }
         }
 
         &::before{
@@ -1049,11 +1084,31 @@ h1,h2,h3,h4,h5,h5{
         .title h2::after{
             content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 115.28 113.74'%3E%3Cpath d='M2.2 70.43c-4.62-18.6-3.57-50.35 18.55-64.3 20.87-13.17 46.47-1.65 55.62 2.5 7.38 3.32 34.15 15.36 38.33 40.8 2.35 14.28-3.56 25.8-6.18 30.9-13.36 26.06-41.12 31.75-43.28 32.15-5.84 1.1-21.46 3.8-37.1-4.94C8.74 96.64 3.64 76.18 2.2 70.43z' fill='rgb(102,255,199)'/%3E%3C/svg%3E");
         }
+
+        #projection2, #webpage{
+            filter: url("#SALT-more");
+        }
+
     }
     section.animator {
         
         ::selection {
             background:rgba(187,242,242,0.99);
+        }
+        a {
+            color:#502455;
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1.5s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23502455' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+
+            .click-confetti{
+                path{
+                    stroke:#502455 !important;
+                }
+            }
+            transition: color 0.2s;
+            &:hover{
+                color: white !important;
+                opacity:1;
+            }
         }
 
         &::before{
@@ -1122,13 +1177,24 @@ h1,h2,h3,h4,h5,h5{
     }
 }
 
-
+#confetti-holder{
+    width: 100vw;
+    height 100vh;
+    z-index:99999;
+    background: none;
+    position: absolute;
+    top:0;
+    left:0;
+    pointer-events: none;
+}
 .click-confetti{
     position: absolute;
     width: var(--click-width, 300px) !important;
     height:  var(--click-height, 200px) !important;
-    top: calc(var(--click-height, 200px) / 3)
-    left: calc(var(--click-width, 300px) / -3);
+    //top: calc(var(--click-height, 200px) / 3)
+    //left: calc(var(--click-width, 300px) / -3);
+    top: calc(var(--click-y) + calc((var(--click-height)/2)))
+    left: calc(var(--click-x) - calc(var(--click-width)/2))
     z-index 999;
     transform: none !important;
     svg{
@@ -1142,6 +1208,28 @@ h1,h2,h3,h4,h5,h5{
       
     }
 }
+
+#app.tinker #confetti-holder .click-confetti{
+    path{
+        stroke:rgb(241,103,100) !important;
+    }
+}
+#app.explorer #confetti-holder .click-confetti{
+    path{
+        stroke:rgb(255, 152, 0) !important;
+    }
+}
+#app.developer #confetti-holder .click-confetti{
+    path{
+        stroke:#46738D !important;
+    }
+}
+#app.animator #confetti-holder .click-confetti{
+    path{
+        stroke:#502455 !important;
+    }
+}
+
 
 .plankton{ 
     position: absolute;

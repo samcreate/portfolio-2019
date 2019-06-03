@@ -12,7 +12,7 @@ import Click from "./click";
 class App {
   constructor() {
     this.loader_anim = {};
-    //this.mouse_ctrl = new Mouse();
+    this.mouse_ctrl = new Mouse();
     this.site_load().then(this.init.bind(this));
   }
 
@@ -151,10 +151,14 @@ class App {
         this.plankton_ctrl.pause(e.visible);
       });
 
-      homeButton.addEventListener("click", e => {
-        e.preventDefault();
-        this.slide_ctrl.handleGoHome();
-      });
+      homeButton.addEventListener(
+        "click",
+        e => {
+          e.preventDefault();
+          this.slide_ctrl.handleGoHome();
+        },
+        true
+      );
     }
   }
 

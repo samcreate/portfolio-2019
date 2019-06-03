@@ -1,6 +1,6 @@
 import clickJson from "./json/click.json";
 import lottie from "lottie-web";
-
+import { Utily as u } from "./utily";
 export default class Click {
   constructor(links) {
     this.padding = 150;
@@ -15,10 +15,13 @@ export default class Click {
           let height = width / 3 - width;
           let container = document.createElement("div");
           container.className = "click-confetti";
-          e.target.appendChild(container);
+          u.$("#confetti-holder").appendChild(container);
 
           document.body.style.setProperty("--click-width", width + "px");
           document.body.style.setProperty("--click-height", height + "px");
+
+          document.body.style.setProperty("--click-x", e.clientX + "px");
+          document.body.style.setProperty("--click-y", e.clientY + "px");
 
           let tmpAnim = lottie.loadAnimation({
             wrapper: container,
@@ -45,7 +48,7 @@ export default class Click {
           tmpAnim.play();
           return false;
         },
-        false
+        true
       );
     });
   }

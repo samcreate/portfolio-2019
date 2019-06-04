@@ -1373,6 +1373,7 @@ h1,h2,h3,h4,h5,h5 {
   transform: translateZ(149px);
   transition: opacity 1s;
   z-index: -1;
+  
 
   +for_breakpoint(mobile) {
     left: 0;
@@ -1387,15 +1388,17 @@ h1,h2,h3,h4,h5,h5 {
     position: absolute;
     transform-style: preserve-3d;
     width: 220px;
-
+    
     +for_breakpoint(mobile) {
       width: 160px;
     }
 
     svg {
-      path {
+       
+        path {
+        
         stroke: rgba(255, 255, 255, 1) !important;
-      }
+        }
     }
   }
 }

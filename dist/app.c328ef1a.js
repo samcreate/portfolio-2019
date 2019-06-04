@@ -25729,7 +25729,6 @@ class SlideShow extends _dispatcher.Dispatcher {
         console.error("Unabled to create main timeline: ", slide.dataset.section);
       }
     });
-    console.log("CureentSectionIndex: ", this.currentSectionIndex, " pastIndex: ", this.pastIndex);
     this.setUpEventlisteners();
   }
 
@@ -25741,7 +25740,6 @@ class SlideShow extends _dispatcher.Dispatcher {
   handleGoHome() {
     this.firstRun = true;
     const tl = new _TweenMax.TimelineMax();
-    console.log("this.currentSectionName", "section." + this.currentSectionName, _utily.Utily.$("section." + this.currentSectionName));
 
     const sectionToHide = _utily.Utily.$("section." + this.currentSectionName);
 
@@ -26782,7 +26780,6 @@ class Mobile {
     const title_border = _utily.Utily.$("." + name + " .title");
 
     const allObj = [[title_border, subtitle, h2], h3, [p_first_letter, p_body_copy]];
-    console.log(allObj);
 
     _TweenMax.TweenMax.set(allObj, {
       opacity: 0,
@@ -29309,7 +29306,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57025" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58556" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

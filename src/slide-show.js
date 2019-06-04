@@ -58,12 +58,6 @@ export class SlideShow extends Dispatcher {
         );
       }
     });
-    console.log(
-      "CureentSectionIndex: ",
-      this.currentSectionIndex,
-      " pastIndex: ",
-      this.pastIndex
-    );
 
     this.setUpEventlisteners();
   }
@@ -78,11 +72,6 @@ export class SlideShow extends Dispatcher {
 
     const tl = new TimelineMax();
 
-    console.log(
-      "this.currentSectionName",
-      "section." + this.currentSectionName,
-      u.$("section." + this.currentSectionName)
-    );
     const sectionToHide = u.$("section." + this.currentSectionName);
     const ruleForHide = CSSRulePlugin.getRule(
       "#app .sections section." + this.currentSectionName + "::before"

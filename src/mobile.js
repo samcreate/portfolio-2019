@@ -78,7 +78,7 @@ export default class Mobile {
       h3,
       [p_first_letter, p_body_copy]
     ];
-    console.log(allObj);
+
     TweenMax.set(allObj, {
       opacity: 0,
       y: "+=10px",

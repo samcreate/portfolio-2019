@@ -138,7 +138,7 @@ class Mouse {
       this.x = e.clientX;
       this.y = e.clientY;
     });
-    this.update(); //document.body.style.cursor = "none";
+    this.update();
   }
 
   pause(bl) {
@@ -159,7 +159,6 @@ class Mouse {
       document.body.style.setProperty("--rot-xvw", rotY + "vw");
       document.body.style.setProperty("--rot-yvw", rotX + "vw");
       document.body.style.setProperty("--rot-y", rotY);
-      console.log();
       this.update();
     });
   }
@@ -25699,7 +25698,7 @@ class SlideShow extends _dispatcher.Dispatcher {
     this.downward = 1;
     this.firstRun = true;
     this.isTweenBool = false;
-    this.sectionGradientOpacity = 0.15;
+    this.sectionGradientOpacity = 0.0;
     this.currentSectionName;
 
     _TweenMax.TweenMax.set(this.$$(".sections section.hidden"), {
@@ -25823,6 +25822,7 @@ class SlideShow extends _dispatcher.Dispatcher {
   next() {
     this.firstRun = false;
     const tl = new _TweenMax.TimelineMax();
+    tl.timeScale(0.95);
     const sectionToShow = this.sections[this.currentSectionIndex - 1];
     const sectionToHide = this.sections[this.pastIndex - 1];
     const sectionName = sectionToShow.dataset.section;
@@ -25911,6 +25911,7 @@ class SlideShow extends _dispatcher.Dispatcher {
     this.pastIndex--;
     this.currentSectionIndex--;
     let tl = new _TweenMax.TimelineMax();
+    tl.timeScale(0.95);
 
     if (this.pastIndex === 0) {
       this.pastIndex = this.sections.length;
@@ -25918,14 +25919,7 @@ class SlideShow extends _dispatcher.Dispatcher {
 
     if (this.currentSectionIndex === 0) {
       this.currentSectionIndex = this.sections.length;
-    } // console.log(
-    //   "prev: sectionToShow:",
-    //   this.pastIndex - 1,
-    //   " sectionToHide:",
-    //   this.currentSectionIndex - 1,
-    //   this.currentSectionIndex
-    // );
-
+    }
 
     let sectionToShow = this.sections[this.pastIndex - 1];
     let sectionToHide = this.sections[this.currentSectionIndex - 1];
@@ -29022,8 +29016,8 @@ class Click {
 
         document.body.style.setProperty("--click-width", width + "px");
         document.body.style.setProperty("--click-height", height + "px");
-        document.body.style.setProperty("--click-x", e.screenX + "px");
-        document.body.style.setProperty("--click-y", e.screenY + "px");
+        document.body.style.setProperty("--click-x", e.clientX + "px");
+        document.body.style.setProperty("--click-y", e.clientY + "px");
 
         let tmpAnim = _lottieWeb.default.loadAnimation({
           wrapper: container,
@@ -29040,12 +29034,11 @@ class Click {
           setTimeout(() => {
             if (e.target.hasAttribute("target")) {
               window.open(e.target.href);
+              tmpAnim.destroy();
 
               if (_utily.Utily.isMobile()) {
                 document.location.href = e.target.href;
               }
-
-              tmpAnim.destroy();
             } else {
               document.location.href = e.target.href;
             }
@@ -29087,13 +29080,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
-
+    this.loader_anim = {};
+    this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(this.init.bind(this));
   }
 
   init() {
-    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 3);
+    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 2);
     const tl = new _TweenMax.TimelineMax();
 
     const h1 = _utily.Utily.$(".about h1");
@@ -29309,7 +29302,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57797" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55408" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

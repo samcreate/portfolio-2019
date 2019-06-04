@@ -12,7 +12,7 @@ import Click from "./click";
 class App {
   constructor() {
     this.loader_anim = {};
-    //this.mouse_ctrl = new Mouse();
+    this.mouse_ctrl = new Mouse();
     this.site_load().then(this.init.bind(this));
   }
 
@@ -20,7 +20,7 @@ class App {
     this.plankton_ctrl = new Plankton(
       ".plankton",
       this.queue.getResult("plankton"),
-      u.isMobile() ? 1 : 3
+      u.isMobile() ? 1 : 2
     );
 
     const tl = new TimelineMax();

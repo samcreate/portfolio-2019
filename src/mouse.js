@@ -12,7 +12,6 @@ export class Mouse {
       this.y = e.clientY;
     });
     this.update();
-    //document.body.style.cursor = "none";
   }
 
   pause(bl) {
@@ -30,8 +29,6 @@ export class Mouse {
       document.body.style.setProperty("--rot-xvw", rotY + "vw");
       document.body.style.setProperty("--rot-yvw", rotX + "vw");
       document.body.style.setProperty("--rot-y", rotY);
-
-      console.log();
 
       this.update();
     });

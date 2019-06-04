@@ -25,7 +25,7 @@ export class SlideShow extends Dispatcher {
     this.downward = 1;
     this.firstRun = true;
     this.isTweenBool = false;
-    this.sectionGradientOpacity = 0.15;
+    this.sectionGradientOpacity = 0.0;
     this.currentSectionName;
 
     TweenMax.set(this.$$(".sections section.hidden"), {
@@ -164,6 +164,8 @@ export class SlideShow extends Dispatcher {
   next() {
     this.firstRun = false;
     const tl = new TimelineMax();
+    tl.timeScale(0.95);
+
     const sectionToShow = this.sections[this.currentSectionIndex - 1];
     const sectionToHide = this.sections[this.pastIndex - 1];
     const sectionName = sectionToShow.dataset.section;
@@ -265,6 +267,7 @@ export class SlideShow extends Dispatcher {
     this.currentSectionIndex--;
 
     let tl = new TimelineMax();
+    tl.timeScale(0.95);
 
     if (this.pastIndex === 0) {
       this.pastIndex = this.sections.length;
@@ -274,13 +277,6 @@ export class SlideShow extends Dispatcher {
       this.currentSectionIndex = this.sections.length;
     }
 
-    // console.log(
-    //   "prev: sectionToShow:",
-    //   this.pastIndex - 1,
-    //   " sectionToHide:",
-    //   this.currentSectionIndex - 1,
-    //   this.currentSectionIndex
-    // );
     let sectionToShow = this.sections[this.pastIndex - 1];
     let sectionToHide = this.sections[this.currentSectionIndex - 1];
     let sectionName = sectionToShow.dataset.section;

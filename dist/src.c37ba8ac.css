@@ -1261,6 +1261,11 @@ h5 {
   text-align: center;
   color: #fff;
 }
+@media only screen and (max-width: 600px) {
+  .scroll-icon-container {
+    display: none !important;
+  }
+}
 @-moz-keyframes rotating {
   from {
     transform: rotate(0deg);

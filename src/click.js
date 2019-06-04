@@ -38,13 +38,14 @@ export default class Click {
             setTimeout(() => {
               if (e.target.hasAttribute("target")) {
                 window.open(e.target.href);
-                tmpAnim.destroy();
+
                 if (u.isMobile()) {
                   document.location.href = e.target.href;
                 }
               } else {
                 document.location.href = e.target.href;
               }
+              tmpAnim.destroy();
             }, 50);
           });
 

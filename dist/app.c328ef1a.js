@@ -29031,7 +29031,6 @@ class Click {
           setTimeout(() => {
             if (e.target.hasAttribute("target")) {
               window.open(e.target.href);
-              tmpAnim.destroy();
 
               if (_utily.Utily.isMobile()) {
                 document.location.href = e.target.href;
@@ -29039,6 +29038,8 @@ class Click {
             } else {
               document.location.href = e.target.href;
             }
+
+            tmpAnim.destroy();
           }, 50);
         });
         tmpAnim.play();

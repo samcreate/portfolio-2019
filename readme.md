@@ -1,6 +1,6 @@
 # Aaron McGuire's Portfolio 2019
 
-Created using Parceljs and gsap and couple of other 'tings boiiii.
+Created using Parceljs and gsap and couple of other 'tings boiiii. I did a #%!@ job making the slide show and I'll be refactoring the code. Check https://github.com/samcreate/portfolio-2019 for the latest codez.
 
 ### Installing
 
@@ -16,7 +16,7 @@ if all goes well... next run:
 npm run dev
 ```
 
-To generate a build for "production" 
+To generate a build for "production"
 
 ```
 npm run build

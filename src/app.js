@@ -30,9 +30,11 @@ class App {
     const image = u.$(".about .image-container");
     const bg = u.$(".bg");
     const plankton = u.$$(".plankton .life");
-    const scrollIndicator = u.$(".scroll-indicator");
     const homeButton = u.$("li.home");
     const dots = u.$$("li.dot a");
+    const nav = u.$("nav");
+    const scrollIndicator = u.$(".scroll-icon-container");
+    tl.timeScale(0.9);
 
     tl.set([h1, p, image], {
       autoAlpha: 0,
@@ -46,65 +48,8 @@ class App {
       autoAlpha: 0
     });
 
-    u.$("#app").classList.remove("loading");
-    tl.to(this.loaderEl, 1, {
-      autoAlpha: 0,
-      ease: Power1.easeOut
-    });
-    tl.to(
-      bg,
-      0.7,
-      {
-        autoAlpha: 1,
-        ease: Power1.easeOut
-      },
-      "-=0.4"
-    );
-    tl.staggerTo(
-      [h1, p],
-      0.93,
-      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-      0.08,
-      "-=0.4"
-    );
-    tl.staggerTo(
-      icons,
-      0.8,
-      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-      0.06,
-      "-=0.90"
-    );
-    tl.to(
-      image,
-      0.5,
-      {
-        autoAlpha: 1,
-        y: "-=20px"
-      },
-      "-=1.5"
-    );
-    tl.staggerFromTo(
-      plankton,
-      1,
-      { opacity: 0, scale: 0 },
-      { opacity: 1, scale: 1, ease: Elastic.easeOut.config(1, 0.5) },
-      5,
-      "-=0.0"
-    );
-
-    tl.to(
-      scrollIndicator,
-      0.6,
-      {
-        autoAlpha: 1,
-        x: "+=20",
-        repeat: -1,
-        yoyo: true,
-        ease: Power1.easeOut
-      },
-      "-=1"
-    );
     this.dotCycleTween = new TimelineMax();
+    this.dotCycleTween.timeScale(1.2);
     this.dotCycleTween.staggerTo(
       dots,
       1,
@@ -125,6 +70,67 @@ class App {
       },
       0.6
     );
+
+    u.$("#app").classList.remove("loading");
+
+    tl.to(this.loaderEl, 1, {
+      autoAlpha: 0,
+      ease: Power1.easeOut
+    });
+    tl.to(
+      bg,
+      0.7,
+      {
+        autoAlpha: 1,
+        ease: Power1.easeOut
+      },
+      "-=0.4"
+    );
+    tl.to(nav, 0.5, {
+      opacity: 1,
+      ease: Power1.easeOut
+    });
+    tl.staggerTo(
+      [h1, p],
+      0.93,
+      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
+      0.08,
+      "-=0.4"
+    );
+    tl.staggerTo(
+      icons,
+      0.8,
+      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
+      0.06,
+      "-=0.90"
+    );
+
+    tl.to(
+      scrollIndicator,
+      0.5,
+      {
+        autoAlpha: 1
+      },
+      "-=1.5"
+    );
+    tl.to(
+      image,
+      0.5,
+      {
+        autoAlpha: 1,
+        y: "-=20px"
+      },
+      "-=1.5"
+    );
+    tl.staggerFromTo(
+      plankton,
+      1,
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, ease: Elastic.easeOut.config(1, 0.5) },
+      5,
+      "-=0.0"
+    );
+
     this.click_ctrl = new Click(u.$$("a"));
     if (u.isMobile()) {
       this.mobile = new Mobile(u.$$(".sections section"), this.queue);
@@ -136,14 +142,14 @@ class App {
         if (e.visible) {
           u.$("#app").classList.add("about-tilt-off");
           u.$(".plankton").style.opacity = 0;
-          u.$(".scroll-indicator-container").style.visibility = "hidden";
+          TweenMax.to(scrollIndicator, 0.5, { opacity: 0 });
           u.$(".home").classList.add("visible");
           u.$("#app").className = e.section;
           this.dotCycleTween.pause(0);
         } else {
           u.$("#app").classList.remove("about-tilt-off");
           u.$(".plankton").style.opacity = 1;
-          u.$(".scroll-indicator-container").style.visibility = "visible";
+          //u.$(".scroll-indicator-container").style.visibility = "visible";
           u.$("#app").className = "";
           u.$(".home").classList.remove("visible");
           this.dotCycleTween.resume(0);

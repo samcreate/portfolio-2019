@@ -29101,12 +29101,15 @@ class App {
 
     const plankton = _utily.Utily.$$(".plankton .life");
 
-    const scrollIndicator = _utily.Utily.$(".scroll-indicator");
-
     const homeButton = _utily.Utily.$("li.home");
 
     const dots = _utily.Utily.$$("li.dot a");
 
+    const nav = _utily.Utily.$("nav");
+
+    const scrollIndicator = _utily.Utily.$(".scroll-icon-container");
+
+    tl.timeScale(0.9);
     tl.set([h1, p, image], {
       autoAlpha: 0,
       y: "+=20px"
@@ -29118,6 +29121,18 @@ class App {
     tl.set([bg], {
       autoAlpha: 0
     });
+    this.dotCycleTween = new _TweenMax.TimelineMax();
+    this.dotCycleTween.timeScale(1.2);
+    this.dotCycleTween.staggerTo(dots, 1, {
+      cycle: {
+        //an array of values
+        backgroundColor: ["rgb(241,103,100)", "rgb(141,236,193)", "rgb(70,114,141)", "#502455"]
+      },
+      repeat: -1,
+      repeatDelay: 1,
+      yoyo: true,
+      ease: _TweenMax.Power2.easeOut
+    }, 0.6);
 
     _utily.Utily.$("#app").classList.remove("loading");
 
@@ -29129,6 +29144,10 @@ class App {
       autoAlpha: 1,
       ease: _TweenMax.Power1.easeOut
     }, "-=0.4");
+    tl.to(nav, 0.5, {
+      opacity: 1,
+      ease: _TweenMax.Power1.easeOut
+    });
     tl.staggerTo([h1, p], 0.93, {
       autoAlpha: 1,
       y: "-=20px",
@@ -29139,6 +29158,9 @@ class App {
       y: "-=20px",
       ease: _TweenMax.Power2.easeOut
     }, 0.06, "-=0.90");
+    tl.to(scrollIndicator, 0.5, {
+      autoAlpha: 1
+    }, "-=1.5");
     tl.to(image, 0.5, {
       autoAlpha: 1,
       y: "-=20px"
@@ -29151,24 +29173,6 @@ class App {
       scale: 1,
       ease: _TweenMax.Elastic.easeOut.config(1, 0.5)
     }, 5, "-=0.0");
-    tl.to(scrollIndicator, 0.6, {
-      autoAlpha: 1,
-      x: "+=20",
-      repeat: -1,
-      yoyo: true,
-      ease: _TweenMax.Power1.easeOut
-    }, "-=1");
-    this.dotCycleTween = new _TweenMax.TimelineMax();
-    this.dotCycleTween.staggerTo(dots, 1, {
-      cycle: {
-        //an array of values
-        backgroundColor: ["rgb(241,103,100)", "rgb(141,236,193)", "rgb(70,114,141)", "#502455"]
-      },
-      repeat: -1,
-      repeatDelay: 1,
-      yoyo: true,
-      ease: _TweenMax.Power2.easeOut
-    }, 0.6);
     this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
 
     if (_utily.Utily.isMobile()) {
@@ -29182,7 +29186,10 @@ class App {
           _utily.Utily.$("#app").classList.add("about-tilt-off");
 
           _utily.Utily.$(".plankton").style.opacity = 0;
-          _utily.Utily.$(".scroll-indicator-container").style.visibility = "hidden";
+
+          _TweenMax.TweenMax.to(scrollIndicator, 0.5, {
+            opacity: 0
+          });
 
           _utily.Utily.$(".home").classList.add("visible");
 
@@ -29191,8 +29198,8 @@ class App {
         } else {
           _utily.Utily.$("#app").classList.remove("about-tilt-off");
 
-          _utily.Utily.$(".plankton").style.opacity = 1;
-          _utily.Utily.$(".scroll-indicator-container").style.visibility = "visible";
+          _utily.Utily.$(".plankton").style.opacity = 1; //u.$(".scroll-indicator-container").style.visibility = "visible";
+
           _utily.Utily.$("#app").className = "";
 
           _utily.Utily.$(".home").classList.remove("visible");
@@ -29302,7 +29309,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55408" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57025" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

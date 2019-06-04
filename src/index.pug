@@ -3,15 +3,24 @@ html
     head
         meta(charset="utf-8")
         meta(http-equiv="x-ua-compatible" content="ie=edge")
-        title Portfolio of Aaron McGuire
+        title Aaron McGuire | Freelance Interactive Developer
         meta(name="description" content="")
         meta(name="viewport"  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" )
+        meta(property='og:locale', content='fr_FR')
+        meta(property='og:type', content='website')
+        meta(property='og:image:width', content='279')
+        meta(property='og:image:height', content='279')
+        meta(property='og:description', content="Welcome to the world of Aaron McGuire I'm a creative technologist and I'm available for freelance!")
+        meta(property='og:title', content='Aaron McGuire | Freelance Interactive Developer')
+        meta(property='og:site_name', content='Aaron McGuire | Freelance Interactive Developer')
+        meta(property='og:url', content='https://www.aaronmcguire.co')
+        meta(property='og:image', content='images/fb.png')
         link(rel="stylesheet" href="index.styl")
         
 
 
     body
-        
+        #{myfb}
         #app.loading
             #confetti-holder
             nav.crumbs
@@ -60,7 +69,7 @@ html
                     p.copy
                         span.first-letter W
                         span.body-copy 
-                            | hen I stumbled upon coding, I quickly discovered how much I appreciate the art of functional organization. Making something is interactive and also looks good behind the scenes scratches a certain itch. I work comfortably on both front-end and back-end systems alike. On the front-end, I've been using motion frameworks like #[a(href="https://lottiefiles.com" target="_blank") Lottie] and #[a(href="https://lottiefiles.com" target="_blank") GSAP] to help tell stories visually, and often use #[a(href="https://reactjs.org/" target="_blank") React] to glue it all together (although for heavier animation sites I do not recommend using React). For back-end, I tend to reach for NodeJs, but have worked on both rails apps and php applications. Ultimately, I’ve reached a point where I can see the similarities  in languages, and understand how to find the same 'tools' in each language. Speaking of apps, want to see how I put this one together? Get the source code and read about it on #[a(href="#") the world wide web ].   
+                            | hen I stumbled upon coding, I quickly discovered how much I appreciate the art of functional organization. Making something is interactive and also looks good behind the scenes scratches a certain itch. I work comfortably on both front-end and back-end systems alike. On the front-end, I've been using motion frameworks like #[a(href="https://lottiefiles.com" target="_blank") Lottie] and #[a(href="https://lottiefiles.com" target="_blank") GSAP] to help tell stories visually, and often use #[a(href="https://reactjs.org/" target="_blank") React] to glue it all together (although for heavier animation sites I do not recommend using React). For back-end, I tend to reach for NodeJs, but have worked on both rails apps and php applications. Ultimately, I’ve reached a point where I can see the similarities  in languages, and understand how to find the same 'tools' in each language. Speaking of apps, want to see how I put this one together? Get the source code and read about it on #[a(href="https://medium.com/@samcreate/2019-portfolio-cf42faf34fc1") the world wide web ].   
                 section.hidden.animator(data-section="animator") 
                     .title
                         h2 Animating
@@ -74,7 +83,7 @@ html
             .about
                 .copy
                     h1 Welcome to the world of Aaron &hyphen; McGuire.
-                    p I'm a creative technologist. I'm available for freelance, #[a(href="mailto:samuel.aaron.mcguire@gmail.com?subject=Mail from Our Site" target="_blank") reach out]. Want the #[a(href="#") source code] to this site that includes design and After Effects files?
+                    p I'm a creative technologist and I'm available for freelance, #[a(href="mailto:samuel.aaron.mcguire@gmail.com?subject=Mail from Our Site" target="_blank") reach out]. Want the #[a(href="https://medium.com/@samcreate/2019-portfolio-cf42faf34fc1") source code] to this site that includes design and After Effects files?
                     ul
                         li.linkedin
                             a.link(href="https://www.linkedin.com/in/samcreate/" target="_blank") My LinkedIn Profile
@@ -96,10 +105,13 @@ html
                         .halos
                         .me
                             img(src="/images/headshot1.png")
-                .scroll-indicator-container
-                    .scroll-indicator
-                .plankton  
+
+                .plankton
             .bg
+
+            .scroll-icon-container
+                .scroll-icon
+                p SCROLL ME
         script(src='app.js')
 
         <svg xmlns="http://www.w3.org/2000/svg">

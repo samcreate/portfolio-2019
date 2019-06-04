@@ -168,20 +168,15 @@ h5 {
   color: #fff;
   height: 70px;
   margin: 0;
-  opacity: 1;
+  opacity: 0;
   overflow: hidden;
   padding: 0;
   pointer-events: all;
   position: fixed;
   right: 1vw;
   top: 1vw;
-  transition: transform 0.6s, opacity 0.6s;
   width: 180px;
   z-index: 99;
-}
-#app nav.hidden {
-  opacity: 0;
-  transmform: translateY('-30px');
 }
 @media only screen and (max-width: 600px) {
   #app nav {
@@ -643,23 +638,6 @@ h5 {
     width: 72vw;
   }
 }
-#app .about .scroll-indicator {
-  left: 110%;
-  opacity: 0;
-  position: fixed;
-  top: 50%;
-}
-#app .about .scroll-indicator::before {
-  border: solid #fff;
-  border-width: 0 4px 4px 0;
-  content: '';
-  content: '';
-  display: inline-block;
-  height: 1em;
-  padding: 3px;
-  transform: rotate(-45deg);
-  width: 1em;
-}
 #app .bg {
   background: url("https://s3-us-west-2.amazonaws.com/lottietest/squiggle.gif");
   background-size: 150px;
@@ -674,7 +652,7 @@ h5 {
   width: 150vw;
 }
 #app:not(.about-tilt-off) .bg {
-  transform: translateZ(-280px) scale(2.3) rotateX(calc(2deg * var(--rot-x, 0))) rotateY(calc(2deg * var(--rot-y, 0)));
+  transform: translateZ(-299px) scale(2.3) rotateX(calc(-5deg * var(--rot-x, 0))) rotateY(calc(5deg * var(--rot-y, 0)));
 }
 @media only screen and (max-width: 600px) {
   #app .bg {
@@ -1239,6 +1217,50 @@ h5 {
 .plankton > div svg path {
   stroke: #fff !important;
 }
+.scroll-icon-container {
+  pointer-events: all;
+  position: fixed;
+  left: 50%;
+  bottom: 1.5%;
+  opacity: 0;
+  margin-left: -10px;
+}
+.scroll-icon-container .scroll-icon {
+  align-items: center;
+  border: solid 2px;
+  border-radius: 2em;
+  color: rgba(255,255,255,0.5);
+  display: flex;
+  font-size: 22px;
+  height: 2em;
+  justify-content: center;
+  transition: 0.4s;
+  width: 1.2em;
+}
+.scroll-icon-container .scroll-icon:hover {
+  background-color: rgba(255,255,255,0.05);
+  color: #fff;
+}
+.scroll-icon-container .scroll-icon::after {
+  animation: scroll-icon 2.2s infinite cubic-bezier(0.65, 0.05, 0.36, 1);
+  background-color: #fff;
+  border-radius: 50%;
+  content: '';
+  height: 5px;
+  width: 5px;
+}
+.scroll-icon-container p {
+  animation: fadeIt 2.2s infinite cubic-bezier(0.65, 0.05, 0.36, 1);
+  font-family: 'montserrat_blackregular', sans-serif;
+  font-weight: 400;
+  font-size: 0.45em;
+  display: inline-flex;
+  width: 151%;
+  position: relative;
+  left: -16px;
+  text-align: center;
+  color: #fff;
+}
 @-moz-keyframes rotating {
   from {
     transform: rotate(0deg);
@@ -1301,6 +1323,102 @@ h5 {
   }
   to {
     transform: scale(1);
+  }
+}
+@-moz-keyframes scroll-icon {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@-webkit-keyframes scroll-icon {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@-o-keyframes scroll-icon {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes scroll-icon {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@-moz-keyframes fadeIt {
+  0% {
+    opacity: 0;
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fadeIt {
+  0% {
+    opacity: 0;
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes fadeIt {
+  0% {
+    opacity: 0;
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadeIt {
+  0% {
+    opacity: 0;
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 

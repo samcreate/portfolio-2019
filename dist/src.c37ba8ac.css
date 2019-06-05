@@ -750,7 +750,7 @@ h5 {
 #app .sections h3 {
   color: #deefdb;
   display: grid;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'montserrat_blackregular', sans-serif;
   font-size: 17vw;
   grid-area: mid;
   height: 29vh;

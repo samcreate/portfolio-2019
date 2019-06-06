@@ -2,237 +2,233 @@ import { Dispatcher } from "./dispatcher";
 import { TweenMax, Power2, Power1, TimelineMax } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import { Lethargy } from "../node_modules/lethargy/lethargy";
-import CSSRulePlugin from "gsap/CSSRulePlugin";
 import { Utily as u } from "./utily";
 
 export class SlideShow extends Dispatcher {
   constructor(sections, assets) {
     super(sections);
 
-    this.$ = document.querySelector.bind(document);
-    this.$$ = document.querySelectorAll.bind(document);
-
+    this.slides = sections;
+    this.total = this.slides.length - 1;
+    this.current = -1;
+    this.DIR_FORWARD = "forwards";
+    this.DIR_BACKWARD = "backward";
+    this.HOME_SECTION = "home";
+    this.MOUSE_FRWD = -1;
+    this.MOUSE_DWRD = 1;
+    this.lastSlide = null;
     this.assets = assets;
-    this.loaded = 0;
+    this.scrollMomentumSlower = new Lethargy();
     this.animations = {};
     this.animations.lottie = {};
     this.animations.main = {};
-    this.lethargy = new Lethargy();
-    this.sections = sections;
-    this.pastIndex = 1;
-    this.currentSectionIndex = 1;
-    this.upward = -1;
-    this.downward = 1;
-    this.firstRun = true;
-    this.isTweenBool = false;
-    this.sectionGradientOpacity = 0.0;
-    this.currentSectionName;
+    this.timescale = 1;
+    this.checkURL().then(this.init.bind(this));
+  }
 
-    TweenMax.set(this.$$(".sections section.hidden"), {
+  init(location) {
+    // prettier-ignore
+    this.prepSlides()
+    .then(
+      this.createSectionTimelines()
+      .then(
+        this.setUpEventlisteners()
+        .then(()=>{
+          //send to section from URL #, or do nothing.
+          if(location.section !== this.HOME_SECTION){
+            setTimeout(()=>{
+              this.current = location.index;
+              this.slideTo(this.current, this.DIR_FORWARD);
+            },2000)
+            
+          }
+        })
+      )
+    );
+  }
+
+  async prepSlides() {
+    TweenMax.set(u.$$(".sections section"), {
       rotationY: -18,
       left: "130vw",
       scale: 0.8
     });
-    TweenMax.set(this.$(".sections"), {
+    TweenMax.set(u.$(".sections"), {
       css: {
         pointerEvents: "none"
       }
     });
-
-    sections.forEach(slide => {
-      try {
-        this.createMainSectionTimeline(slide.dataset.section).then(response => {
-          this.loaded++;
-          this.animations.main[slide.dataset.section] = response.tl;
-          this.animations.lottie[slide.dataset.section] = response.lottie;
-          if (this.loaded === sections.length) {
-            // this.dispatch("ready", {
-            //   loaded: true
-            // });
-          }
-        });
-      } catch (error) {
-        console.error(
-          "Unabled to create main timeline: ",
-          slide.dataset.section
-        );
-      }
-    });
-
-    this.setUpEventlisteners();
+    return true;
   }
 
-  setUpEventlisteners() {
-    document.addEventListener("wheel", this.handleWheel.bind(this));
-    window.addEventListener("keydown", this.handleArrowKeys.bind(this), true);
-  }
+  async createSectionTimelines() {
+    for (let index = 0; index < this.slides.length; index++) {
+      const slide = this.slides[index];
+      const name = slide.dataset.section;
 
-  handleGoHome() {
-    this.firstRun = true;
+      const lottie = await this.getLottieTween(name);
+      const tree = new TimelineMax({ paused: true });
+      const h3 = u.$("." + name + " h3");
+      const h2 = u.$("." + name + " h2");
+      const subtitle = u.$("." + name + " .title p");
+      const title_border = u.$("." + name + " .title");
+      const p_first_letter = u.$("." + name + " .copy span.first-letter");
+      const p_body_copy = u.$("." + name + " .copy span.body-copy");
 
-    const tl = new TimelineMax();
+      TweenMax.set(h3, { y: "+=" + h3.clientHeight / 2 + "px" });
 
-    const sectionToHide = u.$("section." + this.currentSectionName);
-    const ruleForHide = CSSRulePlugin.getRule(
-      "#app .sections section." + this.currentSectionName + "::before"
-    );
-
-    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
-
-    this.dispatch("slideState", {
-      visible: false,
-      section: this.currentSectionName
-    });
-
-    this.pastIndex = 1;
-    this.currentSectionIndex = 1;
-  }
-
-  handleArrowKeys(event) {
-    if (event.defaultPrevented) {
-      return;
-    }
-
-    switch (event.key) {
-      case "Down":
-      case "ArrowDown":
-      case "Right":
-      case "ArrowRight":
-        this.checkSlideState();
-        this.next();
-        break;
-      case "Up":
-      case "ArrowUp":
-      case "Left":
-      case "ArrowLeft":
-        this.checkSlideState();
-        this.prev();
-
-        break;
-    }
-    event.preventDefault();
-  }
-
-  handleWheel(event) {
-    if (!this.lethargy.check(event)) return;
-    let scrollDelta = Math.sign(event.deltaY);
-
-    this.checkSlideState();
-
-    if (!this.isTweenBool && scrollDelta === this.downward) {
-      this.next();
-    } else if (!this.isTweenBool && scrollDelta === this.upward) {
-      this.prev();
-    }
-  }
-
-  checkSlideState() {
-    this.isTweenBool = false;
-
-    this.sections.forEach($sect => {
-      if (TweenMax.isTweening($sect)) {
-        this.isTweenBool = true;
-      }
-    });
-
-    if (this.currentSectionIndex > this.sections.length) {
-      this.currentSectionIndex = 1;
-    }
-    if (this.currentSectionIndex < 1) {
-      this.currentSectionIndex = this.sections.length;
-    }
-    if (this.pastIndex < 1) {
-      this.pastIndex = this.sections.length;
-    }
-
-    if (this.pastIndex > this.sections.length) {
-      this.pastIndex = 1;
-    }
-  }
-
-  next() {
-    this.firstRun = false;
-    const tl = new TimelineMax();
-    tl.timeScale(0.95);
-
-    const sectionToShow = this.sections[this.currentSectionIndex - 1];
-    const sectionToHide = this.sections[this.pastIndex - 1];
-    const sectionName = sectionToShow.dataset.section;
-    const sectionToHideName = sectionToHide.dataset.section;
-    const ruleForHide = CSSRulePlugin.getRule(
-      "#app .sections section." + sectionToHideName + "::before"
-    );
-    const ruleForShow = CSSRulePlugin.getRule(
-      "#app .sections section." + sectionName + "::before"
-    );
-
-    this.animations.lottie[sectionToHideName].pause();
-    this.animations.lottie[sectionName].pause();
-
-    TweenMax.to(
-      ruleForShow,
-      0,
-      { cssRule: { opacity: this.sectionGradientOpacity } },
-      0
-    );
-
-    if (sectionName !== sectionToHideName) {
-      tl.to(sectionToHide, 0.3, {
-        z: -150,
-        ease: Power1.easeOut,
-        zIndex: 0,
-        onComplete: () => {
-          setTimeout(() => {
-            TweenMax.set(sectionToHide, {
-              rotationY: -18,
-              left: "130vw",
-              scale: 0.8,
-              visibility: "hidden"
-            });
-          }, 300);
-        }
+      TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
+        opacity: 0,
+        y: "+=20px",
+        ease: Power2.easeOut
       });
-      tl.to(
-        ruleForHide,
-        0.3,
-        { cssRule: { opacity: this.sectionGradientOpacity } },
-        0
+
+      tree.to(h3, 1, { opacity: 1, y: 0, ease: Power1.easeOut });
+
+      tree.call(
+        () => {
+          lottie.play();
+        },
+        null,
+        null,
+        "-=0.9"
       );
+
+      tree.staggerTo(
+        [h2, subtitle],
+        0.93,
+        { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
+        0.08,
+        "-=0.5"
+      );
+
+      tree.fromTo(
+        title_border,
+        0.25,
+        { borderRightColor: "rgba(0,0,0,0)" },
+        { borderRightColor: "rgba(0,0,0,1)" },
+        "-=0.8"
+      );
+
+      tree.staggerTo(
+        [p_first_letter, p_body_copy],
+        0.93,
+        { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
+        0.08,
+        "-=0.8"
+      );
+      this.animations.main[slide.dataset.section] = tree;
+      this.animations.lottie[slide.dataset.section] = lottie;
     }
-    this.currentSectionName = sectionName;
+    return true;
+  }
+  async getLottieTween(name) {
+    let tmpAnim = await lottie.loadAnimation({
+      wrapper: u.$("." + name + " .lottie"),
+      renderer: "svg",
+      loop: true,
+      autoplay: false,
+      animationData: this.assets.getResult(name),
+      width: "100%",
+      height: "100%"
+    });
+
+    return tmpAnim;
+  }
+
+  slideTo(index, direction) {
+    let _tranition_TL = new TimelineMax();
+    _tranition_TL.timeScale(this.timescale);
+    if (index >= 0 && index <= this.total) {
+      if (direction === this.DIR_FORWARD) {
+        this.hideSlide(this.lastSlide, this.DIR_FORWARD).then(hide_response => {
+          this.showSlide(this.slides[index]).then(show_response => {
+            if (hide_response) {
+              _tranition_TL.eventCallback(
+                "onComplete",
+                hide_response.handleOnComplete
+              );
+
+              _tranition_TL.add(hide_response.tl);
+              _tranition_TL.add(show_response.tl, "-=0.1");
+            } else {
+              _tranition_TL.add(show_response.tl);
+            }
+          });
+        });
+        this.lastSlide = this.slides[index];
+      } else if (direction === this.DIR_BACKWARD) {
+        this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(
+          hide_response => {
+            this.showSlide(this.slides[index], this.DIR_BACKWARD).then(
+              show_response => {
+                _tranition_TL.eventCallback(
+                  "onComplete",
+                  show_response.handleOnComplete
+                );
+                _tranition_TL.add(hide_response.tl);
+                _tranition_TL.add(show_response.tl, "-=0.6");
+              }
+            );
+          }
+        );
+        this.lastSlide = this.slides[index];
+      }
+    } else {
+      console.error("Index: " + index, this.total);
+    }
+  }
+
+  async showSlide(slide, dir) {
+    //console.log("+SHOW: ", slide);
+    const tl = new TimelineMax();
+    const sectionName = slide.dataset.section;
+    const handleOnComplete = () => {
+      if (dir === this.DIR_BACKWARD) {
+        TweenMax.set(slide, {
+          zIndex: 1
+        });
+      }
+    };
+    tl.timeScale(this.timescale);
+
     this.dispatch("slideState", {
       visible: true,
       section: sectionName
     });
-    tl.to(
-      sectionToShow,
-      0.4,
-      {
+    if (dir === this.DIR_BACKWARD) {
+      TweenMax.set(slide, {
+        z: -150,
+        zIndex: 0,
+        rotationY: 0,
+        scale: 1,
         left: 0,
-        ease: Power1.easeOut,
-        z: 20,
-        zIndex: 1,
-        visibility: "visible",
-        onComplete: () => {
-          TweenMax.to(ruleForShow, 1, { cssRule: { opacity: 0 } });
-        }
-      },
-      "-=0.15"
-    );
+        visibility: "visible"
+      });
+    } else {
+      tl.to(
+        slide,
+        0.4,
+        {
+          left: 0,
+          ease: Power1.easeOut,
+          z: 20,
+          zIndex: 1,
+          visibility: "visible"
+        },
+        "-=0.15"
+      );
+    }
+
+    tl.to(slide, 0.65, { rotationY: 0, ease: Power1.easeOut }, "-=0.35");
     tl.to(
-      sectionToShow,
-      0.65,
-      { rotationY: 0, ease: Power1.easeOut },
-      "-=0.35"
-    );
-    tl.to(
-      sectionToShow,
+      slide,
       0.4,
       { rotationX: -15, scale: 1, ease: Power1.easeOut },
       "-=0.11"
     );
     tl.to(
-      sectionToShow,
+      slide,
       0.35,
       {
         rotationX: 0,
@@ -246,209 +242,198 @@ export class SlideShow extends Dispatcher {
       },
       "-=0.35"
     );
-    this.pastIndex = this.currentSectionIndex;
-    this.currentSectionIndex++;
+    return { tl, handleOnComplete };
   }
 
-  prev() {
-    if (this.firstRun) return;
-    this.pastIndex--;
-    this.currentSectionIndex--;
-
-    let tl = new TimelineMax();
-    tl.timeScale(0.95);
-
-    if (this.pastIndex === 0) {
-      this.pastIndex = this.sections.length;
-    }
-
-    if (this.currentSectionIndex === 0) {
-      this.currentSectionIndex = this.sections.length;
-    }
-
-    let sectionToShow = this.sections[this.pastIndex - 1];
-    let sectionToHide = this.sections[this.currentSectionIndex - 1];
-    let sectionName = sectionToShow.dataset.section;
-    let sectionToHideName = sectionToHide.dataset.section;
-    let ruleForHide = CSSRulePlugin.getRule(
-      "#app .sections section." + sectionToHideName + "::before"
-    );
-    let ruleForShow = CSSRulePlugin.getRule(
-      "#app .sections section." + sectionName + "::before"
-    );
-    if (this.currentSectionIndex !== 1) {
-      tl.set(sectionToShow, {
-        z: -150,
-        ease: Power1.easeOut,
-        zIndex: 0,
-        rotationY: 0,
-        scale: 1,
-        left: 0,
-        visibility: "visible"
-      });
-
-      TweenMax.to(ruleForShow, 0, {
-        cssRule: { opacity: this.sectionGradientOpacity }
-      });
-    } else {
-      this.firstRun = true;
-    }
-
+  async hideSlide(slide, dir) {
+    if (!this.lastSlide) return false;
+    //console.log("-HIDE: ", slide);
+    const tl = new TimelineMax();
+    const sectionName = slide.dataset.section;
+    const handleOnComplete = () => {
+      if (dir === this.DIR_FORWARD) {
+        slide.style.visibility = "hidden";
+        TweenMax.set(slide, {
+          rotationZ: 0,
+          rotationY: -18,
+          left: "130vw",
+          z: 0,
+          scale: 0.8,
+          zIndex: 0
+        });
+      }
+    };
+    tl.timeScale(this.timescale);
     this.animations.lottie[sectionName].pause();
-    this.animations.lottie[sectionToHideName].pause();
+    this.animations.lottie[sectionName].pause();
     this.dispatch("slideState", {
       visible: true,
       section: sectionName
     });
-    this.currentSectionName = sectionName;
-
-    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
-    if (this.currentSectionIndex !== 1) {
-      tl.to(
-        sectionToShow,
-        0.4,
-        {
-          rotationX: -15,
-          scale: 1,
-          ease: Power1.easeOut
-        },
-        "-=0.11"
-      );
-      tl.to(
-        ruleForShow,
-        0.3,
-        {
-          cssRule: { opacity: 0 }
-        },
-        "-=0.4"
-      );
-      tl.to(
-        sectionToShow,
-        0.35,
-        {
-          rotationX: 0,
-          rotationZ: 0,
-          z: 0,
-          ease: Power1.easeOut,
-          onComplete: () => {
-            this.animations.lottie[sectionName].play();
-            this.animations.main[sectionName].play();
-          }
-        },
-        "-=0.35"
-      );
-    } else {
-      this.dispatch("slideState", {
-        visible: false,
-        section: sectionName
-      });
-    }
-  }
-
-  hideSlideAnim(tl, sectionToHide, ruleForHide) {
-    tl.to(sectionToHide, 0.35, {
+    tl.to(slide, 0.35, {
       rotationX: -15,
       ease: Power1.easeOut
     });
 
     tl.to(
-      sectionToHide,
+      slide,
       0.4,
-      { rotationX: 0, z: 20, scale: 0.8, ease: Power1.easeOut },
+      {
+        rotationX: 0,
+        z: 20,
+        scale: 0.8,
+        ease: Power1.easeOut
+      },
       "-=0.25"
     );
-    tl.to(
-      ruleForHide,
-      0.4,
-      {
-        cssRule: { opacity: this.sectionGradientOpacity }
-      },
-      "-=0.4"
-    );
-    tl.to(
-      sectionToHide,
-      0.2,
-      { rotationZ: -3, ease: Power1.easeOut },
-      "-=0.15"
-    );
-    tl.to(
-      sectionToHide,
-      0.4,
-      {
-        rotationZ: 0,
-        rotationY: -18,
-        left: "130vw",
-        z: 0,
-        scale: 0.8,
-        ease: Power1.easeOut,
-        onComplete: function() {
-          TweenMax.set(this.target, { visibility: "hidden" });
+    if (dir === this.DIR_BACKWARD) {
+      tl.to(slide, 0.2, { rotationZ: -3, ease: Power1.easeOut }, "-=0.15");
+      tl.to(
+        slide,
+        0.4,
+        {
+          rotationZ: 0,
+          rotationY: -18,
+          left: "130vw",
+          z: 0,
+          scale: 0.8,
+          ease: Power1.easeOut,
+          onComplete: function() {
+            TweenMax.set(this.target, { visibility: "hidden" });
+          }
+        },
+        "-=0.15"
+      );
+    } else {
+      TweenMax.set(slide, {
+        zIndex: 0
+      });
+    }
+
+    return { tl, handleOnComplete };
+  }
+
+  handleNext() {
+    this.isSectionAnimating().then(bool => {
+      if (!bool) {
+        this.current === this.total ? (this.current = 0) : (this.current += 1);
+        this.slideTo(this.current, this.DIR_FORWARD);
+        this.setHashURL();
+      }
+    });
+  }
+
+  handlePrev() {
+    if (this.current < 0) return;
+    this.isSectionAnimating().then(bool => {
+      if (!bool) {
+        this.current === 0 ? (this.current = this.total) : (this.current -= 1);
+        this.slideTo(this.current, this.DIR_BACKWARD);
+        this.setHashURL();
+      }
+    });
+  }
+
+  async isSectionAnimating() {
+    let tweenFlag = false;
+    for (let index = 0; index < this.slides.length; index++) {
+      const slide = this.slides[index];
+      if (TweenMax.isTweening(slide)) {
+        tweenFlag = true;
+      }
+    }
+
+    return tweenFlag;
+  }
+
+  async setUpEventlisteners() {
+    document.addEventListener("wheel", this.handleWheel.bind(this));
+    window.addEventListener("keydown", this.handleArrowKeys.bind(this), true);
+    return true;
+  }
+
+  handleGoHome() {
+    this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(hide_response => {
+      this.current = -1;
+      this.lastSlide = null;
+      hide_response.tl.play();
+      location.hash = "";
+      this.dispatch("slideState", {
+        visible: false,
+        section: "home"
+      });
+    });
+  }
+
+  gotoSection(sectionHash) {
+    this.isSectionAnimating().then(bool => {
+      if (!bool) {
+        let name = sectionHash.split("#")[1];
+        if (this.lastSlide) {
+          if (this.lastSlide.className === name) return;
         }
-      },
-      "-=0.15"
-    );
+
+        let slideIndex = this.getIndexFromName(name);
+        this.current = slideIndex;
+        this.setHashURL();
+        this.slideTo(this.current, this.DIR_FORWARD);
+      }
+    });
   }
 
-  async createMainSectionTimeline(name) {
-    const lottie = await this.getLottieTween(name);
-    const tree = new TimelineMax({ paused: true });
+  handleArrowKeys(event) {
+    if (event.defaultPrevented) {
+      return;
+    }
+    switch (event.key) {
+      case "Down":
+      case "ArrowDown":
+      case "Right":
+      case "ArrowRight":
+        this.handleNext();
+        break;
+      case "Up":
+      case "ArrowUp":
+      case "Left":
+      case "ArrowLeft":
+        this.handlePrev();
 
-    const h3 = this.$("." + name + " h3");
-    const h2 = this.$("." + name + " h2");
-    const subtitle = this.$("." + name + " .title p");
-    const title_border = this.$("." + name + " .title");
-    const p_first_letter = this.$("." + name + " .copy span.first-letter");
-    const p_body_copy = this.$("." + name + " .copy span.body-copy");
-    TweenMax.set(h3, { y: "+=" + h3.clientHeight / 2 + "px" });
-    TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
-      opacity: 0,
-      y: "+=20px",
-      ease: Power2.easeOut
-    });
-
-    tree.to(h3, 1, { opacity: 1, y: 0, ease: Power1.easeOut });
-    tree.call(
-      () => {
-        lottie.play();
-      },
-      null,
-      null,
-      "-=0.9"
-    );
-    tree.staggerTo(
-      [h2, subtitle],
-      0.93,
-      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-      0.08,
-      "-=0.5"
-    );
-    tree.fromTo(
-      title_border,
-      0.25,
-      { borderRightColor: "rgba(0,0,0,0)" },
-      { borderRightColor: "rgba(0,0,0,1)" },
-      "-=0.8"
-    );
-    tree.staggerTo(
-      [p_first_letter, p_body_copy],
-      0.93,
-      { autoAlpha: 1, y: "-=20px", ease: Power2.easeOut },
-      0.08,
-      "-=0.8"
-    );
-    return { tl: tree, lottie };
+        break;
+    }
+    event.preventDefault();
   }
-  async getLottieTween(name) {
-    let tmpAnim = await lottie.loadAnimation({
-      wrapper: this.$("." + name + " .lottie"),
-      renderer: "svg",
-      loop: true,
-      autoplay: false,
-      animationData: this.assets.getResult(name),
-      width: "100%",
-      height: "100%"
-    });
 
-    return tmpAnim;
+  handleWheel(event) {
+    if (!this.scrollMomentumSlower.check(event)) return;
+    let scrollDelta = Math.sign(event.deltaY);
+    if (scrollDelta === this.MOUSE_DWRD) {
+      this.handleNext();
+    } else if (scrollDelta === this.MOUSE_FRWD) {
+      this.handlePrev();
+    }
+  }
+  async checkURL() {
+    if (window.location.hash) {
+      let preposedSection = window.location.hash.split("#")[1].toLowerCase();
+      //console.log("preposedSection ", preposedSection);
+      let slideIndex = this.getIndexFromName(preposedSection);
+      return { section: preposedSection, index: slideIndex };
+    }
+    return { section: this.HOME_SECTION };
+  }
+
+  getIndexFromName(name) {
+    for (let index = 0; index < this.slides.length; index++) {
+      const slide = this.slides[index];
+      if (slide.className.toLowerCase() === name) {
+        return index;
+      }
+    }
+  }
+
+  setHashURL() {
+    const slide = this.slides[this.current];
+    const slideName = slide.className;
+    location.hash = slideName;
   }
 }

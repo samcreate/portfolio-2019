@@ -25488,145 +25488,7 @@ GroupEffect.prototype.init = function(data,element){
 
 }).call(this);
 
-},{}],"../node_modules/gsap/CSSRulePlugin.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.CSSRulePlugin = void 0;
-
-var _TweenLite = _interopRequireWildcard(require("./TweenLite.js"));
-
-var _CSSPlugin = _interopRequireDefault(require("./CSSPlugin.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-/*!
- * VERSION: 0.6.8
- * DATE: 2019-02-22
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
- * @author: Jack Doyle, jack@greensock.com
- */
-
-/* eslint-disable */
-_TweenLite._gsScope._gsDefine("plugins.CSSRulePlugin", ["plugins.TweenPlugin", "TweenLite", "plugins.CSSPlugin"], function () {
-  /** @constructor **/
-  var CSSRulePlugin = function () {
-    _TweenLite.TweenPlugin.call(this, "cssRule");
-
-    this._overwriteProps.length = 0;
-  },
-      _doc = _TweenLite._gsScope.document,
-      _superSetRatio = _CSSPlugin.default.prototype.setRatio,
-      p = CSSRulePlugin.prototype = new _CSSPlugin.default();
-
-  p._propName = "cssRule";
-  p.constructor = CSSRulePlugin;
-  CSSRulePlugin.version = "0.6.8";
-  CSSRulePlugin.API = 2;
-  /**
-   * Searches the style sheets in the document for a particular selector like ".myClass" or "a" or "a:hover" or ":after" and
-   * returns a reference to that style sheet (or an array of them in the case of a pseudo selector like ":after"). Then you
-   * can animate the individual properties of the style sheet.
-   *
-   * @param {!string} selector a string describing the selector, like ".myClass" or "a" or "a:hover" or ":after"
-   * @return a reference to the style sheet (or an array of them in the case of a pseudo selector). If none was found, null is returned (or an empty array for a pseudo selector)
-   */
-
-  CSSRulePlugin.getRule = function (selector) {
-    var ruleProp = _doc.all ? "rules" : "cssRules",
-        ss = _doc.styleSheets,
-        i = ss.length,
-        pseudo = selector.charAt(0) === ":",
-        j,
-        curSS,
-        cs,
-        a;
-    selector = (pseudo ? "" : ",") + selector.split("::").join(":").toLowerCase() + ","; //note: old versions of IE report tag name selectors as upper case, so we just change everything to lowercase.
-
-    if (pseudo) {
-      a = [];
-    }
-
-    while (--i > -1) {
-      //Firefox may throw insecure operation errors when css is loaded from other domains, so try/catch.
-      try {
-        curSS = ss[i][ruleProp];
-
-        if (!curSS) {
-          continue;
-        }
-
-        j = curSS.length;
-      } catch (e) {
-        console.log(e);
-        continue;
-      }
-
-      while (--j > -1) {
-        cs = curSS[j];
-
-        if (cs.selectorText && ("," + cs.selectorText.split("::").join(":").toLowerCase() + ",").indexOf(selector) !== -1) {
-          //note: IE adds an extra ":" to pseudo selectors, so .myClass:after becomes .myClass::after, so we need to strip the extra one out.
-          if (pseudo) {
-            a.push(cs.style);
-          } else {
-            return cs.style;
-          }
-        }
-      }
-    }
-
-    return a;
-  }; // @private gets called when the tween renders for the first time. This kicks everything off, recording start/end values, etc.
-
-
-  p._onInitTween = function (target, value, tween) {
-    if (target.cssText === undefined) {
-      return false;
-    }
-
-    var div = target._gsProxy = target._gsProxy || _doc.createElement("div");
-
-    this._ss = target;
-    this._proxy = div.style;
-    div.style.cssText = target.cssText;
-
-    _CSSPlugin.default.prototype._onInitTween.call(this, div, value, tween); //we just offload all the work to the regular CSSPlugin and then copy the cssText back over to the rule in the setRatio() method. This allows us to have all of the updates to CSSPlugin automatically flow through to CSSRulePlugin instead of having to maintain both
-
-
-    return true;
-  }; // @private gets called every time the tween updates, passing the new ratio (typically a value between 0 and 1, but not always (for example, if an Elastic.easeOut is used, the value can jump above 1 mid-tween). It will always start and 0 and end at 1.
-
-
-  p.setRatio = function (v) {
-    _superSetRatio.call(this, v);
-
-    var proxy = this._proxy,
-        ss = this._ss,
-        i = proxy.length;
-
-    while (--i > -1) {
-      ss[proxy[i]] = proxy[proxy[i]];
-    }
-  };
-
-  _TweenLite.TweenPlugin.activate([CSSRulePlugin]);
-
-  return CSSRulePlugin;
-}, true);
-
-var CSSRulePlugin = _TweenLite.globals.CSSRulePlugin;
-exports.default = exports.CSSRulePlugin = CSSRulePlugin;
-},{"./TweenLite.js":"../node_modules/gsap/TweenLite.js","./CSSPlugin.js":"../node_modules/gsap/CSSPlugin.js"}],"utily.js":[function(require,module,exports) {
+},{}],"utily.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25674,8 +25536,6 @@ var _lottieWeb = _interopRequireDefault(require("lottie-web"));
 
 var _lethargy = require("../node_modules/lethargy/lethargy");
 
-var _CSSRulePlugin = _interopRequireDefault(require("gsap/CSSRulePlugin"));
-
 var _utily = require("./utily");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -25683,75 +25543,366 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 class SlideShow extends _dispatcher.Dispatcher {
   constructor(sections, assets) {
     super(sections);
-    this.$ = document.querySelector.bind(document);
-    this.$$ = document.querySelectorAll.bind(document);
+    this.slides = sections;
+    this.total = this.slides.length - 1;
+    this.current = -1;
+    this.DIR_FORWARD = "forwards";
+    this.DIR_BACKWARD = "backward";
+    this.HOME_SECTION = "home";
+    this.MOUSE_FRWD = -1;
+    this.MOUSE_DWRD = 1;
+    this.lastSlide = null;
     this.assets = assets;
-    this.loaded = 0;
+    this.scrollMomentumSlower = new _lethargy.Lethargy();
     this.animations = {};
     this.animations.lottie = {};
     this.animations.main = {};
-    this.lethargy = new _lethargy.Lethargy();
-    this.sections = sections;
-    this.pastIndex = 1;
-    this.currentSectionIndex = 1;
-    this.upward = -1;
-    this.downward = 1;
-    this.firstRun = true;
-    this.isTweenBool = false;
-    this.sectionGradientOpacity = 0.0;
-    this.currentSectionName;
+    this.timescale = 1;
+    this.checkURL().then(this.init.bind(this));
+  }
 
-    _TweenMax.TweenMax.set(this.$$(".sections section.hidden"), {
+  init(location) {
+    // prettier-ignore
+    this.prepSlides().then(this.createSectionTimelines().then(this.setUpEventlisteners().then(() => {
+      //send to section from URL #, or do nothing.
+      if (location.section !== this.HOME_SECTION) {
+        setTimeout(() => {
+          this.current = location.index;
+          this.slideTo(this.current, this.DIR_FORWARD);
+        }, 2000);
+      }
+    })));
+  }
+
+  async prepSlides() {
+    _TweenMax.TweenMax.set(_utily.Utily.$$(".sections section"), {
       rotationY: -18,
       left: "130vw",
       scale: 0.8
     });
 
-    _TweenMax.TweenMax.set(this.$(".sections"), {
+    _TweenMax.TweenMax.set(_utily.Utily.$(".sections"), {
       css: {
         pointerEvents: "none"
       }
     });
 
-    sections.forEach(slide => {
-      try {
-        this.createMainSectionTimeline(slide.dataset.section).then(response => {
-          this.loaded++;
-          this.animations.main[slide.dataset.section] = response.tl;
-          this.animations.lottie[slide.dataset.section] = response.lottie;
-
-          if (this.loaded === sections.length) {// this.dispatch("ready", {
-            //   loaded: true
-            // });
-          }
-        });
-      } catch (error) {
-        console.error("Unabled to create main timeline: ", slide.dataset.section);
-      }
-    });
-    this.setUpEventlisteners();
+    return true;
   }
 
-  setUpEventlisteners() {
+  async createSectionTimelines() {
+    for (let index = 0; index < this.slides.length; index++) {
+      const slide = this.slides[index];
+      const name = slide.dataset.section;
+      const lottie = await this.getLottieTween(name);
+      const tree = new _TweenMax.TimelineMax({
+        paused: true
+      });
+
+      const h3 = _utily.Utily.$("." + name + " h3");
+
+      const h2 = _utily.Utily.$("." + name + " h2");
+
+      const subtitle = _utily.Utily.$("." + name + " .title p");
+
+      const title_border = _utily.Utily.$("." + name + " .title");
+
+      const p_first_letter = _utily.Utily.$("." + name + " .copy span.first-letter");
+
+      const p_body_copy = _utily.Utily.$("." + name + " .copy span.body-copy");
+
+      _TweenMax.TweenMax.set(h3, {
+        y: "+=" + h3.clientHeight / 2 + "px"
+      });
+
+      _TweenMax.TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
+        opacity: 0,
+        y: "+=20px",
+        ease: _TweenMax.Power2.easeOut
+      });
+
+      tree.to(h3, 1, {
+        opacity: 1,
+        y: 0,
+        ease: _TweenMax.Power1.easeOut
+      });
+      tree.call(() => {
+        lottie.play();
+      }, null, null, "-=0.9");
+      tree.staggerTo([h2, subtitle], 0.93, {
+        autoAlpha: 1,
+        y: "-=20px",
+        ease: _TweenMax.Power2.easeOut
+      }, 0.08, "-=0.5");
+      tree.fromTo(title_border, 0.25, {
+        borderRightColor: "rgba(0,0,0,0)"
+      }, {
+        borderRightColor: "rgba(0,0,0,1)"
+      }, "-=0.8");
+      tree.staggerTo([p_first_letter, p_body_copy], 0.93, {
+        autoAlpha: 1,
+        y: "-=20px",
+        ease: _TweenMax.Power2.easeOut
+      }, 0.08, "-=0.8");
+      this.animations.main[slide.dataset.section] = tree;
+      this.animations.lottie[slide.dataset.section] = lottie;
+    }
+
+    return true;
+  }
+
+  async getLottieTween(name) {
+    let tmpAnim = await _lottieWeb.default.loadAnimation({
+      wrapper: _utily.Utily.$("." + name + " .lottie"),
+      renderer: "svg",
+      loop: true,
+      autoplay: false,
+      animationData: this.assets.getResult(name),
+      width: "100%",
+      height: "100%"
+    });
+    return tmpAnim;
+  }
+
+  slideTo(index, direction) {
+    let _tranition_TL = new _TweenMax.TimelineMax();
+
+    _tranition_TL.timeScale(this.timescale);
+
+    if (index >= 0 && index <= this.total) {
+      if (direction === this.DIR_FORWARD) {
+        this.hideSlide(this.lastSlide, this.DIR_FORWARD).then(hide_response => {
+          this.showSlide(this.slides[index]).then(show_response => {
+            if (hide_response) {
+              _tranition_TL.eventCallback("onComplete", hide_response.handleOnComplete);
+
+              _tranition_TL.add(hide_response.tl);
+
+              _tranition_TL.add(show_response.tl, "-=0.1");
+            } else {
+              _tranition_TL.add(show_response.tl);
+            }
+          });
+        });
+        this.lastSlide = this.slides[index];
+      } else if (direction === this.DIR_BACKWARD) {
+        this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(hide_response => {
+          this.showSlide(this.slides[index], this.DIR_BACKWARD).then(show_response => {
+            _tranition_TL.eventCallback("onComplete", show_response.handleOnComplete);
+
+            _tranition_TL.add(hide_response.tl);
+
+            _tranition_TL.add(show_response.tl, "-=0.6");
+          });
+        });
+        this.lastSlide = this.slides[index];
+      }
+    } else {
+      console.error("Index: " + index, this.total);
+    }
+  }
+
+  async showSlide(slide, dir) {
+    //console.log("+SHOW: ", slide);
+    const tl = new _TweenMax.TimelineMax();
+    const sectionName = slide.dataset.section;
+
+    const handleOnComplete = () => {
+      if (dir === this.DIR_BACKWARD) {
+        _TweenMax.TweenMax.set(slide, {
+          zIndex: 1
+        });
+      }
+    };
+
+    tl.timeScale(this.timescale);
+    this.dispatch("slideState", {
+      visible: true,
+      section: sectionName
+    });
+
+    if (dir === this.DIR_BACKWARD) {
+      _TweenMax.TweenMax.set(slide, {
+        z: -150,
+        zIndex: 0,
+        rotationY: 0,
+        scale: 1,
+        left: 0,
+        visibility: "visible"
+      });
+    } else {
+      tl.to(slide, 0.4, {
+        left: 0,
+        ease: _TweenMax.Power1.easeOut,
+        z: 20,
+        zIndex: 1,
+        visibility: "visible"
+      }, "-=0.15");
+    }
+
+    tl.to(slide, 0.65, {
+      rotationY: 0,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.35");
+    tl.to(slide, 0.4, {
+      rotationX: -15,
+      scale: 1,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.11");
+    tl.to(slide, 0.35, {
+      rotationX: 0,
+      rotationZ: 0,
+      z: 0,
+      ease: _TweenMax.Power1.easeOut,
+      onComplete: () => {
+        this.animations.main[sectionName].resume();
+        this.animations.lottie[sectionName].play();
+      }
+    }, "-=0.35");
+    return {
+      tl,
+      handleOnComplete
+    };
+  }
+
+  async hideSlide(slide, dir) {
+    if (!this.lastSlide) return false; //console.log("-HIDE: ", slide);
+
+    const tl = new _TweenMax.TimelineMax();
+    const sectionName = slide.dataset.section;
+
+    const handleOnComplete = () => {
+      if (dir === this.DIR_FORWARD) {
+        slide.style.visibility = "hidden";
+
+        _TweenMax.TweenMax.set(slide, {
+          rotationZ: 0,
+          rotationY: -18,
+          left: "130vw",
+          z: 0,
+          scale: 0.8,
+          zIndex: 0
+        });
+      }
+    };
+
+    tl.timeScale(this.timescale);
+    this.animations.lottie[sectionName].pause();
+    this.animations.lottie[sectionName].pause();
+    this.dispatch("slideState", {
+      visible: true,
+      section: sectionName
+    });
+    tl.to(slide, 0.35, {
+      rotationX: -15,
+      ease: _TweenMax.Power1.easeOut
+    });
+    tl.to(slide, 0.4, {
+      rotationX: 0,
+      z: 20,
+      scale: 0.8,
+      ease: _TweenMax.Power1.easeOut
+    }, "-=0.25");
+
+    if (dir === this.DIR_BACKWARD) {
+      tl.to(slide, 0.2, {
+        rotationZ: -3,
+        ease: _TweenMax.Power1.easeOut
+      }, "-=0.15");
+      tl.to(slide, 0.4, {
+        rotationZ: 0,
+        rotationY: -18,
+        left: "130vw",
+        z: 0,
+        scale: 0.8,
+        ease: _TweenMax.Power1.easeOut,
+        onComplete: function () {
+          _TweenMax.TweenMax.set(this.target, {
+            visibility: "hidden"
+          });
+        }
+      }, "-=0.15");
+    } else {
+      _TweenMax.TweenMax.set(slide, {
+        zIndex: 0
+      });
+    }
+
+    return {
+      tl,
+      handleOnComplete
+    };
+  }
+
+  handleNext() {
+    this.isSectionAnimating().then(bool => {
+      if (!bool) {
+        this.current === this.total ? this.current = 0 : this.current += 1;
+        this.slideTo(this.current, this.DIR_FORWARD);
+        this.setHashURL();
+      }
+    });
+  }
+
+  handlePrev() {
+    if (this.current < 0) return;
+    this.isSectionAnimating().then(bool => {
+      if (!bool) {
+        this.current === 0 ? this.current = this.total : this.current -= 1;
+        this.slideTo(this.current, this.DIR_BACKWARD);
+        this.setHashURL();
+      }
+    });
+  }
+
+  async isSectionAnimating() {
+    let tweenFlag = false;
+
+    for (let index = 0; index < this.slides.length; index++) {
+      const slide = this.slides[index];
+
+      if (_TweenMax.TweenMax.isTweening(slide)) {
+        tweenFlag = true;
+      }
+    }
+
+    return tweenFlag;
+  }
+
+  async setUpEventlisteners() {
     document.addEventListener("wheel", this.handleWheel.bind(this));
     window.addEventListener("keydown", this.handleArrowKeys.bind(this), true);
+    return true;
   }
 
   handleGoHome() {
-    this.firstRun = true;
-    const tl = new _TweenMax.TimelineMax();
-
-    const sectionToHide = _utily.Utily.$("section." + this.currentSectionName);
-
-    const ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + this.currentSectionName + "::before");
-
-    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
-    this.dispatch("slideState", {
-      visible: false,
-      section: this.currentSectionName
+    this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(hide_response => {
+      this.current = -1;
+      this.lastSlide = null;
+      hide_response.tl.play();
+      location.hash = "";
+      this.dispatch("slideState", {
+        visible: false,
+        section: "home"
+      });
     });
-    this.pastIndex = 1;
-    this.currentSectionIndex = 1;
+  }
+
+  gotoSection(sectionHash) {
+    this.isSectionAnimating().then(bool => {
+      if (!bool) {
+        let name = sectionHash.split("#")[1];
+
+        if (this.lastSlide) {
+          if (this.lastSlide.className === name) return;
+        }
+
+        let slideIndex = this.getIndexFromName(name);
+        this.current = slideIndex;
+        this.setHashURL();
+        this.slideTo(this.current, this.DIR_FORWARD);
+      }
+    });
   }
 
   handleArrowKeys(event) {
@@ -25764,16 +25915,14 @@ class SlideShow extends _dispatcher.Dispatcher {
       case "ArrowDown":
       case "Right":
       case "ArrowRight":
-        this.checkSlideState();
-        this.next();
+        this.handleNext();
         break;
 
       case "Up":
       case "ArrowUp":
       case "Left":
       case "ArrowLeft":
-        this.checkSlideState();
-        this.prev();
+        this.handlePrev();
         break;
     }
 
@@ -25781,314 +25930,52 @@ class SlideShow extends _dispatcher.Dispatcher {
   }
 
   handleWheel(event) {
-    if (!this.lethargy.check(event)) return;
+    if (!this.scrollMomentumSlower.check(event)) return;
     let scrollDelta = Math.sign(event.deltaY);
-    this.checkSlideState();
 
-    if (!this.isTweenBool && scrollDelta === this.downward) {
-      this.next();
-    } else if (!this.isTweenBool && scrollDelta === this.upward) {
-      this.prev();
+    if (scrollDelta === this.MOUSE_DWRD) {
+      this.handleNext();
+    } else if (scrollDelta === this.MOUSE_FRWD) {
+      this.handlePrev();
     }
   }
 
-  checkSlideState() {
-    this.isTweenBool = false;
-    this.sections.forEach($sect => {
-      if (_TweenMax.TweenMax.isTweening($sect)) {
-        this.isTweenBool = true;
-      }
-    });
+  async checkURL() {
+    if (window.location.hash) {
+      let preposedSection = window.location.hash.split("#")[1].toLowerCase(); //console.log("preposedSection ", preposedSection);
 
-    if (this.currentSectionIndex > this.sections.length) {
-      this.currentSectionIndex = 1;
+      let slideIndex = this.getIndexFromName(preposedSection);
+      return {
+        section: preposedSection,
+        index: slideIndex
+      };
     }
 
-    if (this.currentSectionIndex < 1) {
-      this.currentSectionIndex = this.sections.length;
-    }
-
-    if (this.pastIndex < 1) {
-      this.pastIndex = this.sections.length;
-    }
-
-    if (this.pastIndex > this.sections.length) {
-      this.pastIndex = 1;
-    }
-  }
-
-  next() {
-    this.firstRun = false;
-    const tl = new _TweenMax.TimelineMax();
-    tl.timeScale(0.95);
-    const sectionToShow = this.sections[this.currentSectionIndex - 1];
-    const sectionToHide = this.sections[this.pastIndex - 1];
-    const sectionName = sectionToShow.dataset.section;
-    const sectionToHideName = sectionToHide.dataset.section;
-
-    const ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + sectionToHideName + "::before");
-
-    const ruleForShow = _CSSRulePlugin.default.getRule("#app .sections section." + sectionName + "::before");
-
-    this.animations.lottie[sectionToHideName].pause();
-    this.animations.lottie[sectionName].pause();
-
-    _TweenMax.TweenMax.to(ruleForShow, 0, {
-      cssRule: {
-        opacity: this.sectionGradientOpacity
-      }
-    }, 0);
-
-    if (sectionName !== sectionToHideName) {
-      tl.to(sectionToHide, 0.3, {
-        z: -150,
-        ease: _TweenMax.Power1.easeOut,
-        zIndex: 0,
-        onComplete: () => {
-          setTimeout(() => {
-            _TweenMax.TweenMax.set(sectionToHide, {
-              rotationY: -18,
-              left: "130vw",
-              scale: 0.8,
-              visibility: "hidden"
-            });
-          }, 300);
-        }
-      });
-      tl.to(ruleForHide, 0.3, {
-        cssRule: {
-          opacity: this.sectionGradientOpacity
-        }
-      }, 0);
-    }
-
-    this.currentSectionName = sectionName;
-    this.dispatch("slideState", {
-      visible: true,
-      section: sectionName
-    });
-    tl.to(sectionToShow, 0.4, {
-      left: 0,
-      ease: _TweenMax.Power1.easeOut,
-      z: 20,
-      zIndex: 1,
-      visibility: "visible",
-      onComplete: () => {
-        _TweenMax.TweenMax.to(ruleForShow, 1, {
-          cssRule: {
-            opacity: 0
-          }
-        });
-      }
-    }, "-=0.15");
-    tl.to(sectionToShow, 0.65, {
-      rotationY: 0,
-      ease: _TweenMax.Power1.easeOut
-    }, "-=0.35");
-    tl.to(sectionToShow, 0.4, {
-      rotationX: -15,
-      scale: 1,
-      ease: _TweenMax.Power1.easeOut
-    }, "-=0.11");
-    tl.to(sectionToShow, 0.35, {
-      rotationX: 0,
-      rotationZ: 0,
-      z: 0,
-      ease: _TweenMax.Power1.easeOut,
-      onComplete: () => {
-        this.animations.main[sectionName].resume();
-        this.animations.lottie[sectionName].play();
-      }
-    }, "-=0.35");
-    this.pastIndex = this.currentSectionIndex;
-    this.currentSectionIndex++;
-  }
-
-  prev() {
-    if (this.firstRun) return;
-    this.pastIndex--;
-    this.currentSectionIndex--;
-    let tl = new _TweenMax.TimelineMax();
-    tl.timeScale(0.95);
-
-    if (this.pastIndex === 0) {
-      this.pastIndex = this.sections.length;
-    }
-
-    if (this.currentSectionIndex === 0) {
-      this.currentSectionIndex = this.sections.length;
-    }
-
-    let sectionToShow = this.sections[this.pastIndex - 1];
-    let sectionToHide = this.sections[this.currentSectionIndex - 1];
-    let sectionName = sectionToShow.dataset.section;
-    let sectionToHideName = sectionToHide.dataset.section;
-
-    let ruleForHide = _CSSRulePlugin.default.getRule("#app .sections section." + sectionToHideName + "::before");
-
-    let ruleForShow = _CSSRulePlugin.default.getRule("#app .sections section." + sectionName + "::before");
-
-    if (this.currentSectionIndex !== 1) {
-      tl.set(sectionToShow, {
-        z: -150,
-        ease: _TweenMax.Power1.easeOut,
-        zIndex: 0,
-        rotationY: 0,
-        scale: 1,
-        left: 0,
-        visibility: "visible"
-      });
-
-      _TweenMax.TweenMax.to(ruleForShow, 0, {
-        cssRule: {
-          opacity: this.sectionGradientOpacity
-        }
-      });
-    } else {
-      this.firstRun = true;
-    }
-
-    this.animations.lottie[sectionName].pause();
-    this.animations.lottie[sectionToHideName].pause();
-    this.dispatch("slideState", {
-      visible: true,
-      section: sectionName
-    });
-    this.currentSectionName = sectionName;
-    this.hideSlideAnim(tl, sectionToHide, ruleForHide);
-
-    if (this.currentSectionIndex !== 1) {
-      tl.to(sectionToShow, 0.4, {
-        rotationX: -15,
-        scale: 1,
-        ease: _TweenMax.Power1.easeOut
-      }, "-=0.11");
-      tl.to(ruleForShow, 0.3, {
-        cssRule: {
-          opacity: 0
-        }
-      }, "-=0.4");
-      tl.to(sectionToShow, 0.35, {
-        rotationX: 0,
-        rotationZ: 0,
-        z: 0,
-        ease: _TweenMax.Power1.easeOut,
-        onComplete: () => {
-          this.animations.lottie[sectionName].play();
-          this.animations.main[sectionName].play();
-        }
-      }, "-=0.35");
-    } else {
-      this.dispatch("slideState", {
-        visible: false,
-        section: sectionName
-      });
-    }
-  }
-
-  hideSlideAnim(tl, sectionToHide, ruleForHide) {
-    tl.to(sectionToHide, 0.35, {
-      rotationX: -15,
-      ease: _TweenMax.Power1.easeOut
-    });
-    tl.to(sectionToHide, 0.4, {
-      rotationX: 0,
-      z: 20,
-      scale: 0.8,
-      ease: _TweenMax.Power1.easeOut
-    }, "-=0.25");
-    tl.to(ruleForHide, 0.4, {
-      cssRule: {
-        opacity: this.sectionGradientOpacity
-      }
-    }, "-=0.4");
-    tl.to(sectionToHide, 0.2, {
-      rotationZ: -3,
-      ease: _TweenMax.Power1.easeOut
-    }, "-=0.15");
-    tl.to(sectionToHide, 0.4, {
-      rotationZ: 0,
-      rotationY: -18,
-      left: "130vw",
-      z: 0,
-      scale: 0.8,
-      ease: _TweenMax.Power1.easeOut,
-      onComplete: function () {
-        _TweenMax.TweenMax.set(this.target, {
-          visibility: "hidden"
-        });
-      }
-    }, "-=0.15");
-  }
-
-  async createMainSectionTimeline(name) {
-    const lottie = await this.getLottieTween(name);
-    const tree = new _TweenMax.TimelineMax({
-      paused: true
-    });
-    const h3 = this.$("." + name + " h3");
-    const h2 = this.$("." + name + " h2");
-    const subtitle = this.$("." + name + " .title p");
-    const title_border = this.$("." + name + " .title");
-    const p_first_letter = this.$("." + name + " .copy span.first-letter");
-    const p_body_copy = this.$("." + name + " .copy span.body-copy");
-
-    _TweenMax.TweenMax.set(h3, {
-      y: "+=" + h3.clientHeight / 2 + "px"
-    });
-
-    _TweenMax.TweenMax.set([h2, subtitle, p_first_letter, p_body_copy], {
-      opacity: 0,
-      y: "+=20px",
-      ease: _TweenMax.Power2.easeOut
-    });
-
-    tree.to(h3, 1, {
-      opacity: 1,
-      y: 0,
-      ease: _TweenMax.Power1.easeOut
-    });
-    tree.call(() => {
-      lottie.play();
-    }, null, null, "-=0.9");
-    tree.staggerTo([h2, subtitle], 0.93, {
-      autoAlpha: 1,
-      y: "-=20px",
-      ease: _TweenMax.Power2.easeOut
-    }, 0.08, "-=0.5");
-    tree.fromTo(title_border, 0.25, {
-      borderRightColor: "rgba(0,0,0,0)"
-    }, {
-      borderRightColor: "rgba(0,0,0,1)"
-    }, "-=0.8");
-    tree.staggerTo([p_first_letter, p_body_copy], 0.93, {
-      autoAlpha: 1,
-      y: "-=20px",
-      ease: _TweenMax.Power2.easeOut
-    }, 0.08, "-=0.8");
     return {
-      tl: tree,
-      lottie
+      section: this.HOME_SECTION
     };
   }
 
-  async getLottieTween(name) {
-    let tmpAnim = await _lottieWeb.default.loadAnimation({
-      wrapper: this.$("." + name + " .lottie"),
-      renderer: "svg",
-      loop: true,
-      autoplay: false,
-      animationData: this.assets.getResult(name),
-      width: "100%",
-      height: "100%"
-    });
-    return tmpAnim;
+  getIndexFromName(name) {
+    for (let index = 0; index < this.slides.length; index++) {
+      const slide = this.slides[index];
+
+      if (slide.className.toLowerCase() === name) {
+        return index;
+      }
+    }
+  }
+
+  setHashURL() {
+    const slide = this.slides[this.current];
+    const slideName = slide.className;
+    location.hash = slideName;
   }
 
 }
 
 exports.SlideShow = SlideShow;
-},{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js","gsap/CSSRulePlugin":"../node_modules/gsap/CSSRulePlugin.js","./utily":"utily.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
+},{"./dispatcher":"dispatcher.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","../node_modules/lethargy/lethargy":"../node_modules/lethargy/lethargy.js","./utily":"utily.js"}],"../node_modules/preload-js/index.js":[function(require,module,exports) {
 /*!
 * @license PreloadJS
 * Visit http://createjs.com/ for documentation, updates and examples.
@@ -29001,50 +28888,52 @@ class Click {
   constructor(links) {
     this.padding = 150;
     links.forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        e.target.disabled = "true";
-        let width = e.target.offsetWidth + this.padding;
-        let height = width / 3 - width;
-        let container = document.createElement("div");
-        container.className = "click-confetti";
+      if (link.className !== "menuItem") {
+        link.addEventListener("click", e => {
+          e.preventDefault();
+          e.target.disabled = "true";
+          let width = e.target.offsetWidth + this.padding;
+          let height = width / 3 - width;
+          let container = document.createElement("div");
+          container.className = "click-confetti";
 
-        _utily.Utily.$("#confetti-holder").appendChild(container);
+          _utily.Utily.$("#confetti-holder").appendChild(container);
 
-        document.body.style.setProperty("--click-width", width + "px");
-        document.body.style.setProperty("--click-height", height + "px");
-        document.body.style.setProperty("--click-x", e.clientX + "px");
-        document.body.style.setProperty("--click-y", e.clientY + "px");
+          document.body.style.setProperty("--click-width", width + "px");
+          document.body.style.setProperty("--click-height", height + "px");
+          document.body.style.setProperty("--click-x", e.clientX + "px");
+          document.body.style.setProperty("--click-y", e.clientY + "px");
 
-        let tmpAnim = _lottieWeb.default.loadAnimation({
-          wrapper: container,
-          renderer: "svg",
-          loop: false,
-          autoplay: false,
-          animationData: _click.default,
-          width: "100%",
-          height: "100%"
-        });
+          let tmpAnim = _lottieWeb.default.loadAnimation({
+            wrapper: container,
+            renderer: "svg",
+            loop: false,
+            autoplay: false,
+            animationData: _click.default,
+            width: "100%",
+            height: "100%"
+          });
 
-        tmpAnim.setSpeed(1);
-        tmpAnim.addEventListener("complete", () => {
-          setTimeout(() => {
-            if (e.target.hasAttribute("target")) {
-              window.open(e.target.href);
+          tmpAnim.setSpeed(1);
+          tmpAnim.addEventListener("complete", () => {
+            setTimeout(() => {
+              if (e.target.hasAttribute("target")) {
+                window.open(e.target.href);
 
-              if (_utily.Utily.isMobile()) {
+                if (_utily.Utily.isMobile()) {
+                  document.location.href = e.target.href;
+                }
+              } else {
                 document.location.href = e.target.href;
               }
-            } else {
-              document.location.href = e.target.href;
-            }
 
-            tmpAnim.destroy();
-          }, 50);
-        });
-        tmpAnim.play();
-        return false;
-      }, true);
+              tmpAnim.destroy();
+            }, 50);
+          });
+          tmpAnim.play();
+          return false;
+        }, true);
+      }
     });
   }
 
@@ -29085,6 +28974,11 @@ class App {
 
   init() {
     this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 2);
+
+    const handleOnComplete = () => {
+      _utily.Utily.$(".sections").style.opacity = 1;
+    };
+
     const tl = new _TweenMax.TimelineMax();
 
     const h1 = _utily.Utily.$(".about h1");
@@ -29106,6 +29000,51 @@ class App {
     const nav = _utily.Utily.$("nav");
 
     const scrollIndicator = _utily.Utily.$(".scroll-icon-container");
+
+    this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
+
+    if (_utily.Utily.isMobile()) {
+      this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
+
+      _utily.Utily.$("#app").classList.add("is-mobile");
+    } else {
+      this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
+      dots.forEach(dot => {
+        dot.addEventListener("click", e => {
+          e.preventDefault();
+          this.slide_ctrl.gotoSection(e.target.hash);
+          return false;
+        }, true);
+      });
+      this.slide_ctrl.addListener("slideState", e => {
+        if (e.visible) {
+          _utily.Utily.$("#app").classList.add("about-tilt-off");
+
+          _utily.Utily.$(".plankton").style.opacity = 0;
+
+          _TweenMax.TweenMax.to(scrollIndicator, 0.5, {
+            opacity: 0
+          });
+
+          _utily.Utily.$(".home").classList.add("visible");
+
+          _utily.Utily.$("#app").className = e.section;
+          this.dotCycleTween.pause(0);
+        } else {
+          _utily.Utily.$("#app").classList.remove("about-tilt-off");
+
+          _utily.Utily.$(".plankton").style.opacity = 1; //u.$(".scroll-indicator-container").style.visibility = "visible";
+
+          _utily.Utily.$("#app").className = "";
+
+          _utily.Utily.$(".home").classList.remove("visible");
+
+          this.dotCycleTween.resume(0);
+        }
+
+        this.plankton_ctrl.pause(e.visible);
+      });
+    }
 
     tl.timeScale(0.9);
     tl.set([h1, p, image], {
@@ -29161,7 +29100,12 @@ class App {
     }, "-=1.5");
     tl.to(image, 0.5, {
       autoAlpha: 1,
-      y: "-=20px"
+      y: "-=20px",
+      onComplete: () => {
+        setTimeout(() => {
+          handleOnComplete();
+        }, 0);
+      }
     }, "-=1.5");
     tl.staggerFromTo(plankton, 1, {
       opacity: 0,
@@ -29171,47 +29115,10 @@ class App {
       scale: 1,
       ease: _TweenMax.Elastic.easeOut.config(1, 0.5)
     }, 5, "-=0.0");
-    this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
-
-    if (_utily.Utily.isMobile()) {
-      this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
-
-      _utily.Utily.$("#app").classList.add("is-mobile");
-    } else {
-      this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
-      this.slide_ctrl.addListener("slideState", e => {
-        if (e.visible) {
-          _utily.Utily.$("#app").classList.add("about-tilt-off");
-
-          _utily.Utily.$(".plankton").style.opacity = 0;
-
-          _TweenMax.TweenMax.to(scrollIndicator, 0.5, {
-            opacity: 0
-          });
-
-          _utily.Utily.$(".home").classList.add("visible");
-
-          _utily.Utily.$("#app").className = e.section;
-          this.dotCycleTween.pause(0);
-        } else {
-          _utily.Utily.$("#app").classList.remove("about-tilt-off");
-
-          _utily.Utily.$(".plankton").style.opacity = 1; //u.$(".scroll-indicator-container").style.visibility = "visible";
-
-          _utily.Utily.$("#app").className = "";
-
-          _utily.Utily.$(".home").classList.remove("visible");
-
-          this.dotCycleTween.resume(0);
-        }
-
-        this.plankton_ctrl.pause(e.visible);
-      });
-      homeButton.addEventListener("click", e => {
-        e.preventDefault();
-        this.slide_ctrl.handleGoHome();
-      }, true);
-    }
+    homeButton.addEventListener("click", e => {
+      e.preventDefault();
+      this.slide_ctrl.handleGoHome();
+    }, true);
   }
 
   onProgress(event) {
@@ -29307,7 +29214,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58556" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49522" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

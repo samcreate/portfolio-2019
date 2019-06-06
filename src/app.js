@@ -23,6 +23,10 @@ class App {
       u.isMobile() ? 1 : 2
     );
 
+    const handleOnComplete = () => {
+      u.$(".sections").style.opacity = 1;
+    };
+
     const tl = new TimelineMax();
     const h1 = u.$(".about h1");
     const p = u.$(".about p");
@@ -34,6 +38,47 @@ class App {
     const dots = u.$$("li.dot a");
     const nav = u.$("nav");
     const scrollIndicator = u.$(".scroll-icon-container");
+
+    this.click_ctrl = new Click(u.$$("a"));
+    if (u.isMobile()) {
+      this.mobile = new Mobile(u.$$(".sections section"), this.queue);
+      u.$("#app").classList.add("is-mobile");
+    } else {
+      this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
+
+      dots.forEach(dot => {
+        dot.addEventListener(
+          "click",
+          e => {
+            e.preventDefault();
+            this.slide_ctrl.gotoSection(e.target.hash);
+            return false;
+          },
+          true
+        );
+      });
+
+      this.slide_ctrl.addListener("slideState", e => {
+        if (e.visible) {
+          u.$("#app").classList.add("about-tilt-off");
+          u.$(".plankton").style.opacity = 0;
+          TweenMax.to(scrollIndicator, 0.5, { opacity: 0 });
+          u.$(".home").classList.add("visible");
+          u.$("#app").className = e.section;
+          this.dotCycleTween.pause(0);
+        } else {
+          u.$("#app").classList.remove("about-tilt-off");
+          u.$(".plankton").style.opacity = 1;
+          //u.$(".scroll-indicator-container").style.visibility = "visible";
+          u.$("#app").className = "";
+          u.$(".home").classList.remove("visible");
+          this.dotCycleTween.resume(0);
+        }
+
+        this.plankton_ctrl.pause(e.visible);
+      });
+    }
+
     tl.timeScale(0.9);
 
     tl.set([h1, p, image], {
@@ -118,7 +163,12 @@ class App {
       0.5,
       {
         autoAlpha: 1,
-        y: "-=20px"
+        y: "-=20px",
+        onComplete: () => {
+          setTimeout(() => {
+            handleOnComplete();
+          }, 0);
+        }
       },
       "-=1.5"
     );
@@ -131,42 +181,14 @@ class App {
       "-=0.0"
     );
 
-    this.click_ctrl = new Click(u.$$("a"));
-    if (u.isMobile()) {
-      this.mobile = new Mobile(u.$$(".sections section"), this.queue);
-      u.$("#app").classList.add("is-mobile");
-    } else {
-      this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
-
-      this.slide_ctrl.addListener("slideState", e => {
-        if (e.visible) {
-          u.$("#app").classList.add("about-tilt-off");
-          u.$(".plankton").style.opacity = 0;
-          TweenMax.to(scrollIndicator, 0.5, { opacity: 0 });
-          u.$(".home").classList.add("visible");
-          u.$("#app").className = e.section;
-          this.dotCycleTween.pause(0);
-        } else {
-          u.$("#app").classList.remove("about-tilt-off");
-          u.$(".plankton").style.opacity = 1;
-          //u.$(".scroll-indicator-container").style.visibility = "visible";
-          u.$("#app").className = "";
-          u.$(".home").classList.remove("visible");
-          this.dotCycleTween.resume(0);
-        }
-
-        this.plankton_ctrl.pause(e.visible);
-      });
-
-      homeButton.addEventListener(
-        "click",
-        e => {
-          e.preventDefault();
-          this.slide_ctrl.handleGoHome();
-        },
-        true
-      );
-    }
+    homeButton.addEventListener(
+      "click",
+      e => {
+        e.preventDefault();
+        this.slide_ctrl.handleGoHome();
+      },
+      true
+    );
   }
 
   onProgress(event) {

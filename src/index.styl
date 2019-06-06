@@ -254,18 +254,19 @@ h1,h2,h3,h4,h5,h5 {
         a {
           background: none;
           border-radius: 100%;
-          pointer-events: none !important;
         }
 
         border: 3px solid white;
         border-radius: 100%;
         transition: background var(--transition-time);
 
-        ^[0].tinker nav .tinker,&.tinker.cycle {
+
+        ^[0].tinker nav .tinker,&.tinker.cycle, &.tinker:hover {
           background: rgb(241, 103, 100);
         }
 
-        ^[0].explorer nav .explorer,&.explorer.cycle {
+
+        ^[0].explorer nav .explorer,&.explorer.cycle, &.explorer:hover {
           background: rgb(141, 236, 193);
         }
 
@@ -273,11 +274,11 @@ h1,h2,h3,h4,h5,h5 {
           border-color: rgb(141, 236, 193);
         }
 
-        ^[0].developer nav .developer,&.developer.cycle {
+        ^[0].developer nav .developer,&.developer.cycle, &.developer:hover {
           background: rgb(70, 114, 141);
         }
 
-        ^[0].animator nav .animator,&.animator.cycle {
+        ^[0].animator nav .animator,&.animator.cycle, &.animator:hover {
           background: #502455;
         }
       }
@@ -739,6 +740,7 @@ h1,h2,h3,h4,h5,h5 {
   position: relative;
   scroll-behavior: smooth;
   width: 100vw;
+  opacity:0;
 
   +for_breakpoint(mobile) {
     margin-top: 140vh;

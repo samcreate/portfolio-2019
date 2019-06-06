@@ -232,25 +232,28 @@ h5 {
 #app nav ol > li.dot a {
   background: none;
   border-radius: 100%;
-  pointer-events: none !important;
 }
 #app.tinker nav .tinker,
-#app nav ol > li.dot.tinker.cycle {
+#app nav ol > li.dot.tinker.cycle,
+#app nav ol > li.dot.tinker:hover {
   background: #f16764;
 }
 #app.explorer nav .explorer,
-#app nav ol > li.dot.explorer.cycle {
+#app nav ol > li.dot.explorer.cycle,
+#app nav ol > li.dot.explorer:hover {
   background: #8decc1;
 }
 #app.explorer nav .dot {
   border-color: #8decc1;
 }
 #app.developer nav .developer,
-#app nav ol > li.dot.developer.cycle {
+#app nav ol > li.dot.developer.cycle,
+#app nav ol > li.dot.developer:hover {
   background: #46728d;
 }
 #app.animator nav .animator,
-#app nav ol > li.dot.animator.cycle {
+#app nav ol > li.dot.animator.cycle,
+#app nav ol > li.dot.animator:hover {
   background: #502455;
 }
 #app nav ol > li.home {
@@ -674,6 +677,7 @@ h5 {
   position: relative;
   scroll-behavior: smooth;
   width: 100vw;
+  opacity: 0;
 }
 @media only screen and (max-width: 600px) {
   #app .sections {

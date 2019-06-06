@@ -5,55 +5,57 @@ export default class Click {
   constructor(links) {
     this.padding = 150;
     links.forEach(link => {
-      link.addEventListener(
-        "click",
-        e => {
-          e.preventDefault();
-          e.target.disabled = "true";
+      if (link.className !== "menuItem") {
+        link.addEventListener(
+          "click",
+          e => {
+            e.preventDefault();
+            e.target.disabled = "true";
 
-          let width = e.target.offsetWidth + this.padding;
-          let height = width / 3 - width;
-          let container = document.createElement("div");
-          container.className = "click-confetti";
-          u.$("#confetti-holder").appendChild(container);
+            let width = e.target.offsetWidth + this.padding;
+            let height = width / 3 - width;
+            let container = document.createElement("div");
+            container.className = "click-confetti";
+            u.$("#confetti-holder").appendChild(container);
 
-          document.body.style.setProperty("--click-width", width + "px");
-          document.body.style.setProperty("--click-height", height + "px");
+            document.body.style.setProperty("--click-width", width + "px");
+            document.body.style.setProperty("--click-height", height + "px");
 
-          document.body.style.setProperty("--click-x", e.clientX + "px");
-          document.body.style.setProperty("--click-y", e.clientY + "px");
+            document.body.style.setProperty("--click-x", e.clientX + "px");
+            document.body.style.setProperty("--click-y", e.clientY + "px");
 
-          let tmpAnim = lottie.loadAnimation({
-            wrapper: container,
-            renderer: "svg",
-            loop: false,
-            autoplay: false,
-            animationData: clickJson,
-            width: "100%",
-            height: "100%"
-          });
-          tmpAnim.setSpeed(1);
+            let tmpAnim = lottie.loadAnimation({
+              wrapper: container,
+              renderer: "svg",
+              loop: false,
+              autoplay: false,
+              animationData: clickJson,
+              width: "100%",
+              height: "100%"
+            });
+            tmpAnim.setSpeed(1);
 
-          tmpAnim.addEventListener("complete", () => {
-            setTimeout(() => {
-              if (e.target.hasAttribute("target")) {
-                window.open(e.target.href);
+            tmpAnim.addEventListener("complete", () => {
+              setTimeout(() => {
+                if (e.target.hasAttribute("target")) {
+                  window.open(e.target.href);
 
-                if (u.isMobile()) {
+                  if (u.isMobile()) {
+                    document.location.href = e.target.href;
+                  }
+                } else {
                   document.location.href = e.target.href;
                 }
-              } else {
-                document.location.href = e.target.href;
-              }
-              tmpAnim.destroy();
-            }, 50);
-          });
+                tmpAnim.destroy();
+              }, 50);
+            });
 
-          tmpAnim.play();
-          return false;
-        },
-        true
-      );
+            tmpAnim.play();
+            return false;
+          },
+          true
+        );
+      }
     });
   }
 }

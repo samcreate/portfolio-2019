@@ -1,6 +1,6 @@
 # Aaron McGuire's Portfolio 2019
 
-Created using Parceljs and gsap and couple of other 'tings boiiii. I did a #%!@ job making the slide show and I'll be refactoring the code. Check https://github.com/samcreate/portfolio-2019 for the latest codez.
+Created using Parceljs and gsap and couple of other 'tings boiiii. I did a #%!@ job making the slide show and I'll be refactoring the code. Go to https://github.com/samcreate/portfolio-2019 for the latest codez.
 
 ### Installing
 

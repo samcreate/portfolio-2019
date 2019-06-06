@@ -29001,13 +29001,12 @@ class App {
 
     const scrollIndicator = _utily.Utily.$(".scroll-icon-container");
 
-    this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
-
     if (_utily.Utily.isMobile()) {
       this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
 
       _utily.Utily.$("#app").classList.add("is-mobile");
     } else {
+      this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
       this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
       dots.forEach(dot => {
         dot.addEventListener("click", e => {

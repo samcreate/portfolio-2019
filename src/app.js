@@ -39,11 +39,11 @@ class App {
     const nav = u.$("nav");
     const scrollIndicator = u.$(".scroll-icon-container");
 
-    this.click_ctrl = new Click(u.$$("a"));
     if (u.isMobile()) {
       this.mobile = new Mobile(u.$$(".sections section"), this.queue);
       u.$("#app").classList.add("is-mobile");
     } else {
+      this.click_ctrl = new Click(u.$$("a"));
       this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
 
       dots.forEach(dot => {

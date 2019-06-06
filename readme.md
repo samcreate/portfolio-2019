@@ -1,10 +1,10 @@
 # Aaron McGuire's Portfolio 2019
 
-Created using Parceljs and gsap and couple of other 'tings boiiii. I did a #%!@ job making the slide show and I'll be refactoring the code. Go to https://github.com/samcreate/portfolio-2019 for the latest codez.
+Created using Parceljs and gsap and couple of other 'tings boiiii.
 
 ### Installing
 
-To Run locallying, you'll need top:
+To Run locallying, you'll need to:
 
 ```
 npm install
@@ -22,4 +22,4 @@ To generate a build for "production"
 npm run build
 ```
 
-Then check dist/ folder!
+Then check dist/ folder for the generated files. :)

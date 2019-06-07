@@ -25878,40 +25878,10 @@ class SlideShow extends _dispatcher.Dispatcher {
   }
 
   handleGoHome() {
-    const staggerTL = new _TweenMax.TimelineMax();
-    const staggerSlides = [];
-    staggerTL.timeScale(this.timescale);
-    this.slides.forEach((slide, i) => {
-      if (slide.className != this.lastSlide.className) {
-        staggerSlides.push(slide);
-        staggerTL.set(slide, {
-          z: -150,
-          zIndex: -i,
-          rotationY: 0,
-          scale: 1,
-          left: 0,
-          visibility: "visible"
-        });
-      }
-    });
-    staggerTL.staggerTo(staggerSlides, 0.6, {
-      rotationZ: 0,
-      rotationY: -18,
-      left: "130vw",
-      z: 0,
-      scale: 0.8,
-      ease: _TweenMax.Power1.easeOut,
-      onComplete: function () {
-        _TweenMax.TweenMax.set(this.target, {
-          visibility: "hidden",
-          zIndex: 0
-        });
-      }
-    }, 0.09);
     this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(hide_response => {
       this.current = -1;
       this.lastSlide = null;
-      hide_response.tl.add(staggerTL, "-=0.4");
+      hide_response.tl.timeScale(0.8);
       hide_response.tl.play();
       location.hash = "";
       this.dispatch("slideState", {
@@ -29000,8 +28970,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
-
+    this.loader_anim = {};
+    this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
         this.init();

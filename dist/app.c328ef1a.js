@@ -25562,16 +25562,18 @@ class SlideShow extends _dispatcher.Dispatcher {
   }
 
   init(location) {
-    // prettier-ignore
-    this.prepSlides().then(this.createSectionTimelines().then(this.setUpEventlisteners().then(() => {
-      //send to section from URL #, or do nothing.
-      if (location.section !== this.HOME_SECTION) {
-        setTimeout(() => {
-          this.current = location.index;
-          this.slideTo(this.current, this.DIR_FORWARD);
-        }, 2000);
-      }
-    })));
+    this.prepSlides().then(() => {
+      this.createSectionTimelines().then(() => {
+        this.setUpEventlisteners().then(() => {
+          if (location.section !== this.HOME_SECTION) {
+            setTimeout(() => {
+              this.current = location.index;
+              this.slideTo(this.current, this.DIR_FORWARD);
+            }, 2000);
+          }
+        });
+      });
+    });
   }
 
   async prepSlides() {
@@ -28969,52 +28971,39 @@ class App {
   constructor() {
     this.loader_anim = {};
     this.mouse_ctrl = new _mouse.Mouse();
-    this.site_load().then(this.init.bind(this));
+    this.site_load().then(() => {
+      this.setupHomePageAnimations().then(() => {
+        this.init();
+      });
+    });
   }
 
   init() {
-    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 2);
-
-    const handleOnComplete = () => {
-      _utily.Utily.$(".sections").style.opacity = 1;
-    };
-
-    const tl = new _TweenMax.TimelineMax();
-
-    const h1 = _utily.Utily.$(".about h1");
-
-    const p = _utily.Utily.$(".about p");
-
-    const icons = _utily.Utily.$$(".about li");
-
-    const image = _utily.Utily.$(".about .image-container");
-
-    const bg = _utily.Utily.$(".bg");
-
-    const plankton = _utily.Utily.$$(".plankton .life");
-
     const homeButton = _utily.Utily.$("li.home");
 
     const dots = _utily.Utily.$$("li.dot a");
 
-    const nav = _utily.Utily.$("nav");
-
     const scrollIndicator = _utily.Utily.$(".scroll-icon-container");
+
+    const plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 2); //setup mobile
 
     if (_utily.Utily.isMobile()) {
       this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
 
       _utily.Utily.$("#app").classList.add("is-mobile");
     } else {
+      //setup desktop
       this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
-      this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue);
+      this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue); // make the dots clickable
+
       dots.forEach(dot => {
         dot.addEventListener("click", e => {
           e.preventDefault();
           this.slide_ctrl.gotoSection(e.target.hash);
           return false;
         }, true);
-      });
+      }); //change visbility of things based on the slidestatte
+
       this.slide_ctrl.addListener("slideState", e => {
         if (e.visible) {
           _utily.Utily.$("#app").classList.add("about-tilt-off");
@@ -29032,8 +29021,7 @@ class App {
         } else {
           _utily.Utily.$("#app").classList.remove("about-tilt-off");
 
-          _utily.Utily.$(".plankton").style.opacity = 1; //u.$(".scroll-indicator-container").style.visibility = "visible";
-
+          _utily.Utily.$(".plankton").style.opacity = 1;
           _utily.Utily.$("#app").className = "";
 
           _utily.Utily.$(".home").classList.remove("visible");
@@ -29041,10 +29029,41 @@ class App {
           this.dotCycleTween.resume(0);
         }
 
-        this.plankton_ctrl.pause(e.visible);
+        plankton_ctrl.pause(e.visible);
       });
+      homeButton.addEventListener("click", e => {
+        e.preventDefault();
+        this.slide_ctrl.handleGoHome();
+      }, true);
     }
 
+    return true;
+  }
+
+  async setupHomePageAnimations() {
+    const h1 = _utily.Utily.$(".about h1");
+
+    const p = _utily.Utily.$(".about p");
+
+    const icons = _utily.Utily.$$(".about li");
+
+    const image = _utily.Utily.$(".about .image-container");
+
+    const bg = _utily.Utily.$(".bg");
+
+    const plankton = _utily.Utily.$$(".plankton .life");
+
+    const nav = _utily.Utily.$("nav");
+
+    const dots = _utily.Utily.$$("li.dot a");
+
+    const scrollIndicator = _utily.Utily.$(".scroll-icon-container");
+
+    const handleOnComplete = () => {
+      _utily.Utily.$(".sections").style.opacity = 1;
+    };
+
+    const tl = new _TweenMax.TimelineMax();
     tl.timeScale(0.9);
     tl.set([h1, p, image], {
       autoAlpha: 0,
@@ -29114,10 +29133,7 @@ class App {
       scale: 1,
       ease: _TweenMax.Elastic.easeOut.config(1, 0.5)
     }, 5, "-=0.0");
-    homeButton.addEventListener("click", e => {
-      e.preventDefault();
-      this.slide_ctrl.handleGoHome();
-    }, true);
+    return true;
   }
 
   onProgress(event) {
@@ -29125,7 +29141,7 @@ class App {
     document.body.style.setProperty("--loaded", 100 - this.progress + "%");
   }
 
-  site_load() {
+  async site_load() {
     this.loaderEl = _utily.Utily.$(".loader");
     document.body.style.setProperty("--loaded", "100%");
     this.loader_anim.font = _lottieWeb.default.loadAnimation({

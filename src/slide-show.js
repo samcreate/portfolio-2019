@@ -27,24 +27,18 @@ export class SlideShow extends Dispatcher {
   }
 
   init(location) {
-    // prettier-ignore
-    this.prepSlides()
-    .then(
-      this.createSectionTimelines()
-      .then(
-        this.setUpEventlisteners()
-        .then(()=>{
-          //send to section from URL #, or do nothing.
-          if(location.section !== this.HOME_SECTION){
-            setTimeout(()=>{
+    this.prepSlides().then(() => {
+      this.createSectionTimelines().then(() => {
+        this.setUpEventlisteners().then(() => {
+          if (location.section !== this.HOME_SECTION) {
+            setTimeout(() => {
               this.current = location.index;
               this.slideTo(this.current, this.DIR_FORWARD);
-            },2000)
-            
+            }, 2000);
           }
-        })
-      )
-    );
+        });
+      });
+    });
   }
 
   async prepSlides() {

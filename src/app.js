@@ -13,39 +13,34 @@ class App {
   constructor() {
     this.loader_anim = {};
     this.mouse_ctrl = new Mouse();
-    this.site_load().then(this.init.bind(this));
+
+    this.site_load().then(() => {
+      this.setupHomePageAnimations().then(() => {
+        this.init();
+      });
+    });
   }
 
   init() {
-    this.plankton_ctrl = new Plankton(
+    const homeButton = u.$("li.home");
+    const dots = u.$$("li.dot a");
+    const scrollIndicator = u.$(".scroll-icon-container");
+    const plankton_ctrl = new Plankton(
       ".plankton",
       this.queue.getResult("plankton"),
       u.isMobile() ? 1 : 2
     );
 
-    const handleOnComplete = () => {
-      u.$(".sections").style.opacity = 1;
-    };
-
-    const tl = new TimelineMax();
-    const h1 = u.$(".about h1");
-    const p = u.$(".about p");
-    const icons = u.$$(".about li");
-    const image = u.$(".about .image-container");
-    const bg = u.$(".bg");
-    const plankton = u.$$(".plankton .life");
-    const homeButton = u.$("li.home");
-    const dots = u.$$("li.dot a");
-    const nav = u.$("nav");
-    const scrollIndicator = u.$(".scroll-icon-container");
-
+    //setup mobile
     if (u.isMobile()) {
       this.mobile = new Mobile(u.$$(".sections section"), this.queue);
       u.$("#app").classList.add("is-mobile");
     } else {
+      //setup desktop
       this.click_ctrl = new Click(u.$$("a"));
       this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
 
+      // make the dots clickable
       dots.forEach(dot => {
         dot.addEventListener(
           "click",
@@ -57,7 +52,7 @@ class App {
           true
         );
       });
-
+      //change visbility of things based on the slidestatte
       this.slide_ctrl.addListener("slideState", e => {
         if (e.visible) {
           u.$("#app").classList.add("about-tilt-off");
@@ -69,15 +64,41 @@ class App {
         } else {
           u.$("#app").classList.remove("about-tilt-off");
           u.$(".plankton").style.opacity = 1;
-          //u.$(".scroll-indicator-container").style.visibility = "visible";
           u.$("#app").className = "";
           u.$(".home").classList.remove("visible");
           this.dotCycleTween.resume(0);
         }
-
-        this.plankton_ctrl.pause(e.visible);
+        plankton_ctrl.pause(e.visible);
       });
+
+      homeButton.addEventListener(
+        "click",
+        e => {
+          e.preventDefault();
+          this.slide_ctrl.handleGoHome();
+        },
+        true
+      );
     }
+
+    return true;
+  }
+
+  async setupHomePageAnimations() {
+    const h1 = u.$(".about h1");
+    const p = u.$(".about p");
+    const icons = u.$$(".about li");
+    const image = u.$(".about .image-container");
+    const bg = u.$(".bg");
+    const plankton = u.$$(".plankton .life");
+    const nav = u.$("nav");
+    const dots = u.$$("li.dot a");
+    const scrollIndicator = u.$(".scroll-icon-container");
+    const handleOnComplete = () => {
+      u.$(".sections").style.opacity = 1;
+    };
+
+    const tl = new TimelineMax();
 
     tl.timeScale(0.9);
 
@@ -180,15 +201,7 @@ class App {
       5,
       "-=0.0"
     );
-
-    homeButton.addEventListener(
-      "click",
-      e => {
-        e.preventDefault();
-        this.slide_ctrl.handleGoHome();
-      },
-      true
-    );
+    return true;
   }
 
   onProgress(event) {
@@ -196,7 +209,7 @@ class App {
     document.body.style.setProperty("--loaded", 100 - this.progress + "%");
   }
 
-  site_load() {
+  async site_load() {
     this.loaderEl = u.$(".loader");
     document.body.style.setProperty("--loaded", "100%");
     this.loader_anim.font = lottie.loadAnimation({

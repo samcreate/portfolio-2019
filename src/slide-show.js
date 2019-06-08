@@ -23,6 +23,7 @@ export class SlideShow extends Dispatcher {
     this.animations.lottie = {};
     this.animations.main = {};
     this.timescale = 1;
+    window.fart = this;
     this.checkURL().then(this.init.bind(this));
   }
 

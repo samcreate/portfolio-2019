@@ -28971,8 +28971,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class App {
   constructor() {
-    this.loader_anim = {}; //this.mouse_ctrl = new Mouse();
-
+    this.loader_anim = {};
+    this.mouse_ctrl = new _mouse.Mouse();
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
         this.init();

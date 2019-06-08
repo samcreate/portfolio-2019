@@ -291,13 +291,14 @@
     +for_breakpoint(mobile) {
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       height: 138vh;
+      min-height: 943px;
       overflow: hidden;
       padding: 12vw;
-      position: relative;
-      top: -243vh;
+      position: absolute;
+      top: 0;
       transform: none;
       width: 100vw;
-      z-index: 999 !important;
+      z-index: -1 !important;
     }
 
     .copy {
@@ -619,7 +620,7 @@
   width: 100vw;
 
   +for_breakpoint(mobile) {
-    margin-top: 140vh;
+    margin-top: 921px;
     position: static;
   }
 
@@ -791,6 +792,7 @@
     grid-template-rows: 1.25fr 0.49fr 1.25fr;
     height: 100vh;
     margin: auto;
+    min-height: 900px;
     overflow: hidden;
     place-items: center;
     position: absolute;
@@ -814,6 +816,7 @@
   section.tinker {
     +for_breakpoint(mobile) {
       height: 130vh;
+      min-height: 932px;
     }
 
     .lottie {
@@ -905,6 +908,10 @@
       }
     }
 
+    +for_breakpoint(mobile) {
+      min-height: 1064px;
+    }
+
     background: white;
     z-index: 0;
 
@@ -988,6 +995,10 @@
   }
 
   section.developer {
+    +for_breakpoint(mobile) {
+      min-height: 1080px;
+    }
+
     .lottie {
       +for_breakpoint(mobile) {
         padding-top: 6vh;
@@ -1082,6 +1093,7 @@
   section.animator {
     +for_breakpoint(mobile) {
       height: 130vh;
+      min-height: 931px;
     }
 
     .lottie {

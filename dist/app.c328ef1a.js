@@ -28973,6 +28973,7 @@ class App {
   constructor() {
     this.loader_anim = {};
     this.mouse_ctrl = new _mouse.Mouse();
+    this.plankton_ctrl = null;
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
         this.init();
@@ -28985,14 +28986,15 @@ class App {
 
     const dots = _utily.Utily.$$("li.dot a");
 
-    const scrollIndicator = _utily.Utily.$(".scroll-icon-container");
+    const scrollIndicator = _utily.Utily.$(".scroll-icon-container"); //setup mobile
 
-    const plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 2); //setup mobile
 
     if (_utily.Utily.isMobile()) {
       this.mobile = new _mobile.default(_utily.Utily.$$(".sections section"), this.queue);
 
       _utily.Utily.$("#app").classList.add("is-mobile");
+
+      _lottieWeb.default.setQuality(6);
     } else {
       //setup desktop
       this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
@@ -29031,7 +29033,7 @@ class App {
           this.dotCycleTween.resume(0);
         }
 
-        plankton_ctrl.pause(e.visible);
+        this.plankton_ctrl.pause(e.visible);
       });
       homeButton.addEventListener("click", e => {
         e.preventDefault();
@@ -29043,6 +29045,8 @@ class App {
   }
 
   async setupHomePageAnimations() {
+    this.plankton_ctrl = new _plankton.default(".plankton", this.queue.getResult("plankton"), _utily.Utily.isMobile() ? 1 : 2);
+
     const h1 = _utily.Utily.$(".about h1");
 
     const p = _utily.Utily.$(".about p");
@@ -29231,7 +29235,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59357" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51230" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -13,7 +13,7 @@ class App {
   constructor() {
     this.loader_anim = {};
     this.mouse_ctrl = new Mouse();
-
+    this.plankton_ctrl = null;
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
         this.init();
@@ -25,16 +25,12 @@ class App {
     const homeButton = u.$("li.home");
     const dots = u.$$("li.dot a");
     const scrollIndicator = u.$(".scroll-icon-container");
-    const plankton_ctrl = new Plankton(
-      ".plankton",
-      this.queue.getResult("plankton"),
-      u.isMobile() ? 1 : 2
-    );
 
     //setup mobile
     if (u.isMobile()) {
       this.mobile = new Mobile(u.$$(".sections section"), this.queue);
       u.$("#app").classList.add("is-mobile");
+      lottie.setQuality(6);
     } else {
       //setup desktop
       this.click_ctrl = new Click(u.$$("a"));
@@ -68,7 +64,7 @@ class App {
           u.$(".home").classList.remove("visible");
           this.dotCycleTween.resume(0);
         }
-        plankton_ctrl.pause(e.visible);
+        this.plankton_ctrl.pause(e.visible);
       });
 
       homeButton.addEventListener(
@@ -85,6 +81,12 @@ class App {
   }
 
   async setupHomePageAnimations() {
+    this.plankton_ctrl = new Plankton(
+      ".plankton",
+      this.queue.getResult("plankton"),
+      u.isMobile() ? 1 : 2
+    );
+
     const h1 = u.$(".about h1");
     const p = u.$(".about p");
     const icons = u.$$(".about li");
@@ -94,6 +96,7 @@ class App {
     const nav = u.$("nav");
     const dots = u.$$("li.dot a");
     const scrollIndicator = u.$(".scroll-icon-container");
+
     const handleOnComplete = () => {
       u.$(".sections").style.opacity = 1;
     };

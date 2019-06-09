@@ -665,6 +665,7 @@
         z-index: -1;
 
         +for_breakpoint(mobile) {
+          animation: none;
           height: 20vw;
           left: -4vw;
           top: -6vw;
@@ -787,6 +788,7 @@
           z-index: -1;
 
           +for_breakpoint(mobile) {
+            animation: none;
             height: calc(55px + 7.6vw);
             width: calc(55px + 7.6vw);
           }
@@ -1255,10 +1257,14 @@
   top: -55%;
   transform: translateZ(149px);
   transition: opacity 1s;
-  z-index: -1;
+  z-index: -1 !important;
 
   .life {
     will-change: transform;
+
+    +for_breakpoint(mobile) {
+      z-index: -9999 !important;
+    }
   }
 
   +for_breakpoint(mobile) {
@@ -1266,7 +1272,7 @@
     position: fixed;
     top: 0;
     transform: none;
-    z-index: -225;
+    z-index: -9225;
   }
 
   > div {

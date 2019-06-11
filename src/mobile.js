@@ -1,6 +1,7 @@
 import lottie from "lottie-web";
 import { Utily as u } from "./utily";
 import { TweenMax, Power1, TimelineMax } from "gsap/TweenMax";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 
 export default class Mobile {
   constructor(sections, assets) {

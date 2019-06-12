@@ -38,30 +38,6 @@ export default class Mobile {
         console.error("Unabled to create lotties: ", slide.dataset.section);
       }
     });
-
-    u.$(".mobile-top").addEventListener("click", e => {
-      e.preventDefault();
-      alert(document.body.scrollTop);
-      // let scrollContainer = u.$("body");
-
-      // scrollContainer.style.height = "unset"; // stop scroll
-      // //alert(scrollContainer.scrollTop);
-      // setTimeout(function() {
-      //   TweenMax.to(window, 1, {
-      //     scrollTo: {
-      //       y: -100,
-      //       x: 0,
-      //       autoKill: false,
-      //       onComplete: () => {
-      //         scrollContainer.style.height = "100%";
-      //       }
-      //     },
-      //     ease: Power2.easeInOut
-      //   });
-
-      //   //scrollContainer.style["-webkit-overflow-scrolling"] = "touch"; // re-enable
-      // }, 2);
-    });
   }
 
   handleObservable(e) {

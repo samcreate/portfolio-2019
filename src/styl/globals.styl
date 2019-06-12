@@ -69,10 +69,13 @@ html, body {
     overflow: hidden;
     padding: 0;
     width: 100%;
+}
 
+body {
     +for_breakpoint(mobile) {
         overflow-y: auto;
         scroll-behavior: smooth;
+        transform-style: flat;
         -webkit-overflow-scrolling: touch;
     }
 }

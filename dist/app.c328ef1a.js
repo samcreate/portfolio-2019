@@ -26821,6 +26821,8 @@ var _ScrollToPlugin = _interopRequireDefault(require("gsap/ScrollToPlugin"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const plugins = [_ScrollToPlugin.default];
+
 class Mobile {
   constructor(sections, assets) {
     this.assets = assets;
@@ -26846,6 +26848,27 @@ class Mobile {
       } catch (error) {
         console.error("Unabled to create lotties: ", slide.dataset.section);
       }
+    });
+
+    _utily.Utily.$(".mobile-top").addEventListener("click", e => {
+      e.preventDefault();
+      alert(document.body.scrollTop); // let scrollContainer = u.$("body");
+      // scrollContainer.style.height = "unset"; // stop scroll
+      // //alert(scrollContainer.scrollTop);
+      // setTimeout(function() {
+      //   TweenMax.to(window, 1, {
+      //     scrollTo: {
+      //       y: -100,
+      //       x: 0,
+      //       autoKill: false,
+      //       onComplete: () => {
+      //         scrollContainer.style.height = "100%";
+      //       }
+      //     },
+      //     ease: Power2.easeInOut
+      //   });
+      //   //scrollContainer.style["-webkit-overflow-scrolling"] = "touch"; // re-enable
+      // }, 2);
     });
   }
 
@@ -29458,7 +29481,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51230" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56803" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

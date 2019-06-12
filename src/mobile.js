@@ -1,7 +1,9 @@
 import lottie from "lottie-web";
 import { Utily as u } from "./utily";
-import { TweenMax, Power1, TimelineMax } from "gsap/TweenMax";
+import { TweenMax, Power1, Power2, TimelineMax } from "gsap/TweenMax";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
+
+const plugins = [ScrollToPlugin];
 
 export default class Mobile {
   constructor(sections, assets) {
@@ -35,6 +37,30 @@ export default class Mobile {
       } catch (error) {
         console.error("Unabled to create lotties: ", slide.dataset.section);
       }
+    });
+
+    u.$(".mobile-top").addEventListener("click", e => {
+      e.preventDefault();
+      alert(document.body.scrollTop);
+      // let scrollContainer = u.$("body");
+
+      // scrollContainer.style.height = "unset"; // stop scroll
+      // //alert(scrollContainer.scrollTop);
+      // setTimeout(function() {
+      //   TweenMax.to(window, 1, {
+      //     scrollTo: {
+      //       y: -100,
+      //       x: 0,
+      //       autoKill: false,
+      //       onComplete: () => {
+      //         scrollContainer.style.height = "100%";
+      //       }
+      //     },
+      //     ease: Power2.easeInOut
+      //   });
+
+      //   //scrollContainer.style["-webkit-overflow-scrolling"] = "touch"; // re-enable
+      // }, 2);
     });
   }
 

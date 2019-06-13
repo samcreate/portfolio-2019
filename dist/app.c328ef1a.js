@@ -29199,6 +29199,7 @@ class App {
     this.loader_anim = {};
     this.mouse_ctrl = new _mouse.Mouse();
     this.plankton_ctrl = null;
+    this.CDN = "https://d31vq1ptw1cn8i.cloudfront.net/";
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
         this.init();
@@ -29222,6 +29223,8 @@ class App {
       _lottieWeb.default.setQuality(6);
     } else {
       //setup desktop
+      _lottieWeb.default.setQuality(10);
+
       this.click_ctrl = new _click.default(_utily.Utily.$$("a"));
       this.slide_ctrl = new _slideShow.SlideShow(_utily.Utily.$$(".sections section"), this.queue); // make the dots clickable
 
@@ -29412,19 +29415,19 @@ class App {
       });
       this.queue.loadManifest([{
         id: "tinker",
-        src: "https://s3-us-west-2.amazonaws.com/lottietest/tinker.json"
+        src: this.CDN + "tinker.json"
       }, {
         id: "explorer",
-        src: "https://s3-us-west-2.amazonaws.com/lottietest/explorer.json"
+        src: this.CDN + "explorer.json"
       }, {
         id: "developer",
-        src: "https://s3-us-west-2.amazonaws.com/lottietest/developer.json"
+        src: this.CDN + "developer.json"
       }, {
         id: "animator",
-        src: "https://s3-us-west-2.amazonaws.com/lottietest/animator.json"
+        src: this.CDN + "animator.json"
       }, {
         id: "plankton",
-        src: "https://s3-us-west-2.amazonaws.com/lottietest/plankton.json"
+        src: this.CDN + "plankton.json"
       }]);
     });
   }
@@ -29460,7 +29463,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51640" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52306" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

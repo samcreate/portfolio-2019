@@ -14,6 +14,7 @@ class App {
     this.loader_anim = {};
     this.mouse_ctrl = new Mouse();
     this.plankton_ctrl = null;
+    this.CDN = "https://d31vq1ptw1cn8i.cloudfront.net/";
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
         this.init();
@@ -33,6 +34,7 @@ class App {
       lottie.setQuality(6);
     } else {
       //setup desktop
+      lottie.setQuality(10);
       this.click_ctrl = new Click(u.$$("a"));
       this.slide_ctrl = new SlideShow(u.$$(".sections section"), this.queue);
 
@@ -252,23 +254,23 @@ class App {
       this.queue.loadManifest([
         {
           id: "tinker",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/tinker.json"
+          src: this.CDN + "tinker.json"
         },
         {
           id: "explorer",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/explorer.json"
+          src: this.CDN + "explorer.json"
         },
         {
           id: "developer",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/developer.json"
+          src: this.CDN + "developer.json"
         },
         {
           id: "animator",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/animator.json"
+          src: this.CDN + "animator.json"
         },
         {
           id: "plankton",
-          src: "https://s3-us-west-2.amazonaws.com/lottietest/plankton.json"
+          src: this.CDN + "plankton.json"
         }
       ]);
     });

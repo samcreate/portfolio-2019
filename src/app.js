@@ -17,7 +17,9 @@ class App {
     this.CDN = "https://d31vq1ptw1cn8i.cloudfront.net/";
     this.site_load().then(() => {
       this.setupHomePageAnimations().then(() => {
-        this.init();
+        setTimeout(() => {
+          this.init();
+        }, 600);
       });
     });
   }

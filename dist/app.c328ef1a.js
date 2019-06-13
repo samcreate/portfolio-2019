@@ -25879,6 +25879,7 @@ class SlideShow extends _dispatcher.Dispatcher {
   }
 
   handleGoHome() {
+    if (this.lastSlide === null) return;
     this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(hide_response => {
       this.current = -1;
       this.lastSlide = null;
@@ -25927,6 +25928,10 @@ class SlideShow extends _dispatcher.Dispatcher {
       case "Left":
       case "ArrowLeft":
         this.handlePrev();
+        break;
+
+      case "Escape":
+        this.handleGoHome();
         break;
     }
 

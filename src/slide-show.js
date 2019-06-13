@@ -348,6 +348,7 @@ export class SlideShow extends Dispatcher {
   }
 
   handleGoHome() {
+    if (this.lastSlide === null) return;
     this.hideSlide(this.lastSlide, this.DIR_BACKWARD).then(hide_response => {
       this.current = -1;
       this.lastSlide = null;
@@ -382,6 +383,7 @@ export class SlideShow extends Dispatcher {
     if (event.defaultPrevented) {
       return;
     }
+
     switch (event.key) {
       case "Down":
       case "ArrowDown":
@@ -394,7 +396,9 @@ export class SlideShow extends Dispatcher {
       case "Left":
       case "ArrowLeft":
         this.handlePrev();
-
+        break;
+      case "Escape":
+        this.handleGoHome();
         break;
     }
     event.preventDefault();

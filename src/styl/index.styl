@@ -941,6 +941,10 @@
       transform: translate3d(calc(calc(3 * var(--rot-xvw, 0)) + -90px), calc(calc(3 * var(--rot-yvw, 0)) + 20px), 0);
     }
 
+    &:not(.is-mobile) #allcouds :nth-child(2) {
+      z-index: -88;
+    }
+
     &:not(.is-mobile) #explorer {
       transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + 0px), calc(calc(1.5 * var(--rot-yvw, 0)) + 50px), 0);
       transform-origin: center;
@@ -948,6 +952,22 @@
 
     &:not(.is-mobile) #van-floor-shadow {
       transform: translate3d(calc(-2 * var(--rot-xvw, 0)), calc(calc(-2 * var(--rot-yvw, 0)) + 92px), 0);
+    }
+
+    &:not(.is-mobile) #vanall {
+      transform: translateZ(0px) rotateX(calc(5deg * var(--rot-x, 0))) rotateY(calc(5deg * var(--rot-y, 0))) translateY(-150px);
+    }
+
+    &:not(.is-mobile) #explorer-all > :nth-child(3) {
+      transform: translate3d(calc(-1 * var(--rot-xvw, 0)), calc(calc(-1 * var(--rot-yvw, 0)) + 92px), 0) translateX(960px) translateY(400px);
+    }
+
+    &:not(.is-mobile) #explorer-all #cactus2 {
+      transform: translate3d(calc(-1 * var(--rot-xvw, 0)), calc(calc(-1 * var(--rot-yvw, 0)) + 92px), 0) translateY(-60px);
+    }
+
+    &:not(.is-mobile) #explorer-all #cactus {
+      transform: translate3d(calc(-1 * var(--rot-xvw, 0)), calc(calc(-1 * var(--rot-yvw, 0)) + 92px), 0) translateY(320px) translateX(1050px);
     }
 
     ::selection {

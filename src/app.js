@@ -1,23 +1,11 @@
-import {
-  Mouse
-} from "./mouse";
-import {
-  SlideShow
-} from "./slide-show";
+import { Mouse } from "./mouse";
+import { SlideShow } from "./slide-show";
 import preloadjs from "preload-js";
-import {
-  TimelineMax,
-  TweenMax,
-  Power1,
-  Power2,
-  Elastic
-} from "gsap/TweenMax";
+import { TimelineMax, TweenMax, Power1, Power2, Elastic } from "gsap/TweenMax";
 import lottie from "lottie-web";
 import loaderJson from "./json/loader.json";
 import Plankton from "./plankton";
-import {
-  Utily as u
-} from "./utily";
+import { Utily as u } from "./utily";
 import Mobile from "./mobile";
 import Click from "./click";
 
@@ -139,7 +127,8 @@ class App {
     this.dotCycleTween.timeScale(1.2);
     this.dotCycleTween.staggerTo(
       dots,
-      1, {
+      1,
+      {
         cycle: {
           //an array of values
           backgroundColor: [
@@ -165,7 +154,8 @@ class App {
     });
     tl.to(
       bg,
-      0.7, {
+      0.7,
+      {
         autoAlpha: 1,
         ease: Power1.easeOut
       },
@@ -177,7 +167,8 @@ class App {
     });
     tl.staggerTo(
       [h1, p],
-      0.93, {
+      0.93,
+      {
         autoAlpha: 1,
         y: "-=20px",
         ease: Power2.easeOut
@@ -187,7 +178,8 @@ class App {
     );
     tl.staggerTo(
       icons,
-      0.8, {
+      0.8,
+      {
         autoAlpha: 1,
         y: "-=20px",
         ease: Power2.easeOut
@@ -198,14 +190,16 @@ class App {
 
     tl.to(
       scrollIndicator,
-      0.5, {
+      0.5,
+      {
         autoAlpha: 1
       },
       "-=1.5"
     );
     tl.to(
       image,
-      0.5, {
+      0.5,
+      {
         autoAlpha: 1,
         y: "-=20px",
         onComplete: () => {
@@ -218,10 +212,12 @@ class App {
     );
     tl.staggerFromTo(
       plankton,
-      1, {
+      1,
+      {
         opacity: 0,
         scale: 0
-      }, {
+      },
+      {
         opacity: 1,
         scale: 1,
         ease: Elastic.easeOut.config(1, 0.5)
@@ -265,10 +261,12 @@ class App {
 
     TweenMax.fromTo(
       this.loaderEl,
-      1, {
+      1,
+      {
         y: "+=40px",
         opacity: 0
-      }, {
+      },
+      {
         y: "-=40px",
         opacity: 1,
         ease: Power1.easeOut
@@ -279,7 +277,8 @@ class App {
       this.queue.on("complete", e => {
         resolve(e);
       });
-      this.queue.loadManifest([{
+      this.queue.loadManifest([
+        {
           id: "tinker",
           src: this.CDN + "tinker.json"
         },

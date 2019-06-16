@@ -954,7 +954,9 @@
       transform: translate3d(calc(-2 * var(--rot-xvw, 0)), calc(calc(-2 * var(--rot-yvw, 0)) + 92px), 0);
     }
 
-    
+    &:not(.is-mobile) #vanall {
+      transform: translate3d(calc(-1 * var(--rot-xvw, 0)), calc(calc(-1 * var(--rot-yvw, 0)) - 120px), 0);
+    }
 
     ::selection {
       background: rgba(141, 236, 193, 0.99);
@@ -1022,10 +1024,10 @@
       +for_breakpoint(mobile) {
         padding-top: 6vh;
       }
+
       +for_breakpoint(desktopLaptop) {
         padding-top: 27vh;
       }
-      
     }
 
     &:not(.is-mobile) .lottie {
@@ -1129,7 +1131,7 @@
     }
 
     &:not(.is-mobile) #anim-factory {
-      transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + 0px), calc(calc(1.5 * var(--rot-yvw, 0)) + 0px), 0);
+      transform: translate3d(calc(calc(1.5 * var(--rot-xvw, 0)) + 0px), calc(calc(1.5 * var(--rot-yvw, 0)) - 15px), 0);
     }
 
     &:not(.is-mobile) #anim-floor {

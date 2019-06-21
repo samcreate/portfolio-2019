@@ -29174,7 +29174,19 @@ class Click {
 }
 
 exports.default = Click;
-},{"./json/click.json":"json/click.json","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js"}],"app.js":[function(require,module,exports) {
+},{"./json/click.json":"json/click.json","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./utily":"utily.js"}],"images/anim-bg.svg":[function(require,module,exports) {
+module.exports = "/anim-bg.57ac43bd.svg";
+},{}],"images/tinker-bg.svg":[function(require,module,exports) {
+module.exports = "/tinker-bg.df306a06.svg";
+},{}],"images/explore-bg.svg":[function(require,module,exports) {
+module.exports = "/explore-bg.4098c85d.svg";
+},{}],"images/dev-bg.svg":[function(require,module,exports) {
+module.exports = "/dev-bg.41d739f5.svg";
+},{}],"images/halo-bg.svg":[function(require,module,exports) {
+module.exports = "/halo-bg.cf5c8f85.svg";
+},{}],"images/headshot1.png":[function(require,module,exports) {
+module.exports = "/headshot1.23593917.png";
+},{}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _mouse = require("./mouse");
@@ -29196,6 +29208,18 @@ var _utily = require("./utily");
 var _mobile = _interopRequireDefault(require("./mobile"));
 
 var _click = _interopRequireDefault(require("./click"));
+
+var _animBg = _interopRequireDefault(require("/images/anim-bg.svg"));
+
+var _tinkerBg = _interopRequireDefault(require("/images/tinker-bg.svg"));
+
+var _exploreBg = _interopRequireDefault(require("/images/explore-bg.svg"));
+
+var _devBg = _interopRequireDefault(require("/images/dev-bg.svg"));
+
+var _haloBg = _interopRequireDefault(require("/images/halo-bg.svg"));
+
+var _headshot = _interopRequireDefault(require("/images/headshot1.png"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29378,8 +29402,16 @@ class App {
   }
 
   onProgress(event) {
+    const percent = _utily.Utily.$(".percent p");
+
     this.progress = Math.round(event.loaded * 100);
     document.body.style.setProperty("--loaded", 100 - this.progress + "%");
+
+    if (this.progress < 100) {
+      percent.innerText = this.progress;
+    } else {
+      percent.innerText = 99;
+    }
   }
 
   async site_load() {
@@ -29435,6 +29467,24 @@ class App {
       }, {
         id: "plankton",
         src: this.CDN + "plankton.json"
+      }, {
+        id: "animbg",
+        src: _animBg.default
+      }, {
+        id: "tinkbg",
+        src: _tinkerBg.default
+      }, {
+        id: "explorebg",
+        src: _exploreBg.default
+      }, {
+        id: "devbg",
+        src: _devBg.default
+      }, {
+        id: "halo",
+        src: _haloBg.default
+      }, {
+        id: "me",
+        src: _headshot.default
       }]);
     });
   }
@@ -29442,7 +29492,7 @@ class App {
 }
 
 const Portfolio = new App();
-},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./json/loader.json":"json/loader.json","./plankton":"plankton.js","./utily":"utily.js","./mobile":"mobile.js","./click":"click.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./mouse":"mouse.js","./slide-show":"slide-show.js","preload-js":"../node_modules/preload-js/index.js","gsap/TweenMax":"../node_modules/gsap/TweenMax.js","lottie-web":"../node_modules/lottie-web/build/player/lottie.js","./json/loader.json":"json/loader.json","./plankton":"plankton.js","./utily":"utily.js","./mobile":"mobile.js","./click":"click.js","/images/anim-bg.svg":"images/anim-bg.svg","/images/tinker-bg.svg":"images/tinker-bg.svg","/images/explore-bg.svg":"images/explore-bg.svg","/images/dev-bg.svg":"images/dev-bg.svg","/images/halo-bg.svg":"images/halo-bg.svg","/images/headshot1.png":"images/headshot1.png"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -29470,7 +29520,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53685" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51942" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

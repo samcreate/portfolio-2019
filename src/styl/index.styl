@@ -33,16 +33,31 @@
       position: relative;
     }
 
+    .percent {
+      p {
+        color: white;
+        font-family: 'montserrat_blackregular';
+        font-size: 5em;
+        opacity: 0.09;
+
+        +for_breakpoint(mobile) {
+          position: relative;
+          top: 40%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+
     .tp-ldr, .bt-ldr {
       position: fixed;
-      transform: translateZ(0px) rotateX(calc(var(--degs) * var(--rot-x, 0))) rotateY(calc(var(--degs) * var(--rot-y, 0)));
       transform-origin: center;
       width: 10vw;
 
       +for_breakpoint(mobile) {
         height: 30vw;
         position: absolute;
-        top: 35vh;
+        top: 50%;
+        transform: translateY(-50%);
         transform: none;
         width: 50vw;
       }
@@ -592,7 +607,7 @@
   }
 
   .bg {
-    background: url('https://s3-us-west-2.amazonaws.com/lottietest/squiggle.gif');
+    background: url('https://d31vq1ptw1cn8i.cloudfront.net/squiggle.gif');
     background-size: 150px;
     display: flex;
     height: 150vh;

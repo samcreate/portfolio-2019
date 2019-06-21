@@ -8,6 +8,12 @@ import Plankton from "./plankton";
 import { Utily as u } from "./utily";
 import Mobile from "./mobile";
 import Click from "./click";
+import animbg from "/images/anim-bg.svg";
+import tinkbg from "/images/tinker-bg.svg";
+import explorebg from "/images/explore-bg.svg";
+import devbg from "/images/dev-bg.svg";
+import halo from "/images/halo-bg.svg";
+import me from "/images/headshot1.png";
 
 class App {
   constructor() {
@@ -229,8 +235,14 @@ class App {
   }
 
   onProgress(event) {
+    const percent = u.$(".percent p");
     this.progress = Math.round(event.loaded * 100);
     document.body.style.setProperty("--loaded", 100 - this.progress + "%");
+    if (this.progress < 100) {
+      percent.innerText = this.progress;
+    } else {
+      percent.innerText = 99;
+    }
   }
 
   async site_load() {
@@ -297,6 +309,30 @@ class App {
         {
           id: "plankton",
           src: this.CDN + "plankton.json"
+        },
+        {
+          id: "animbg",
+          src: animbg
+        },
+        {
+          id: "tinkbg",
+          src: tinkbg
+        },
+        {
+          id: "explorebg",
+          src: explorebg
+        },
+        {
+          id: "devbg",
+          src: devbg
+        },
+        {
+          id: "halo",
+          src: halo
+        },
+        {
+          id: "me",
+          src: me
         }
       ]);
     });

@@ -156,7 +156,10 @@ class App {
 
     tl.to(this.loaderEl, 1, {
       autoAlpha: 0,
-      ease: Power1.easeOut
+      ease: Power1.easeOut,
+      onComplete: () => {
+        this.loaderEl.style.display = "none";
+      }
     });
     tl.to(
       bg,

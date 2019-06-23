@@ -14,9 +14,7 @@
     "preset": [
       "default",
       {
-        "discardComments": {
-          "normalizeWhitespace": false
-        }
+        "normalizeWhitespace": false
       }
     ]
   },

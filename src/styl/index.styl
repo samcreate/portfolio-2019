@@ -1131,17 +1131,6 @@
   }
 
   section.animator {
-    +for_breakpoint(mobile) {
-      height: 130vh;
-      min-height: 931px;
-    }
-
-    .lottie {
-      +for_breakpoint(mobile) {
-        padding-top: 7vh;
-      }
-    }
-
     &:not(.is-mobile) #anim-factory {
       transform: translate3d(calc(calc(1.9 * var(--rot-xvw, 0)) + 0px), calc(calc(1.9 * var(--rot-yvw, 0)) - 10px), 0);
     }
@@ -1153,6 +1142,17 @@
 
     &:not(.is-mobile) #anim-floor-shadow {
       transform: translate3d(calc(-3 * var(--rot-xvw, 0)), calc(calc(-3 * var(--rot-yvw, 0)) + 55px), 0);
+    }
+
+    +for_breakpoint(mobile) {
+      height: 130vh;
+      min-height: 931px;
+    }
+
+    .lottie {
+      +for_breakpoint(mobile) {
+        padding-top: 7vh;
+      }
     }
 
     ::selection {

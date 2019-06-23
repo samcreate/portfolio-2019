@@ -14,7 +14,11 @@
     "preset": [
       "default",
       {
-        "normalizeWhitespace": false
+        "normalizeWhitespace": false,
+        "reduceTransforms": false,
+        "zindex": false,
+        "orderedValues": false,
+        "calc": false
       }
     ]
   },

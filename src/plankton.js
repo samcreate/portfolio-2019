@@ -21,8 +21,8 @@ export default class Plankton {
       });
       this.plankton.push(_tmp_anim);
       TweenMax.set(tmp_div, {
-        x: u.MR(window.innerWidth),
-        y: u.MR(window.innerHeight)
+        x: u.MR(window.innerWidth - window.innerWidth * 0.25),
+        y: u.MR(window.innerHeight - window.innerHeight * 0.25)
       });
       let frame = Math.floor(u.MR(100));
       setTimeout(() => {

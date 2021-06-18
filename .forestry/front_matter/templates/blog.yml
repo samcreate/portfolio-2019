@@ -1,4 +1,21 @@
 ---
 label: blog
 hide_body: true
-fields: []
+fields:
+- name: show_creator_tool
+  type: boolean
+  label: Show Creator tool
+- name: creator_lisa
+  type: list
+  config:
+    use_select: false
+    min: 
+    max: 
+  label: creator list
+- name: title
+  type: text
+  config:
+    required: true
+    max: 20
+    min: 5
+  label: Title
